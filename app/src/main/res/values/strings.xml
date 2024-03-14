@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">StarBug</string>
+    <string name="intech_co">\@Intech .Co</string>
+    <string name="coddee_is_bug_stay_awake_for_it">Coddee is BUG, stay awake for IT</string>
+    <string name="starbug">StarBug</string>
+    <string name="sign_in_to_continue">Sign in to continue</string>
+    <string name="forget_password">FORGET PASSWORD?</string>
+    <string name="go">GO</string>
+    <string name="new_user_sign_up">NEW USER? SIGN UP</string>
+    <string name="welcome_to_starbug">Welcome to StarBug</string>
+    <string name="welcome">welcome\n</string>
+    <string name="sign_up_to_find_your_favor">Sign up to find your favor</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="logo">LOGO</string>
 </resources>
