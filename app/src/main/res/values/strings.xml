@@ -18,4 +18,9 @@
     <string name="sign_in">SIGN IN</string>
     <string name="logo">LOGO</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="verify">VERIFY</string>
+    <string name="back_to_the_sign_in_page">BACK TO THE SIGN IN PAGE</string>
+    <string name="forget_password_1">Forget Password</string>
+    <string name="verify_email_to_reset_password">Verify email to reset password</string>
+    <string name="email_1">Email</string>
 </resources>

@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.util.Pair
 import android.view.View
+import intech.co.starbug.authentication.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
