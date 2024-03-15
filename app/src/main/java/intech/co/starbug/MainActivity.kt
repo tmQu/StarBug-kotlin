@@ -49,6 +49,6 @@ class MainActivity : AppCompatActivity() {
 
             val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
             startActivity(intent, options.toBundle())
-        }, 5000)
+        }, 3000)
     }
 }
