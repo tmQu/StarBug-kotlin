@@ -2,4 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--    Color for detail product page-->
+    <color name="bg_background_detail">#FFF</color>
+    <color name="title_txt">#2F2D2C</color>
+    <color name="category">#9B9B9B</color>
+    <color name="desc_txt">#9B9B9B</color>
+    <color name="avg_rate">#2F2D2C</color>
+    <color name="num_rate">#808080</color>
+
+    <color name="txt_size_unselected">#2F2D2C</color>
+    <color name="border_size_unselected">#DEDEDE</color>
+    <color name="bg_size_unselected">#FFF</color>
+
+    <color name="txt_size_selected">#C67C4E</color>
+    <color name="border_size_selected">#C67C4E</color>
+    <color name="bg_size_selected">#FFF5EE</color>
+    
+    <color name="price_txt">#C67C4E</color>
+
+    <color name="buy_btn">#C67C4E</color>
+    <color name="buy_txt">#FFF</color>
 </resources>

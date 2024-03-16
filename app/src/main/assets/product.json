@@ -1,0 +1,570 @@
+[
+    {
+        "id": "tra-1",
+        "name": "Trà Lipton Ngon",
+        "category": "Trà",
+        "price": 25000,
+        "description": "Trà Lipton Ngon\nHương Vị Tự Nhiên\nTrà Lipton với hương vị tự nhiên, mang lại cảm giác thư giãn sau mỗi ngụm.",
+        "avgRate": 4,
+        "img": [
+            "https://i.pinimg.com/564x/76/38/20/763820283679c7272d2be2d6e327d1c8.jpg",
+            "https://i.pinimg.com/564x/5c/3d/57/5c3d5737d15b92859b2d79045f792b27.jpg"
+        ],
+        "medium_price": 35000,
+        "large_price": 55000
+    },
+    {
+        "id": "tra-2",
+        "name": "Trà Oolong Đặc Biệt",
+        "category": "Trà",
+        "price": 32000,
+        "description": "Trà Oolong Đặc Biệt\nHương Vị Độc Đáo\nTrà Oolong đặc biệt với hương vị độc đáo, thích hợp cho những ai yêu thích trà truyền thống.",
+        "avgRate": 4.2,
+        "img": [
+            "https://i.pinimg.com/564x/af/51/48/af5148b7131618156433c2b5b6118fd5.jpg",
+            "https://i.pinimg.com/564x/cd/d1/c5/cdd1c52ef63e7406c6be0372a0e25a6a.jpg",
+            "https://i.pinimg.com/564x/cd/d1/c5/cdd1c52ef63e7406c6be0372a0e25a6a.jpg"
+        ],
+        "medium_price": 52000,
+        "large_price": 72000
+    },
+    {
+        "id": "tra-3",
+        "name": "Trà Lài Hòa Quyện",
+        "category": "Trà",
+        "price": 28000,
+        "description": "Trà Lài Hòa Quyện\nHương Vị Nồng Nàn\nTrà lái hòa quyện, hương vị nồng nàn và sâu lắng, làm cho mỗi ngày trở nên trọn vẹn.",
+        "avgRate": 4.1,
+        "img": [
+            "https://i.pinimg.com/564x/d5/88/f6/d588f6aef6896ccf6d9f2d57e401c4dc.jpg",
+            "https://i.pinimg.com/564x/a6/bc/8f/a6bc8fc660a9e78d83efb51511e039e9.jpg"
+        ],
+        "medium_price": 58000,
+        "large_price": 78000
+    },
+    {
+        "id": "tra-4",
+        "name": "Trà Đen Twinnings",
+        "category": "Trà",
+        "price": 30000,
+        "description": "Trà Đen Twinnings\nHòa Quyện Hương Thơm\nTrà đen Twinnings với hương thơm quyến rũ, đưa bạn đến một thế giới trà đen đẳng cấp.",
+        "avgRate": 4.3,
+        "img": [
+            "https://i.pinimg.com/564x/0c/d1/74/0cd1744b4166d61220c067d2c2e21ec6.jpg",
+            "https://i.pinimg.com/564x/2a/4e/aa/2a4eaa9b835cd67fa42c3bda92f3f0c9.jpg"
+        ],
+        "medium_price": 40000,
+        "large_price": 50000
+    },
+    {
+        "id": "tra-5",
+        "name": "Trà Xanh Nhài",
+        "category": "Trà",
+        "price": 35000,
+        "description": "Trà Xanh Nhài\nHương Vị Dịu Dàng\nTrà xanh nhài nhẹ nhàng với hương vị dịu dàng, làm cho thời gian thư giãn trở nên thêm phần trọn vẹn.",
+        "avgRate": 4.4,
+        "img": [
+            "https://i.pinimg.com/564x/43/08/a6/4308a6fd31986f44c65d7d9a1f09961d.jpg",
+            "https://i.pinimg.com/564x/e2/1c/d4/e21cd4411f74d0a0573a54e6a089cecc.jpg"
+        ],
+        "medium_price": 45000,
+        "large_price": 65000
+    },
+    {
+        "id": "tra-6",
+        "name": "Trà Lục Bình",
+        "category": "Trà",
+        "price": 27000,
+        "description": "Trà Lục Bình\nHương Vị Nguyên Bản\nTrà lục bình truyền thống với hương vị nguyên bản, làm cho mỗi ngày trở nên tươi mới.",
+        "avgRate": 4,
+        "img": [
+            "https://i.pinimg.com/564x/80/29/56/80295628691d07be976f1b049517f9ab.jpg"
+        ],
+        "medium_price": 37000,
+        "large_price": 57000
+    },
+    {
+        "id": "tra-7",
+        "name": "Trà Sữa Đào",
+        "category": "Trà",
+        "price": 38000,
+        "description": "Trà Sữa Đào\nHòa Quyện Hương Đào\nTrà sữa đào mát lạnh, hòa quyện hương đào tinh tế, thích hợp cho những ngày nóng bức.",
+        "avgRate": 4.2,
+        "img": [
+            "https://i.pinimg.com/564x/95/f8/c4/95f8c4b19a6b7c2e9fb9bf50273a223c.jpg"
+        ],
+        "medium_price": 68000,
+        "large_price": 88000
+    },
+    {
+        "id": "tra-8",
+        "name": "Trà Lài Phủ Bạc",
+        "category": "Trà",
+        "price": 30000,
+        "description": "Trà Lài Phủ Bạc\nHương Vị Độc Đáo\nTrà lái phủ bạc với hương vị độc đáo, mang lại trải nghiệm thưởng thức trà truyền thống.",
+        "avgRate": 4.3,
+        "img": [
+            "https://i.pinimg.com/564x/81/e2/c8/81e2c83531375c842e0fbd6d6f5e9a4c.jpg"
+        ],
+        "medium_price": 50000,
+        "large_price": 60000
+    },
+    {
+        "id": "tra-9",
+        "name": "Trà Hoa Cúc",
+        "category": "Trà",
+        "price": 32000,
+        "description": "Trà Hoa Cúc\nHương Vị Dịu Dàng\nTrà hoa cúc nhẹ nhàng với hương thơm dịu dàng, giúp thư giãn sau một ngày bận rộn.",
+        "avgRate": 4.1,
+        "img": [
+            "https://i.pinimg.com/564x/ab/c8/83/abc8839c1ef31f8427dac146fd844f2c.jpg"
+        ],
+        "medium_price": 62000,
+        "large_price": 72000
+    },
+    {
+        "id": "tra-10",
+        "name": "Trà Đào Xanh",
+        "category": "Trà",
+        "price": 34000,
+        "description": "Trà Đào Xanh\nHương Vị Tinh Khiết\nTrà đào xanh tinh khiết, mang lại hương vị tươi mới và nguyên bản của trà truyền thống.",
+        "avgRate": 4.4,
+        "img": [
+            "https://i.pinimg.com/564x/ca/9d/92/ca9d92b12ed6e30cd7563ccfaa845bf7.jpg"
+        ],
+        "medium_price": 54000,
+        "large_price": 64000
+    },
+    {
+        "id": "cafe-1",
+        "name": "Cà Phê Đen Robusta",
+        "category": "Cà Phê",
+        "price": 35000,
+        "description": "Cà Phê Đen Robusta\nHương Vị Đậm Đà\nCà phê đen Robusta mạnh mẽ, với hương vị đậm đà và hậu vị lâu.",
+        "avgRate": 4,
+        "img": [
+            "https://i.pinimg.com/564x/02/4b/a2/024ba26c2dca5c201a514c7948f3d046.jpg",
+            "https://i.pinimg.com/564x/04/0e/d5/040ed5abea57ebd9ac7a5f50c44279b5.jpg",
+            "https://i.pinimg.com/564x/05/f3/63/05f363d2226a03468535c7ec5bfdb900.jpg"
+        ],
+        "medium_price": 45000,
+        "large_price": 65000
+    },
+    {
+        "id": "cafe-2",
+        "name": "Cà Phê Sữa Đá",
+        "category": "Cà Phê",
+        "price": 40000,
+        "description": "Cà Phê Sữa Đá\nHòa Quyện Hương Vị\nCà phê sữa đá thơm ngon, với sự kết hợp hoàn hảo giữa cà phê và sữa đặc ngọt ngào.",
+        "avgRate": 4.2,
+        "img": [
+            "https://i.pinimg.com/564x/c3/29/ee/c329eec7c55dda45475f7fe5a0ec24ef.jpg",
+            "https://i.pinimg.com/564x/99/69/d9/9969d900634155d2753698c8bce88423.jpg",
+            "https://i.pinimg.com/564x/97/d6/23/97d6234f7c8308125bffaa679ac89548.jpg",
+            "https://i.pinimg.com/564x/a9/f7/8f/a9f78febb7921bed6f4279083b24cf8d.jpg"
+        ],
+        "medium_price": 50000,
+        "large_price": 80000
+    },
+    {
+        "id": "cafe-3",
+        "name": "Cà Phê Caramel Macchiato",
+        "category": "Cà Phê",
+        "price": 45000,
+        "description": "Cà Phê Caramel Macchiato\nLớp Caramel Béo Ngậy\nCaramel Macchiato với lớp caramel béo ngậy, tạo nên cảm giác thưởng thức đặc biệt.",
+        "avgRate": 4.5,
+        "img": [
+            "https://i.pinimg.com/564x/7f/c6/3b/7fc63bbcd2d31c777e00cf7ab5a20024.jpg",
+            "https://i.pinimg.com/564x/16/5f/84/165f841748e7c24850fa5060e91c755a.jpg",
+            "https://i.pinimg.com/564x/57/63/7e/57637ed7549ee5df91b2de63a5b0a6c7.jpg",
+            "https://i.pinimg.com/564x/ad/7a/dd/ad7addae448861a28e16b3e522b625db.jpg"
+        ],
+        "medium_price": 75000,
+        "large_price": 95000
+    },
+    {
+        "id": "cafe-4",
+        "name": "Cà Phê Phin Hòa Quyện",
+        "category": "Cà Phê",
+        "price": 42000,
+        "description": "Cà Phê Phin Hòa Quyện\nHương Vị Cổ Điển\nCà phê phin truyền thống, hòa quyện hương vị cổ điển của Việt Nam.",
+        "avgRate": 4.3,
+        "img": [
+            "https://i.pinimg.com/564x/da/b8/a4/dab8a44fabd8ed717f36247f55ba6045.jpg",
+            "https://i.pinimg.com/564x/c8/ff/3a/c8ff3ae4ac339d636c911ef6a648f69b.jpg",
+            "https://i.pinimg.com/736x/b5/3c/f2/b53cf217ed06b9375fa890a6f161bd19.jpg"
+        ],
+        "medium_price": 72000,
+        "large_price": 92000
+    },
+    {
+        "id": "cafe-5",
+        "name": "Cà Phê Sữa Nóng",
+        "category": "Cà Phê",
+        "price": 38000,
+        "description": "Cà Phê Sữa Nóng\nThưởng Thức Nóng Bỏng\nCà phê sữa nóng, thơm ngon và đậm đà, làm ấm lòng những ngày se lạnh.",
+        "avgRate": 4.1,
+        "img": [
+            "https://i.pinimg.com/564x/a2/4e/5b/a24e5b8638ccdabd9b33e84420397d93.jpg",
+            "https://i.pinimg.com/564x/18/17/09/181709954deff1da57fa19719fc83fe1.jpg",
+            "https://i.pinimg.com/564x/27/67/47/2767476e73b18c77853122a7f1766fc8.jpg"
+        ],
+        "medium_price": 48000,
+        "large_price": 58000
+    },
+    {
+        "id": "cafe-6",
+        "name": "Cà Phê Espresso",
+        "category": "Cà Phê",
+        "price": 48000,
+        "description": "Cà Phê Espresso\nHương Vị Đắng Đậm\nEspresso với hương vị đắng đậm và chất lượng tinh khiết, làm say mê những tín đồ cà phê.",
+        "avgRate": 4.4,
+        "img": [
+            "https://i.pinimg.com/564x/de/56/1d/de561d522edc8b86d4371a7fde4b9270.jpg",
+            "https://i.pinimg.com/564x/b3/bc/d5/b3bcd5105321f5658e490ebed08a40e6.jpg",
+            "https://i.pinimg.com/564x/7b/a9/27/7ba92729d63520c014ab237c267d821b.jpg",
+            "https://i.pinimg.com/564x/40/35/ec/4035ecebf26ac13a5071614566a2fd91.jpg"
+        ],
+        "medium_price": 68000,
+        "large_price": 78000
+    },
+    {
+        "id": "cafe-7",
+        "name": "Cà Phê Mocha",
+        "category": "Cà Phê",
+        "price": 42000,
+        "description": "Cà Phê Mocha\nHòa Quyện Hương Chocolate\nCà phê Mocha với hòa quyện hương vị chocolate và cà phê, làm cho thời gian thư giãn thêm phần ngon miệng.",
+        "avgRate": 4.6,
+        "img": [
+            "https://i.pinimg.com/564x/05/d8/95/05d895fe6e174cd8762f14de620f79a6.jpg",
+            "https://i.pinimg.com/564x/43/92/4e/43924e408367826e0e603284d35e74ab.jpg",
+            "https://i.pinimg.com/564x/4e/e6/65/4ee665107b9aa7ac91c7a9eedab05b6f.jpg"
+        ],
+        "medium_price": 62000,
+        "large_price": 72000
+    },
+    {
+        "id": "cafe-9",
+        "name": "Cà Phê Latte",
+        "category": "Cà Phê",
+        "price": 46000,
+        "description": "Cà Phê Latte\nSự Hòa Quyện Hoàn Hảo\nCà phê Latte với sự hòa quyện hoàn hảo giữa cà phê, sữa và lớp bọt sữa mịn màng.",
+        "avgRate": 4.3,
+        "img": [
+            "https://i.pinimg.com/564x/01/6a/33/016a3372283916a4e84a41a7dd80f1f5.jpg",
+            "https://i.pinimg.com/736x/62/33/67/623367e85bb04e18d14db8ad70409d47.jpg",
+            "https://i.pinimg.com/564x/d4/5f/8b/d45f8b20626bbdf79ce10b11f9a1ff32.jpg"
+        ],
+        "medium_price": 76000,
+        "large_price": 86000
+    },
+    {
+        "id": "cafe-10",
+        "name": "Cà Phê Sữa Nâu Đá",
+        "category": "Cà Phê",
+        "price": 40000,
+        "description": "Cà Phê Sữa Nâu Đá\nHương Vị Ghiền Ngay\nCà phê sữa nâu đá thơm ngon, hấp dẫn, đủ sức ghiền ngay từ lần thử đầu tiên.",
+        "avgRate": 4.1,
+        "img": [
+            "https://i.pinimg.com/564x/6b/8c/05/6b8c055bff6d749ee5a8023a3fdb146a.jpg",
+            "https://i.pinimg.com/564x/4e/e6/65/4ee665107b9aa7ac91c7a9eedab05b6f.jpg"
+        ],
+        "medium_price": 70000,
+        "large_price": 80000
+    },
+    {
+        "id": "tra-sua-1",
+        "name": "Trà Sữa Trân Châu Đen",
+        "category": "Trà Sữa",
+        "price": 38000,
+        "description": "Trà Sữa Trân Châu Đen\nHòa Quyện Hương Vị\nTrà sữa trân châu đen hòa quyện hương vị trà sữa truyền thống với trân châu ngon giòn.",
+        "avgRate": 4.3,
+        "img": [
+            "https://i.pinimg.com/564x/27/c5/2e/27c52ed0f48029e0ec8e69f0d7b4dd69.jpg",
+            "https://i.pinimg.com/564x/63/79/c7/6379c7e72d025191da889f81a1a4caca.jpg",
+            "https://i.pinimg.com/564x/4b/96/75/4b9675dfa453afb780b5d279bf27606d.jpg",
+            "https://i.pinimg.com/564x/4b/96/75/4b9675dfa453afb780b5d279bf27606d.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-2",
+        "name": "Trà Sữa Matcha",
+        "category": "Trà Sữa",
+        "price": 42000,
+        "description": "Trà Sữa Matcha\nHòa Quyện Với Hạt Trân Châu\nTrà sữa Matcha pha chế tinh tế, kết hợp hoàn hảo với hạt trân châu giòn ngon.",
+        "avgRate": 4.5,
+        "img": [
+            "https://i.pinimg.com/564x/cb/1a/22/cb1a22e786627e2db55edc838412ca49.jpg",
+            "https://i.pinimg.com/236x/08/f5/ab/08f5ab970a09dc47e59613354671fbec.jpg",
+            "https://i.pinimg.com/564x/9e/bb/b1/9ebbb15b5be85b6f6d267d57ed505359.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-3",
+        "name": "Trà Sữa Hạt Ngọc Trai",
+        "category": "Trà Sữa",
+        "price": 45000,
+        "description": "Trà Sữa Hạt Ngọc Trai\nSự Sang Trọng\nTrà sữa hạt ngọc trai với sự sang trọng và hương vị độc đáo, làm say mê từng giọt.",
+        "avgRate": 4.2,
+        "img": [
+            "https://i.pinimg.com/736x/07/db/68/07db68265b33136df5ca10d5a07ad368.jpg",
+            "https://i.pinimg.com/564x/ee/c9/32/eec9321c4705a7fc8da3f8ade411aa60.jpg",
+            "https://i.pinimg.com/564x/8f/2f/3e/8f2f3ea8145b38666e994d5358d023ce.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-4",
+        "name": "Trà Sữa Thái Xanh",
+        "category": "Trà Sữa",
+        "price": 40000,
+        "description": "Trà Sữa Thái Xanh\nHòa Quyện Vị Thơm\nTrà sữa thái xanh mềm mại với hương vị thơm ngon và sự kết hợp tuyệt vời giữa trà và sữa.",
+        "avgRate": 4.4,
+        "img": [
+            "https://i.pinimg.com/564x/0e/86/86/0e8686ab820369e1d507117560e745e3.jpg",
+            "https://i.pinimg.com/564x/87/d6/65/87d665e790fc96ba8580e416c0b285c1.jpg",
+            "https://i.pinimg.com/564x/87/d6/65/87d665e790fc96ba8580e416c0b285c1.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-5",
+        "name": "Trà Sữa Phô Mai Đen",
+        "category": "Trà Sữa",
+        "price": 48000,
+        "description": "Trà Sữa Phô Mai Đen\nHòa Quyện Hương Phô Mai\nTrà sữa phô mai đen hòa quyện hương vị truyền thống và phô mai đen độc đáo.",
+        "avgRate": 4.1,
+        "img": [
+            "https://i.pinimg.com/564x/1f/b1/16/1fb116053ed554e4bf3ea4e22d07d387.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-6",
+        "name": "Trà Sữa Thạch Phô Mai",
+        "category": "Trà Sữa",
+        "price": 43000,
+        "description": "Trà Sữa Thạch Phô Mai\nSự Kết Hợp Hòa Quyện\nTrà sữa thạch phô mai với sự kết hợp hòa quyện giữa trà sữa thơm ngon và thạch phô mai béo ngậy.",
+        "avgRate": 4.3,
+        "img": [
+            "https://i.pinimg.com/564x/82/1a/e8/821ae8d4cad34ba129b5bdf2a4e265df.jpg",
+            "https://i.pinimg.com/564x/d6/a4/ef/d6a4efc85dbc00f4442a04ff64aa78af.jpg",
+            "https://i.pinimg.com/564x/44/07/5e/44075ef0e11f7a0b0064af046cda876d.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-7",
+        "name": "Trà Sữa Olong Hạt Trân Châu",
+        "category": "Trà Sữa",
+        "price": 46000,
+        "description": "Trà Sữa Olong Hạt Trân Châu\nHương Vị Đặc Biệt\nTrà sữa Olong hạt trân châu với hương vị đặc biệt và trân châu giòn ngon, không thể chối từ.",
+        "avgRate": 4.5,
+        "img": [
+            "https://i.pinimg.com/564x/d8/b1/90/d8b1906d19e31dbc7629203cc56f11a2.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-8",
+        "name": "Trà Sữa Khoai Môn",
+        "category": "Trà Sữa",
+        "price": 42000,
+        "description": "Trà Sữa Khoai Môn\nHương Vị Độc Đáo\nTrà sữa khoai môn với hương vị độc đáo và thạch khoai môn thơm ngon.",
+        "avgRate": 4.2,
+        "img": [
+            "https://i.pinimg.com/564x/46/a7/3b/46a73b8481d808a01f26c1c2b7d6887d.jpg",
+            "https://i.pinimg.com/564x/f6/64/72/f66472152d68c96f75ac21817c14fa5f.jpg",
+            "https://i.pinimg.com/564x/f6/64/72/f66472152d68c96f75ac21817c14fa5f.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-9",
+        "name": "Trà Sữa Đào Ngọc Trai",
+        "category": "Trà Sữa",
+        "price": 44000,
+        "description": "Trà Sữa Đào Ngọc Trai\nHòa Quyện Hương Đào\nTrà sữa đào ngọc trai hòa quyện hương vị trà sữa truyền thống và hạt ngọc trai đen độc đáo.",
+        "avgRate": 4.1,
+        "img": [
+            "https://i.pinimg.com/736x/0a/24/66/0a2466e3f9849d0d9ff4f1be3c4cc48c.jpg",
+            "https://i.pinimg.com/564x/26/51/00/26510089113ca67760dbfdeac4433f3a.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "tra-sua-10",
+        "name": "Trà Sữa Bạc Xỉu",
+        "category": "Trà Sữa",
+        "price": 40000,
+        "description": "Trà Sữa Bạc Xỉu\nHương Vị Đặc Sắc\nTrà sữa bạc xỉu với hương vị đặc sắc và sự kết hợp tuyệt vời giữa trà, sữa và đường.",
+        "avgRate": 4.4,
+        "img": [
+            "https://i.pinimg.com/564x/50/66/6c/50666c559f4a1aaa6ff1764b07aa655b.jpg",
+            "https://i.pinimg.com/564x/73/5c/22/735c2235dd96b562340e1f0e24e25f2f.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-1",
+        "name": "Bánh Chocolate Brownie",
+        "category": "Bánh Ngọt",
+        "price": 25000,
+        "description": "Bánh Chocolate Brownie\nHương Vị Chocolate Đậm Đà\nBánh Chocolate Brownie đậm đà với lớp chocolate béo ngậy, hấp dẫn từng miếng.",
+        "avgRate": 4.2,
+        "img": [
+            "https://i.pinimg.com/564x/0f/22/f6/0f22f6cb6c5692c695762fa7624b40a5.jpg",
+            "https://nadiashealthykitchen.com/wp-content/uploads/2020/02/healthy-no-bake-brownies_6-min.jpg",
+            "https://i.pinimg.com/236x/1b/78/b3/1b78b3f4436a3008733dd200285db878.jpg",
+            "https://i.pinimg.com/564x/6c/3b/10/6c3b10c95f7b8a71c8fbd59c80429c5c.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-2",
+        "name": "Bánh Muffin Dâu",
+        "category": "Bánh Ngọt",
+        "price": 28000,
+        "description": "Bánh Muffin Dâu\nHương Vị Tươi Mát\nBánh Muffin dâu tươi ngon, mang lại cảm giác tươi mát và ngon miệng.",
+        "avgRate": 4.1,
+        "img": [
+            "https://i.pinimg.com/564x/79/e8/2a/79e82adb43ea1aebbaf5bb84db50cd1d.jpg",
+            "https://i.pinimg.com/564x/f4/16/e2/f416e21ca689fd7041d83f5b51afbe23.jpg",
+            "https://i.pinimg.com/564x/24/ed/a0/24eda09faaa8a1fc876cd87ad286ce6d.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-3",
+        "name": "Bánh Gato Trứng Muối",
+        "category": "Bánh Ngọt",
+        "price": 30000,
+        "description": "Bánh Gato Trứng Muối\nHòa Quyện Hương Vị\nBánh gato trứng muối hòa quyện hương vị trứng và muối, tạo nên sự độc đáo.",
+        "avgRate": 4.3,
+        "img": [
+            "https://i.pinimg.com/564x/0f/0e/27/0f0e27f6340c1aafd14ec94897d732ec.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-4",
+        "name": "Bánh Cupcake Vanilla",
+        "category": "Bánh Ngọt",
+        "price": 26000,
+        "description": "Bánh Cupcake Vanilla\nHương Vị Vanilla Dịu Dàng\nBánh Cupcake vanilla với hương vị dịu dàng và kem phủ béo ngậy, thích hợp cho thời điểm nhẹ nhàng.",
+        "avgRate": 4,
+        "img": [
+            "https://i.pinimg.com/564x/58/ac/d2/58acd2e3d9b6097bf55f82fddc4fdc88.jpg",
+            "https://i.pinimg.com/564x/e0/de/6e/e0de6ef594ba125edbca62d5c527c36e.jpg",
+            "https://i.pinimg.com/564x/00/33/38/0033381a2db7ec3b02ca50409b831bcc.jpg",
+            "https://i.pinimg.com/564x/ac/6b/76/ac6b7680d5a2c180ca97aea44c67dbe7.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-5",
+        "name": "Bánh Donut Chocolate",
+        "category": "Bánh Ngọt",
+        "price": 32000,
+        "description": "Bánh Donut Chocolate\nHương Vị Donut Đặc Trưng\nBánh Donut chocolate với hương vị đặc trưng của donut và lớp chocolate béo ngậy.",
+        "avgRate": 4.4,
+        "img": [
+            "https://i.pinimg.com/564x/4c/ec/1d/4cec1da2ea92d68f0c1dfbf7a269c3f9.jpg",
+            "https://i.pinimg.com/564x/a2/8f/44/a28f440bc933466182bd95b2b6a3dc87.jpg",
+            "https://i.pinimg.com/564x/a6/f8/eb/a6f8ebbfae55060b644c96c317ff89bb.jpg",
+            "https://i.pinimg.com/564x/07/bb/7c/07bb7cd175ce6871598404ba34966631.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-6",
+        "name": "Bánh Tart Dâu",
+        "category": "Bánh Ngọt",
+        "price": 29000,
+        "description": "Bánh Tart Dâu\nHương Vị Tươi Mát\nBánh Tart dâu với hương vị tươi mát và lớp nhân dâu thơm ngon.",
+        "avgRate": 4.2,
+        "img": [
+            "https://i.pinimg.com/564x/0c/1d/53/0c1d53a1fad489bec27386d2b58452fc.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-7",
+        "name": "Bánh Pudding Caramel",
+        "category": "Bánh Ngọt",
+        "price": 35000,
+        "description": "Bánh Pudding Caramel\nHương Vị Caramel Béo Ngậy\nBánh Pudding Caramel với hương vị caramel béo ngậy và lớp bánh mềm mịn.",
+        "avgRate": 4.3,
+        "img": [
+            "https://i.pinimg.com/564x/4b/88/42/4b8842ca5618a7388c3e424bcd78f50e.jpg",
+            "https://i.pinimg.com/564x/2b/1f/17/2b1f17f5ecdad88ad1d7af25d944f8e3.jpg",
+            "https://i.pinimg.com/564x/89/b5/89/89b589b57464ae81773551dc4c89b04a.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-8",
+        "name": "Matcha Macaron",
+        "category": "Bánh Ngọt",
+        "price": 33000,
+        "description": "Matcha Macaron\nHương Vị Độc Đáo\nMatcha Macaron với hương vị độc đáo của trà xanh Matcha, thích hợp cho người yêu thích trà.",
+        "avgRate": 4.1,
+        "img": [
+            "https://i.pinimg.com/736x/57/dc/33/57dc339c0944a33bb2be77089d126399.jpg",
+            "https://i.pinimg.com/564x/00/57/af/0057af0727f6776293d52e8782f3f908.jpg",
+            "https://i.pinimg.com/564x/51/df/af/51dfaf1064ce178fbc18cbde6f18f919.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-9",
+        "name": "Bánh chocolate",
+        "category": "Bánh Ngọt",
+        "price": 31000,
+        "description": "Bánh chocolate\nHương Vị chocolate Đặc Trưng\nBánh chocolate với hương vị đặc trưng của chocolate.",
+        "avgRate": 4,
+        "img": [
+            "https://i.pinimg.com/564x/0f/22/f6/0f22f6cb6c5692c695762fa7624b40a5.jpg",
+            "https://i.pinimg.com/564x/f5/6f/ff/f56fffb5ff7bb13bb3b3452792a6143a.jpg",
+            "https://i.pinimg.com/564x/f5/6f/ff/f56fffb5ff7bb13bb3b3452792a6143a.jpg",
+            "https://i.pinimg.com/564x/ab/ed/8f/abed8fe18125f6f173c013b273008728.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    },
+    {
+        "id": "banh-ngot-10",
+        "name": "White chocolate Matcha mousse cake",
+        "category": "Bánh Ngọt",
+        "price": 30000,
+        "description": "White chocolate Matcha mousse cake\nHương Vị Bông Lan Quyến Rũ\nTrải nghiệm sức hấp dẫn quyến rũ của chiếc bánh Mousse matcha cùng chocolate trắng.",
+        "avgRate": 4.4,
+        "img": [
+            "https://i.pinimg.com/564x/45/42/e1/4542e1e0ef68a732079842b1516603cd.jpg",
+            "https://i.pinimg.com/564x/17/77/c5/1777c5a34570e062e6cc3aaefcff8410.jpg",
+            "https://i.pinimg.com/564x/c3/e3/01/c3e3018ed73c071973de6dd94a1bbf05.jpg"
+        ],
+        "medium_price": -1,
+        "large_price": -1
+    }
+]

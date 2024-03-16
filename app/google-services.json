@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "41508495343",
+    "firebase_url": "https://starbug-9fad0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "starbug-9fad0",
+    "storage_bucket": "starbug-9fad0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41508495343:android:d4f3048ca2db33b6c9601a",
+        "android_client_info": {
+          "package_name": "intech.co.starbug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4uFxiW5jDZZBRzQgz5r-icvLvi2uq_R4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

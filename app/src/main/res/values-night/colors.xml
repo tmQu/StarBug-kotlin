@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Color for detail product page-->
+    <color name="bg_background_detail">#000</color>
+    <color name="title_txt">#FFF</color>
+    <color name="category">#AEAEAE</color>
+    <color name="desc_txt">#FFF</color>
+    <color name="avg_rate">#FFF</color>
+    <color name="num_rate">#AEAEAE</color>
+
+    <color name="txt_size_unselected">#AEAEAE</color>
+    <color name="border_size_unselected">#AEAEAE</color>
+    <color name="bg_size_unselected">#141921</color>
+
+    <color name="txt_size_selected">#D17842</color>
+    <color name="border_size_selected">#D17842</color>
+    <color name="bg_size_selected">#141921</color>
+
+    <color name="price_txt">#C67C4E</color>
+
+    <color name="buy_btn">#C67C4E</color>
+    <color name="buy_txt">#FFF</color>
+</resources>
