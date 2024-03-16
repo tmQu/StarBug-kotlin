@@ -32,16 +32,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val jsonString = readJsonFromAssets(this, "product.json")
+//        val jsonString = readJsonFromAssets(this, "product.json")
+//
+//        val productList = parseJsonToModel(jsonString)
+//
+//        for (product in productList)
+//        {
+//            saveProduct(product)
+//        }
 
-        val productList = parseJsonToModel(jsonString)
-
-        for (product in productList)
-        {
-            saveProduct(product)
-        }
-
-
+        readData()
     }
 
     private fun readData() {
