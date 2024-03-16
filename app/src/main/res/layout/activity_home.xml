@@ -200,7 +200,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:src="@drawable/appBar1" />
+                        android:src="@drawable/app_bar_1" />
 
                    <ImageView
                        android:id="@+id/homeBtnShadow"
@@ -223,7 +223,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:src="@drawable/appBar2" />
+                        android:src="@drawable/app_bar_2" />
 
                     <ImageView
                         android:id="@+id/loveBtnShadow"
@@ -245,7 +245,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:src="@drawable/appBar3" />
+                        android:src="@drawable/app_bar_3" />
 
                     <ImageView
                         android:id="@+id/cartBtnShadow"
@@ -267,7 +267,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:src="@drawable/appBar4" />
+                        android:src="@drawable/app_bar_4" />
 
                     <ImageView
                         android:id="@+id/profileBtnShadow"
