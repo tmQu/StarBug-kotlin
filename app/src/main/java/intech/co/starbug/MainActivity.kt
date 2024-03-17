@@ -42,8 +42,7 @@ class MainActivity : AppCompatActivity() {
         companyTV.setAnimation(bottomAnim);
 
         Handler().postDelayed({
-//            val intent = Intent(this, LoginActivity::class.java)
-            val intent = Intent(this, CartActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             val pairs = arrayOf<Pair<View, String>>(
                 Pair(image, "logo_image"),
                 Pair(logoTV, "brand_text"),
