@@ -130,6 +130,7 @@ class SignUpActivity : AppCompatActivity() {
                         )
 
                         myRef.child(sanitizedEmail).setValue(userData).addOnSuccessListener {
+                            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
                             Log.d("SignUpActivity", "Data saved successfully")
                             Toast.makeText(
                                 this@SignUpActivity,

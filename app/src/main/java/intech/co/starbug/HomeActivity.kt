@@ -1,6 +1,10 @@
 package intech.co.starbug
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +16,11 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var productsRef: DatabaseReference
 
+    private lateinit var homeBtn: LinearLayout
+    private lateinit var cartBtn: LinearLayout
+    private lateinit var profileBtn: LinearLayout
+    private lateinit var loveBtn: LinearLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -20,6 +29,31 @@ class HomeActivity : AppCompatActivity() {
 
         // Retrieve data from Firebase and set up RecyclerView
         retrieveProductsFromFirebase()
+
+        homeBtn = findViewById(R.id.homeBtnLayout)
+        cartBtn = findViewById(R.id.cartBtnLayout)
+        profileBtn = findViewById(R.id.profileBtnLayout)
+        loveBtn = findViewById(R.id.loveBtnLayout)
+
+        homeBtn.setOnClickListener {
+            // Do nothing
+        }
+
+        cartBtn.setOnClickListener {
+            // Go to CartActivity
+            startActivity(Intent(this, CartActivity::class.java))
+        }
+
+        profileBtn.setOnClickListener {
+            // Go to ProfileActivity
+//            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        loveBtn.setOnClickListener {
+            // Go to LoveActivity
+//            startActivity(Intent(this, LoveActivity::class.java))
+        }
+
     }
 
     private fun retrieveProductsFromFirebase() {
