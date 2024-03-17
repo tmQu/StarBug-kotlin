@@ -13,6 +13,7 @@ import android.util.Pair
 import android.view.View
 import intech.co.starbug.authentication.LoginActivity
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var topAnim: Animation;
