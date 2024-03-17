@@ -15,7 +15,6 @@ import intech.co.starbug.R
 
 class ForgetPasswordActivity : AppCompatActivity() {
     private lateinit var email: TextInputLayout;
-    private lateinit var password: TextInputLayout;
     private lateinit var forgetBtn: Button;
     private lateinit var haveUserBtn: Button;
     private lateinit var image: ImageView;
@@ -31,7 +30,6 @@ class ForgetPasswordActivity : AppCompatActivity() {
         logoTV = findViewById(R.id.branchTV);
         verifyTV = findViewById(R.id.verifyTV);
         email = findViewById(R.id.emailInputLayout);
-        password = findViewById(R.id.passwordInputLayout);
         forgetBtn = findViewById(R.id.verifyBtn);
         forgetTV = findViewById(R.id.forgetPasswordTV);
         haveUserBtn = findViewById(R.id.haveUserBtn);
@@ -45,6 +43,21 @@ class ForgetPasswordActivity : AppCompatActivity() {
                 Pair(verifyTV, "sign_in_up_text"),
                 Pair(forgetBtn, "go_button"),
                 Pair(haveUserBtn, "ask_button")
+            )
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(this, *pairs)
+            startActivity(intent, options.toBundle())
+        }
+
+        forgetBtn.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            val pairs = arrayOf<Pair<View, String>>(
+                Pair(image, "logo_image"),
+                Pair(logoTV, "brand_text"),
+                Pair(verifyTV, "reset_text"),
+                Pair(email, "email_input"),
+                Pair(forgetBtn, "reset_button"),
+                Pair(haveUserBtn, "have_user_button")
             )
 
             val options = ActivityOptions.makeSceneTransitionAnimation(this, *pairs)

@@ -1,5 +1,6 @@
 package intech.co.starbug.authentication
 
+import android.accounts.Account
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
+import intech.co.starbug.AccountSettingActivity
 import intech.co.starbug.R
 
 class LoginActivity : AppCompatActivity() {
@@ -51,6 +53,11 @@ class LoginActivity : AppCompatActivity() {
 
             val options = ActivityOptions.makeSceneTransitionAnimation(this, *pairs)
             startActivity(intent, options.toBundle())
+        }
+
+        signInBtn.setOnClickListener {
+            val intent = Intent(this, AccountSettingActivity::class.java)
+            startActivity(intent)
         }
 
         forgetBtn.setOnClickListener {
