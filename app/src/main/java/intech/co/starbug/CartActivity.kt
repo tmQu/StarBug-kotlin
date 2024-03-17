@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import intech.co.starbug.databinding.ActivityCartBinding
 import intech.co.starbug.model.ProductModel
 
 class CartActivity : AppCompatActivity() {
