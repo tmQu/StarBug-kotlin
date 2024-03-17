@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import intech.co.starbug.R
 import intech.co.starbug.model.CommentModel
 

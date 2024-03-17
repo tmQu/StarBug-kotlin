@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
+import intech.co.starbug.HomeActivity
 import intech.co.starbug.R
 
 class LoginActivity : AppCompatActivity() {
@@ -37,6 +38,11 @@ class LoginActivity : AppCompatActivity() {
         signInBtn = findViewById(R.id.signInBtn)
         signUpBtn = findViewById(R.id.haveUserBtn)
         forgetBtn = findViewById(R.id.forgetPasswordBtn)
+
+        signInBtn.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
 
         signUpBtn.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)

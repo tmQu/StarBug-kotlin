@@ -1,0 +1,17 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Phần màu đen (50% phần trên) -->
+    <item android:top="0dp" android:bottom="50dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FF000000" />
+        </shape>
+    </item>
+
+    <!-- Phần màu trắng (50% phần dưới) -->
+    <item android:top="50dp" android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFFFF" />
+        </shape>
+    </item>
+
+</layer-list>
