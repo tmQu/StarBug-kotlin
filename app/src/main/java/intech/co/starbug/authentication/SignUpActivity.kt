@@ -79,6 +79,19 @@ class SignUpActivity : AppCompatActivity() {
             }
         })
 
+        signInBtn.setOnClickListener{
+            val intent = Intent(this, LoginActivity::class.java)
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                this,
+                Pair.create(image, "logoImage"),
+                Pair.create(logoTV, "branchTV"),
+                Pair.create(welcomeTV, "welcomeTV"),
+                Pair.create(signInTV, "signUpTV"),
+                Pair.create(signInBtn, "haveAccountBtn")
+            )
+            startActivity(intent, options.toBundle())
+        }
+
         signUpBtn.setOnClickListener {
 
             val fullNameValue = fullname.editText?.text.toString()
