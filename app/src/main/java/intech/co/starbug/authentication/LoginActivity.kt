@@ -11,12 +11,21 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
 import intech.co.starbug.HomeActivity
 import intech.co.starbug.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.Firebase
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -32,8 +41,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var welcomeTV: TextView;
     private lateinit var signInTV: TextView
     private lateinit var forgetBtn: Button;
+    private lateinit var googleBtn: SignInButton;
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getWindow().setFlags(
@@ -51,8 +62,20 @@ class LoginActivity : AppCompatActivity() {
         signInBtn = findViewById(R.id.signInBtn)
         signUpBtn = findViewById(R.id.haveUserBtn)
         forgetBtn = findViewById(R.id.forgetPasswordBtn)
+        googleBtn = findViewById(R.id.sign_in_button)
 
         auth = FirebaseAuth.getInstance()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        googleBtn.setOnClickListener {
+            signInGoogle()
+        }
 
 
         signInBtn.setOnClickListener {
@@ -60,7 +83,28 @@ class LoginActivity : AppCompatActivity() {
             val passwordValue = password.editText?.text.toString()
 
             if (emailValue.isNotEmpty() && passwordValue.isNotEmpty()) {
-                signIn(email, password)
+                auth.signInWithEmailAndPassword(emailValue, passwordValue)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val user = auth.currentUser
+                            Log.d("LoginActivity", "Successfully signed in")
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Successfully signed in",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "An error occurred. Please try again later.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
             } else {
                 if (emailValue.isEmpty()) {
                     email.error = "Please enter email"
@@ -102,62 +146,42 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun signIn(email: TextInputLayout, password: TextInputLayout) {
-        val emailValue = email.editText?.text.toString()
-        val passwordValue = password.editText?.text.toString()
+    private fun signInGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        launcher.launch(signInIntent)
+    }
 
-        val database = Firebase.database
-        val sanitizedEmail = emailValue.replace(".", "_")
-        val emailRef = database.getReference("User").child(sanitizedEmail)
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            handleResult(task)
+        }
+    }
 
-        Log.d("LoginActivity", emailRef.toString())
-
-        emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.d("LoginActivity", "DataSnapshot: ${dataSnapshot.exists()}")
-                if (dataSnapshot.exists()) {
-
-                    val passwordFromDB = dataSnapshot.child("Password").getValue(String::class.java)
-
-                    if (passwordFromDB == passwordValue) {
-
-                        Log.d("LoginActivity", "Successfully signed in")
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Successfully signed in",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                        startActivity(intent)
-
-                    } else {
-                        Log.d("LoginActivity", "Incorrect password")
-                        password.error = "Incorrect password"
-                        Toast.makeText(this@LoginActivity, "Incorrect password", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                } else {
-                    Log.d("LoginActivity", "Email does not exist")
-                    email.error = "This email has not been registered. Please sign up."
+    private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
+        val credential = GoogleAuthProvider.getCredential(completedTask.result.idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    Log.d("LoginActivity", "Successfully signed in")
                     Toast.makeText(
                         this@LoginActivity,
-                        "This email has not been registered. Please sign up.",
+                        "Successfully signed in",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "An error occurred. Please try again later.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("LoginActivity", "Failed to sign in: ${databaseError.message}")
-                Toast.makeText(
-                    this@LoginActivity,
-                    "An error occurred. Please try again later.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
     }
-
 
 }

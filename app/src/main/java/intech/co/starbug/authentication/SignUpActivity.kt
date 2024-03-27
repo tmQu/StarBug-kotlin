@@ -16,10 +16,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import intech.co.starbug.HomeActivity
 import intech.co.starbug.R
 import java.util.regex.Pattern
 
@@ -37,6 +39,8 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var phoneNo: TextInputLayout
     private lateinit var password: TextInputLayout
     private lateinit var confirmPassword: TextInputLayout
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,7 +118,6 @@ class SignUpActivity : AppCompatActivity() {
                 return@setOnClickListener // Exit the function early
             }
 
-            // Create a new user in the database
             val database = Firebase.database
             val myRef = database.getReference("User")
 
@@ -143,7 +146,7 @@ class SignUpActivity : AppCompatActivity() {
                         )
 
                         myRef.child(sanitizedEmail).setValue(userData).addOnSuccessListener {
-                            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+                            authenSignUp(emailValue, passwordValue)
                             Log.d("SignUpActivity", "Data saved successfully")
                             Toast.makeText(
                                 this@SignUpActivity,
@@ -193,4 +196,31 @@ class SignUpActivity : AppCompatActivity() {
             password.error = null
         }
     }
+
+    private fun authenSignUp(emailValue: String, passwordValue: String) {
+        auth = FirebaseAuth.getInstance()
+        auth.createUserWithEmailAndPassword(emailValue, passwordValue)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    Log.d("SignUpActivity", "Successfully signed up")
+                    Toast.makeText(
+                        this@SignUpActivity,
+                        "Successfully signed up",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Log.d("SignUpActivity", "Failed to sign up: ${task.exception}")
+                    Toast.makeText(
+                        this@SignUpActivity,
+                        "An error occurred. Please try again later.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
 }

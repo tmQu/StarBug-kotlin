@@ -13,7 +13,20 @@
           "package_name": "intech.co.starbug"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "41508495343-ds84fp09u8p26oounllqmfil9muaucm8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "intech.co.starbug",
+            "certificate_hash": "ffa752914359476a883115ac614816f5f923c1e7"
+          }
+        },
+        {
+          "client_id": "41508495343-vl1q3r4bfuca7ioqlr3prcdhduuq1hk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC4uFxiW5jDZZBRzQgz5r-icvLvi2uq_R4"
@@ -21,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "41508495343-vl1q3r4bfuca7ioqlr3prcdhduuq1hk1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
