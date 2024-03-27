@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="150dp"
-    android:layout_height="240dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/item_background"
     android:elevation="6dp">
@@ -11,6 +11,7 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/itemPicture"
+        android:transitionName="productImage"
         android:layout_width="0dp"
         android:layout_height="130dp"
         android:layout_marginStart="4dp"
@@ -27,7 +28,7 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemPicture">
@@ -41,9 +42,11 @@
             android:layout_marginEnd="4dp"
             android:fontFamily="@font/sora"
             android:gravity="start"
-            android:text="Capuccino"
+            android:text="Cappuchino"
             android:textColor="#000000"
-            android:textSize="16sp"
+            android:textSize="14sp"
+            android:lines="2"
+            android:ellipsize="end"
             android:textStyle="bold" />
 
         <TextView
@@ -56,13 +59,14 @@
             android:fontFamily="@font/sora"
             android:text="with Chocolate"
             android:textColor="#9B9B9B"
+
             android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingStart="6dp"
@@ -70,11 +74,12 @@
         android:paddingBottom="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/itemPrice"
-            android:layout_width="8dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/sora"
