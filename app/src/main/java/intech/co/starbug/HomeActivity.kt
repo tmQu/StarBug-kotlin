@@ -1,5 +1,6 @@
 package intech.co.starbug
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
+import intech.co.starbug.activity.product.DetailProductActivity
 import intech.co.starbug.adapter.CategoryAdapter
 import intech.co.starbug.adapter.ItemAdapter
 import intech.co.starbug.model.ProductModel
@@ -165,5 +167,15 @@ class HomeActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         val adapter = ItemAdapter(productList)
         recyclerView.adapter = adapter
+        adapter.onItemClick = { imageView, position ->
+            val intent = Intent(this, DetailProductActivity::class.java)
+            intent.putExtra("product_id", productList[position].id)
+            intent.putExtra("product", productList[position])
+            val options = ActivityOptions
+                .makeSceneTransitionAnimation(this, imageView, "productImage")
+
+            startActivity(intent, options.toBundle())
+        }
+
     }
 }

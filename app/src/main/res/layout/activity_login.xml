@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    tools:context=".authentication.LoginActivity">
+    tools:context=".activity.authentication.LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,23 +21,23 @@
             android:layout_height="150dp"
             android:contentDescription="@string/logo"
             android:src="@drawable/logostarbug"
+            android:transitionName="logo_image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:transitionName="logo_image"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/branchTV"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/bungee"
+            android:text="@string/starbug"
+            android:textColor="#693F2C"
+            android:textSize="40sp"
+            android:transitionName="brand_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/logoImage"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/starbug"
-            android:fontFamily="@font/bungee"
-            android:textSize="40sp"
-            android:textColor="#693F2C"
-            android:transitionName="brand_text"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -48,7 +48,7 @@
         android:text="Hello there, Welcome Back"
         android:textColor="#693F2C"
         android:textSize="40sp"
-        android:transitionName="welcome_text"/>
+        android:transitionName="welcome_text" />
 
     <TextView
         android:id="@+id/signInTV"
@@ -58,7 +58,7 @@
         android:text="@string/sign_in_to_continue"
         android:textColor="#693F2C"
         android:textSize="18sp"
-        android:transitionName="sign_in_up_text"/>
+        android:transitionName="sign_in_up_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,10 +73,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            app:cursorColor="@color/colorPrimary"
-            app:hintTextColor="@color/colorPrimary"
+            android:textColorHint="#693F2C"
             app:boxStrokeColor="@color/colorPrimary"
-            android:textColorHint="#693F2C">
+            app:cursorColor="@color/colorPrimary"
+            app:hintTextColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -92,11 +92,11 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:textColorHint="#693F2C"
+            app:boxStrokeColor="@color/colorPrimary"
             app:cursorColor="@color/colorPrimary"
             app:hintTextColor="@color/colorPrimary"
-            app:boxStrokeColor="@color/colorPrimary"
-            app:passwordToggleTint="@color/colorPrimary"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -117,6 +117,15 @@
             android:text="@string/forget_password"
             android:textColor="#000" />
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:buttonSize="standard"
+            app:colorScheme="light"
+            app:scopeUris="profile email" />
+
+
         <Button
             android:id="@+id/signInBtn"
             android:layout_width="match_parent"
@@ -126,8 +135,8 @@
             android:backgroundTint="#693F2C"
             android:text="@string/sign_in"
             android:textColor="#fff"
-            app:cornerRadius="0dp"
-            android:transitionName="go_button"/>
+            android:transitionName="go_button"
+            app:cornerRadius="0dp" />
 
         <Button
             android:id="@+id/haveUserBtn"
@@ -139,7 +148,7 @@
             android:elevation="0dp"
             android:text="@string/new_user_sign_up"
             android:textColor="#000"
-            android:transitionName="ask_button"/>
+            android:transitionName="ask_button" />
 
     </LinearLayout>
 

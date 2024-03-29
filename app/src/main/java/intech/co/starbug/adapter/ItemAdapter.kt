@@ -11,12 +11,18 @@ import intech.co.starbug.model.ProductModel
 import com.squareup.picasso.Picasso
 
 class ItemAdapter(private val itemList: List<ProductModel>) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
-
-    class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var onItemClick: ((View,Int) -> Unit)? = null
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemImageView: ImageView = itemView.findViewById(R.id.itemPicture)
         val itemNameTextView: TextView = itemView.findViewById(R.id.itemName)
         val itemName2TextView: TextView = itemView.findViewById(R.id.itemName2)
         val itemPriceTextView: TextView = itemView.findViewById(R.id.itemPrice)
+
+        init {
+            itemView.setOnClickListener{
+                onItemClick?.invoke(it.findViewById(R.id.itemPicture),adapterPosition)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -27,7 +33,7 @@ class ItemAdapter(private val itemList: List<ProductModel>) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
         holder.itemNameTextView.text = currentItem.name
-        holder.itemName2TextView.text = currentItem.description
+        holder.itemName2TextView.text = currentItem.category
         holder.itemPriceTextView.text = currentItem.price.toString()
         Picasso.get().load(currentItem.img[0]).into(holder.itemImageView)
     }
