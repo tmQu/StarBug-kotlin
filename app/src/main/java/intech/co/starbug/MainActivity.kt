@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.util.Pair
 import android.view.View
+import com.google.firebase.FirebaseApp
 import intech.co.starbug.authentication.LoginActivity
 
 
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         logoTV.setAnimation(bottomAnim);
         sloganTV.setAnimation(bottomAnim);
         companyTV.setAnimation(bottomAnim);
+
+        FirebaseApp.initializeApp(this);
 
         Handler().postDelayed({
             val intent = Intent(this, LoginActivity::class.java)
