@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             val intent = Intent(this, HomeActivity::class.java)
-//            val intent = Intent(this, Feedback::class.java)
             val pairs = arrayOf<Pair<View, String>>(
                 Pair(image, "logo_image"),
                 Pair(logoTV, "brand_text"),
