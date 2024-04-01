@@ -71,9 +71,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="30dp"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:text="400.000 VNĐ"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/category"
                         app:layout_constraintRight_toRightOf="parent"
                         android:textColor="@color/title_txt"
                         android:textStyle="bold"
@@ -240,7 +240,7 @@
     <include layout="@layout/menu_option_layout"
         />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_cart_btn"
+        android:id="@+id/btn_show_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_anchor="@id/container"

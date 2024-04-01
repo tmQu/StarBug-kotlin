@@ -14,19 +14,19 @@ data class CartItemModel(
     val typeProduct: String = "",
 
     @ColumnInfo(name = "quantity")
-    var quantity: Int = 0,
+    var quantity: Int = 1,
 
     @ColumnInfo(name = "size")
-    var size: String = "S",
+    var size: String = "",
 
     @ColumnInfo(name = "temperature")
-    var temperature: String = "Hot",
+    var temperature: String = "",
 
     @ColumnInfo(name = "amountIce")
-    var amountIce: String = "medium ice",
+    var amountIce: String = "",
 
     @ColumnInfo(name = "amountSugar")
-    var amountSugar: String = "100%",
+    var amountSugar: String = "",
 
     @ColumnInfo(name = "product_price")
     var productPrice: Int = 0

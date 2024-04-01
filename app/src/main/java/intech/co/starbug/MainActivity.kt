@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -15,10 +14,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import intech.co.starbug.activity.CommentActivity
-import intech.co.starbug.activity.CommentFormActivity
-import intech.co.starbug.activity.product.DetailProductActivity
-import intech.co.starbug.activity.authentication.LoginActivity
 
 
 class MainActivity : AppCompatActivity() {

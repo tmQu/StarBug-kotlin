@@ -2,80 +2,121 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet"
-    android:background="@drawable/bottom_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingRight="30dp"
-    android:paddingLeft="30dp"
-    android:orientation="vertical"
-    android:elevation="16dp"
-
+    android:background="@drawable/bottom_layout"
     android:clickable="true"
+    android:elevation="16dp"
+    android:orientation="vertical"
+    android:paddingLeft="30dp"
+
+    android:paddingRight="30dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <com.google.android.material.imageview.ShapeableImageView
-        app:shapeAppearanceOverlay="@style/rounded"
-        android:layout_gravity="center_horizontal"
         android:layout_width="40dp"
         android:layout_height="5dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="2dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary"
+        app:shapeAppearanceOverlay="@style/rounded" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <TextView
-            android:id="@+id/price_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="16dp"
-            android:text="Giá"/>
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:id="@+id/quantity_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/price_title"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
             >
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/remove_quantity_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/buy_btn"
+                    android:src="@drawable/ic_remove"
+                    app:shapeAppearanceOverlay="@style/quantity_btn" />
+
+                <TextView
+                    android:id="@+id/quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textSize="22sp" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/add_quantity_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/buy_btn"
+                    android:src="@drawable/ic_add"
+                    app:shapeAppearanceOverlay="@style/quantity_btn" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
+                android:text="400.000 VNĐ"
+                android:textColor="@color/title_txt"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_cart_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Mua ngay"
-            android:textColor="@color/buy_txt"
-            android:backgroundTint="@color/buy_btn"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/price"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:paddingTop="21dp"
-            android:paddingBottom="21dp"
-            android:layout_marginLeft="10dp"
-            app:cornerRadius="16dp"
-            />
+            android:backgroundTint="@color/buy_btn"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Order Now"
+            android:textColor="@color/buy_txt"
+            android:textSize="15sp"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/ic_cart"
+            app:iconPadding="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/quantity_group"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/menu_container"
-        android:layout_marginBottom="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="16sp"
-            android:textFontWeight="600"
+            android:text="Size"
             android:textColor="@color/title_txt"
-            android:text="Size"/>
+            android:textFontWeight="600"
+            android:textSize="16sp" />
         <!--            android:textColor="#2F2D2C"-->
 
 
@@ -84,190 +125,182 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/S_size"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:background="@drawable/size_radio_selector"
-                android:textColor="@color/size_button_selector"
                 android:button="@null"
+                android:gravity="center"
                 android:text="S"
-                />
+                android:textColor="@color/size_button_selector" />
+
             <RadioButton
                 android:id="@+id/M_size"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:background="@drawable/size_radio_selector"
-                android:textColor="@color/size_button_selector"
                 android:button="@null"
+                android:gravity="center"
                 android:text="M"
-                />
+                android:textColor="@color/size_button_selector" />
+
             <RadioButton
                 android:id="@+id/L_size"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:background="@drawable/size_radio_selector"
-                android:textColor="@color/size_button_selector"
                 android:button="@null"
+                android:gravity="center"
                 android:text="L"
-                />
+                android:textColor="@color/size_button_selector" />
         </RadioGroup>
+
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:textFontWeight="600"
+                android:text="Hot/Cold"
                 android:textColor="@color/title_txt"
-                android:text="Hot/Cold"/>
+                android:textFontWeight="600"
+                android:textSize="20sp" />
 
             <RadioGroup
                 android:id="@+id/tempGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
                 android:layout_weight="3"
-                >
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/hot_cup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/hot_drink"
                     android:alpha="0.3"
+                    android:background="@drawable/hot_drink"
                     android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/ice_cup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cold_drink"
-                    android:button="@null"
-                    android:alpha="0.3"
                     android:layout_marginLeft="10dp"
-                    />
+                    android:alpha="0.3"
+                    android:background="@drawable/cold_drink"
+                    android:button="@null" />
             </RadioGroup>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
-            
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:textFontWeight="600"
-                android:textColor="@color/title_txt"
                 android:layout_weight="1"
-                android:text="Ice"/>
-            
+                android:text="Ice"
+                android:textColor="@color/title_txt"
+                android:textFontWeight="600"
+                android:textSize="20sp" />
+
             <RadioGroup
                 android:id="@+id/iceGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
                 android:layout_weight="3"
-                >
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/less_ice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/medium_ice"
-                    android:button="@null"
-                    android:alpha="0.3"
                     android:layout_marginRight="10dp"
-                    />
+                    android:alpha="0.3"
+                    android:background="@drawable/medium_ice"
+                    android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/more_ice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/most_ice"
-                    android:button="@null"
-                    android:alpha="0.3"
                     android:layout_marginLeft="10dp"
-                    />
+                    android:alpha="0.3"
+                    android:background="@drawable/most_ice"
+                    android:button="@null" />
             </RadioGroup>
         </LinearLayout>
+
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:textFontWeight="600"
-                android:textColor="@color/title_txt"
                 android:layout_weight="1"
-                android:text="Sugar"/>
+                android:text="Sugar"
+                android:textColor="@color/title_txt"
+                android:textFontWeight="600"
+                android:textSize="20sp" />
 
             <RadioGroup
                 android:id="@+id/sugarGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
                 android:layout_weight="3"
-                >
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/sugar_50"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/percent_50"
-                    android:button="@null"
                     android:layout_marginRight="10dp"
                     android:alpha="0.3"
-                    />
+                    android:background="@drawable/percent_50"
+                    android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/sugar_75"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/percent_75"
-                    android:button="@null"
-                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:alpha="0.3"
-                    />
+                    android:background="@drawable/percent_75"
+                    android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/sugar_100"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/percent_100"
-                    android:button="@null"
                     android:layout_marginLeft="10dp"
                     android:alpha="0.3"
-                    />
+                    android:background="@drawable/percent_100"
+                    android:button="@null" />
             </RadioGroup>
         </LinearLayout>
     </LinearLayout>

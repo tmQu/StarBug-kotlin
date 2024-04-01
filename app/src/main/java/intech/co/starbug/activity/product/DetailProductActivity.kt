@@ -2,7 +2,6 @@ package intech.co.starbug.activity.product
 
 
 import android.app.Activity
-import android.app.assist.AssistContent
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -32,26 +31,24 @@ import intech.co.starbug.constants.SETTING
 import intech.co.starbug.model.CommentModel
 import me.relex.circleindicator.CircleIndicator3
 import android.widget.TextView
-import androidx.core.view.children
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.StarbugApp
-import intech.co.starbug.activity.CommentActivity
+import intech.co.starbug.activity.comment.CommentActivity
 import intech.co.starbug.adapter.VP
-import intech.co.starbug.database.StarbugDatabase
-import intech.co.starbug.model.cart.CartItemDAO
 import intech.co.starbug.model.cart.CartItemModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.Serializable
+import intech.co.starbug.utils.Utils
 
 private const val HOT_OPTION = 0
 private const val ICED_OPTION = 1
@@ -88,14 +85,18 @@ class DetailProductActivity : AppCompatActivity() {
     private lateinit var numRate: TextView
     private lateinit var desc: TextView
     private lateinit var price: TextView
-    private lateinit var addCartBtn: FloatingActionButton
+    private lateinit var btnShowMenu: FloatingActionButton
 
     //option menu view
-//    private lateinit var buyBtn: Button
+    private lateinit var btnAddCart: Button
     private lateinit var sizeGroup: RadioGroup
     private lateinit var iceGroup: RadioGroup
     private lateinit var sugarGroup: RadioGroup
     private lateinit var tempGroup: RadioGroup
+    private lateinit var addBtn: ShapeableImageView
+    private lateinit var removeBtn: ShapeableImageView
+    private lateinit var quantityView: TextView
+    private lateinit var totalPrice: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -130,13 +131,17 @@ class DetailProductActivity : AppCompatActivity() {
         sliderComment = findViewById(R.id.comment_vp)
         circleIndicator = findViewById(R.id.circleIndicator)
         btnSeeMore = findViewById(R.id.see_more_btn)
-        addCartBtn = findViewById(R.id.add_cart_btn)
+        btnShowMenu = findViewById(R.id.btn_show_menu)
         // menu view
         sugarGroup = findViewById(R.id.sugarGroup)
         sizeGroup = findViewById(R.id.sizeGroup)
         iceGroup = findViewById(R.id.iceGroup)
         tempGroup = findViewById(R.id.tempGroup)
-
+        btnAddCart = findViewById(R.id.add_cart_btn)
+        addBtn = findViewById(R.id.add_quantity_btn)
+        removeBtn = findViewById(R.id.remove_quantity_btn)
+        totalPrice = findViewById(R.id.total_price)
+        quantityView = findViewById(R.id.quantity)
 
         productName = findViewById(R.id.product_name)
         category = findViewById(R.id.category)
@@ -152,7 +157,11 @@ class DetailProductActivity : AppCompatActivity() {
         showProductInfor()
         getProductDetail()
         initializeTheMenuOption()
+        handleQuantityButton()
 
+        btnAddCart.setOnClickListener {
+            addItemToCart()
+        }
         btnSeeMore.setOnClickListener {
             val intent = Intent(this, CommentActivity::class.java)
             startActivity(intent)
@@ -194,6 +203,8 @@ class DetailProductActivity : AppCompatActivity() {
                 cartItem.productPrice = product.large_price
                 cartItem.size = "M"
             }
+            price.text = Utils.formatMoney(cartItem.productPrice)
+            showTheTotalPrice()
         }
         setDefaultMenu(sizeGroup)
 
@@ -247,6 +258,10 @@ class DetailProductActivity : AppCompatActivity() {
     }
     private fun addItemToCart()
     {
+        if(cartItem.temperature == "hot")
+        {
+            cartItem.amountIce = "no ice"
+        }
         val cartItemDAO = (application as StarbugApp).dbSQLite.cartItemDAO()
         GlobalScope.launch {
             try {
@@ -256,6 +271,7 @@ class DetailProductActivity : AppCompatActivity() {
 
             }
         }
+        finish()
     }
     private fun getProductDetail()
     {
@@ -372,10 +388,10 @@ class DetailProductActivity : AppCompatActivity() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if(newState == STATE_HIDDEN)
                 {
-                    addCartBtn.visibility = View.VISIBLE
+                    btnShowMenu.visibility = View.VISIBLE
                 }
                 else {
-                    addCartBtn.visibility = View.INVISIBLE
+                    btnShowMenu.visibility = View.INVISIBLE
                 }
             }
 
@@ -385,12 +401,37 @@ class DetailProductActivity : AppCompatActivity() {
         }
 
         bottemSheet.addBottomSheetCallback(bottomSheetCallback)
-        addCartBtn.setOnClickListener{
+        btnShowMenu.setOnClickListener{
             bottemSheet.state = STATE_EXPANDED
         }
     }
 
+    private fun handleQuantityButton()
+    {
+        addBtn.setOnClickListener{
+            cartItem.quantity += 1
+            quantityView.text = cartItem.quantity.toString()
+            showTheTotalPrice()
+        }
 
+        removeBtn.setOnClickListener {
+            if(cartItem.quantity == 1)
+            {
+                // Toast
+            }
+            else {
+                cartItem.quantity -= 1
+                quantityView.text = cartItem.quantity.toString()
+                showTheTotalPrice()
+            }
+        }
+    }
+
+    private fun showTheTotalPrice()
+    {
+        val totalMoney = cartItem.quantity *  cartItem.productPrice
+        totalPrice.text = Utils.formatMoney(totalMoney)
+    }
 
     // save the current slider and resume it
     override fun onPause() {
