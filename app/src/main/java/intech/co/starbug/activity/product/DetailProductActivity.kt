@@ -150,8 +150,6 @@ class DetailProductActivity : AppCompatActivity() {
         desc = findViewById(R.id.description)
         price = findViewById(R.id.price)
 
-        
-        
         initializeBottomSheet()
         getAllComment()
         showProductInfor()
@@ -166,8 +164,6 @@ class DetailProductActivity : AppCompatActivity() {
             val intent = Intent(this, CommentActivity::class.java)
             startActivity(intent)
         }
-
-
 
     }
     private fun resetAllTheRadioButton(radioGroup: RadioGroup)

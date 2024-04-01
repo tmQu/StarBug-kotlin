@@ -14,7 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-
+import intech.co.starbug.activity.Feedback
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             val intent = Intent(this, HomeActivity::class.java)
+//            val intent = Intent(this, Feedback::class.java)
             val pairs = arrayOf<Pair<View, String>>(
                 Pair(image, "logo_image"),
                 Pair(logoTV, "brand_text"),
