@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -37,6 +38,7 @@ android {
 }
 
 dependencies {
+    val room_version = "2.6.1"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -58,8 +60,19 @@ dependencies {
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
 
+
     implementation("io.coil-kt:coil:2.6.0")
     implementation("me.relex:circleindicator:2.1.6")
 
     implementation("com.google.code.gson:gson:2.10.1")
+
+
+    // room sqlite
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
 }

@@ -59,11 +59,26 @@
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/container"
                     android:background="@drawable/sheet_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="20dp"
+                    android:paddingTop="40dp"
                     >
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:textSize="18sp"
+                        android:text="400.000 VNĐ"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:textColor="@color/title_txt"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif"
+                        />
 
                     <TextView
                         android:id="@+id/product_name"
@@ -74,10 +89,10 @@
                         android:text="Capuchino"
                         android:layout_marginLeft="30dp"
                         android:textStyle="bold"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textColor="@color/title_txt"
                         />
-                    <!--            android:textColor="#2F2D2C"-->
+
 
                     <TextView
                         android:id="@+id/category"
@@ -211,6 +226,7 @@
                             android:text="SEE MORE"
                             android:textSize="16sp"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:textColor="@color/title_txt"
                             android:layout_gravity="center_horizontal"
                             />
                     </LinearLayout>
@@ -222,6 +238,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <include layout="@layout/menu_option_layout"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_cart_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/container"
+        app:layout_anchorGravity = "right|top"
+        android:layout_marginRight="40dp"
+        android:contentDescription="add to cart button"
+        app:srcCompat="@drawable/ic_cart"
+        android:backgroundTint="@color/buy_btn"
+        app:tint="@color/white"
         />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

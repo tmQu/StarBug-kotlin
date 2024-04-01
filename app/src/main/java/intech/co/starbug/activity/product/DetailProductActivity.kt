@@ -2,16 +2,18 @@ package intech.co.starbug.activity.product
 
 
 import android.app.Activity
+import android.app.assist.AssistContent
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.Toolbar
@@ -30,16 +32,29 @@ import intech.co.starbug.constants.SETTING
 import intech.co.starbug.model.CommentModel
 import me.relex.circleindicator.CircleIndicator3
 import android.widget.TextView
+import androidx.core.view.children
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import intech.co.starbug.StarbugApp
 import intech.co.starbug.activity.CommentActivity
 import intech.co.starbug.adapter.VP
+import intech.co.starbug.database.StarbugDatabase
+import intech.co.starbug.model.cart.CartItemDAO
+import intech.co.starbug.model.cart.CartItemModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.Serializable
 
+private const val HOT_OPTION = 0
+private const val ICED_OPTION = 1
 class DetailProductActivity : AppCompatActivity() {
 
     private val handler: Handler = Handler(Looper.getMainLooper())
@@ -51,12 +66,17 @@ class DetailProductActivity : AppCompatActivity() {
         }
     }
 
-    private lateinit var product: ProductModel
+
     private var productId = ""
     private lateinit var listComment: MutableList<CommentModel>
+
+    private lateinit var product: ProductModel
     private var avgRating = 0.0
     private var numOfRate = 0
 
+    private var cartItem: CartItemModel = CartItemModel()
+
+    // main view
     private lateinit var sliderImage: ViewPager2
     private lateinit var sliderComment: ViewPager2
     private lateinit var circleIndicator: CircleIndicator3
@@ -67,8 +87,16 @@ class DetailProductActivity : AppCompatActivity() {
     private lateinit var avgRate: TextView
     private lateinit var numRate: TextView
     private lateinit var desc: TextView
-
     private lateinit var price: TextView
+    private lateinit var addCartBtn: FloatingActionButton
+
+    //option menu view
+//    private lateinit var buyBtn: Button
+    private lateinit var sizeGroup: RadioGroup
+    private lateinit var iceGroup: RadioGroup
+    private lateinit var sugarGroup: RadioGroup
+    private lateinit var tempGroup: RadioGroup
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         enableEdgeToEdge()
@@ -102,6 +130,13 @@ class DetailProductActivity : AppCompatActivity() {
         sliderComment = findViewById(R.id.comment_vp)
         circleIndicator = findViewById(R.id.circleIndicator)
         btnSeeMore = findViewById(R.id.see_more_btn)
+        addCartBtn = findViewById(R.id.add_cart_btn)
+        // menu view
+        sugarGroup = findViewById(R.id.sugarGroup)
+        sizeGroup = findViewById(R.id.sizeGroup)
+        iceGroup = findViewById(R.id.iceGroup)
+        tempGroup = findViewById(R.id.tempGroup)
+
 
         productName = findViewById(R.id.product_name)
         category = findViewById(R.id.category)
@@ -116,10 +151,110 @@ class DetailProductActivity : AppCompatActivity() {
         getAllComment()
         showProductInfor()
         getProductDetail()
+        initializeTheMenuOption()
 
         btnSeeMore.setOnClickListener {
             val intent = Intent(this, CommentActivity::class.java)
             startActivity(intent)
+        }
+
+
+
+    }
+    private fun resetAllTheRadioButton(radioGroup: RadioGroup)
+    {
+        val childCount = radioGroup.childCount
+        for (i in 0 until childCount)
+        {
+            radioGroup.getChildAt(i).alpha = 0.3f
+        }
+    }
+    private fun initializeTheMenuOption()
+    {
+        cartItem.productId = productId
+        if(product.medium_price == -1){
+            sizeGroup.getChildAt(1).visibility = View.GONE
+        }
+        if(product.large_price == -1)
+        {
+            sizeGroup.getChildAt(2).visibility = View.GONE
+        }
+        sizeGroup.setOnCheckedChangeListener { group, checkedId ->
+            val checkedRadio = group.findViewById<RadioButton>(checkedId)
+            if(checkedRadio.text == "S"){
+                cartItem.productPrice = product.price
+                cartItem.size = "S"
+            }
+            else if(checkedRadio.text == "M")
+            {
+                cartItem.productPrice = product.medium_price
+                cartItem.size = "M"
+            }
+            else{
+                cartItem.productPrice = product.large_price
+                cartItem.size = "M"
+            }
+        }
+        setDefaultMenu(sizeGroup)
+
+        iceGroup.setOnCheckedChangeListener { group, checkedId ->
+            resetAllTheRadioButton(group)
+            val checkedRadio = group.findViewById<RadioButton>(checkedId)
+            checkedRadio.alpha = 1f
+            val idx = group.indexOfChild(checkedRadio)
+            cartItem.amountIce = resources.getStringArray(R.array.ice_option)[idx]
+        }
+        setDefaultMenu(iceGroup)
+
+
+        if(product.tempOption) {
+            tempGroup.visibility = View.VISIBLE
+            val tempOption = resources.getStringArray(R.array.temp_option)
+            tempGroup.setOnCheckedChangeListener { group, checkedId ->
+                resetAllTheRadioButton(group)
+                val checkedRadio = group.findViewById<RadioButton>(checkedId)
+                checkedRadio.alpha = 1f
+                val idx = group.indexOfChild(checkedRadio)
+                cartItem.temperature = tempOption[idx]
+                if(idx == HOT_OPTION)
+                {
+                    iceGroup.visibility = View.INVISIBLE
+                }
+                else {
+                    iceGroup.visibility = View.VISIBLE
+                }
+            }
+            setDefaultMenu(tempGroup)
+
+        }
+
+        if(product.sugarOption) {
+            sugarGroup.setOnCheckedChangeListener { group, checkedId ->
+                resetAllTheRadioButton(group)
+                val checkedRadio = group.findViewById<RadioButton>(checkedId)
+                checkedRadio.alpha = 1f
+                val idx = group.indexOfChild(checkedRadio)
+                cartItem.amountSugar = resources.getStringArray(R.array.sugar_option)[idx]
+            }
+            setDefaultMenu(sugarGroup)
+        }
+
+
+    }
+    private fun setDefaultMenu(radioGroup: RadioGroup)
+    {
+        radioGroup.check(radioGroup.getChildAt(0).id)
+    }
+    private fun addItemToCart()
+    {
+        val cartItemDAO = (application as StarbugApp).dbSQLite.cartItemDAO()
+        GlobalScope.launch {
+            try {
+                cartItemDAO.insertCartItem(cartItem)
+            }
+            finally {
+
+            }
         }
     }
     private fun getProductDetail()
@@ -227,11 +362,34 @@ class DetailProductActivity : AppCompatActivity() {
 
     private fun initializeBottomSheet() {
         bottemSheet = BottomSheetBehavior.from(findViewById<LinearLayout>(R.id.bottom_sheet))
-        bottemSheet.isHideable = false
-        bottemSheet.peekHeight = 100
+        bottemSheet.isHideable = true
+        bottemSheet.peekHeight = 300
         bottemSheet.state = STATE_COLLAPSED
         bottemSheet.isGestureInsetBottomIgnored = true
+
+        val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if(newState == STATE_HIDDEN)
+                {
+                    addCartBtn.visibility = View.VISIBLE
+                }
+                else {
+                    addCartBtn.visibility = View.INVISIBLE
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // Do something for slide offset.
+            }
+        }
+
+        bottemSheet.addBottomSheetCallback(bottomSheetCallback)
+        addCartBtn.setOnClickListener{
+            bottemSheet.state = STATE_EXPANDED
+        }
     }
+
 
 
     // save the current slider and resume it

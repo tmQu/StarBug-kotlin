@@ -11,7 +11,10 @@ class ProductModel(
     var medium_price: Int = 0,
     var large_price: Int = 0,
     var avgRate: Double = 0.0,
-    var description: String = ""
+    var description: String = "",
+    var menuOption: Boolean = true,
+    var tempOption: Boolean = true,
+    var sugarOption: Boolean = true,
 ): Serializable
 {
 
