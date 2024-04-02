@@ -24,10 +24,10 @@
             android:name=".ProductManagementActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.CommentFormActivity"
+            android:name=".activity.comment.CommentFormActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.CommentActivity"
+            android:name=".activity.comment.CommentActivity"
             android:exported="false" />
         <activity
             android:name=".activity.product.DetailProductActivity"
