@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import intech.co.starbug.R
+import intech.co.starbug.activity.authentication.LoginActivity
 import java.util.regex.Pattern
 
 

@@ -15,17 +15,19 @@
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
         <activity
+            android:name=".AccoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.CommentFormActivity"
             android:exported="false" />
         <activity
             android:name=".activity.CommentActivity"
-            android:name=".AccountSettingActivity"
             android:exported="false" />
         <activity
             android:name=".authentication.ResetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.product.DetailProductActivity"
+            android:name=".AccountSettingActivity"
             android:exported="false" />
         <activity
             android:name=".activity.product.DetailProductActivity"
@@ -36,16 +38,16 @@
             android:exported="false" />
         <activity
             android:name=".CartActivity"
-            android:exported="false"/>
-        <activity
-            android:name=".authentication.ForgetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".authentication.SignUpActivity"
+            android:name=".activity.authentication.ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.authentication.SignUpActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".authentication.LoginActivity"
+            android:name=".activity.authentication.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

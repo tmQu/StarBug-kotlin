@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
 
         profileBtn.setOnClickListener {
             // Go to ProfileActivity
-//            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, AccoutActivity::class.java))
         }
 
         loveBtn.setOnClickListener {
