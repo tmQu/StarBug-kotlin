@@ -15,6 +15,15 @@
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
         <activity
+            android:name=".StaffManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrderManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.CommentFormActivity"
             android:exported="false" />
         <activity
