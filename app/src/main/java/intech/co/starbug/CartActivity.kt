@@ -15,6 +15,9 @@ class CartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
+        val cartItemDAO = (application as StarbugApp).dbSQLite.cartItemDAO()
+        cartItemDAO.findAllCartItem()
+
         val productList = listOf(
             ProductModel(name = "Product 1", category = "Loai 1", img = listOf(""), price = 100000, ),
             ProductModel(name = "Product 2", category = "Loai 2", img = listOf(""), price = 150000),

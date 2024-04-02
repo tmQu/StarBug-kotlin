@@ -15,12 +15,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import intech.co.starbug.activity.CommentActivity
-import intech.co.starbug.activity.CommentFormActivity
-import intech.co.starbug.activity.product.DetailProductActivity
-import intech.co.starbug.activity.authentication.LoginActivity
 import com.google.firebase.FirebaseApp
 
+import intech.co.starbug.activity.Feedback
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this);
 
         Handler().postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             val pairs = arrayOf<Pair<View, String>>(
                 Pair(image, "logo_image"),
                 Pair(logoTV, "brand_text"),
