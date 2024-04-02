@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.WRITE_MEDIA_IMAGES" />
 
@@ -20,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.Feedback"
             android:exported="false" />
@@ -44,7 +46,7 @@
             android:exported="false" />
         <activity
             android:name=".CartActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activity.authentication.ForgetPasswordActivity"
             android:exported="false" />
