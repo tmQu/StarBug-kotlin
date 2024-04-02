@@ -27,4 +27,8 @@
 
     </style>
 
+    <style name="quantity_btn">
+        <item name="cornerSize">6dp</item>
+    </style>
+
 </resources>
