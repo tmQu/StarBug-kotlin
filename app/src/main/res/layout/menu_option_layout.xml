@@ -39,7 +39,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                >
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/remove_quantity_btn"
@@ -80,26 +82,20 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_cart_btn"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
             android:backgroundTint="@color/buy_btn"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:text="Order Now"
             android:textColor="@color/buy_txt"
             android:textSize="15sp"
             app:cornerRadius="10dp"
             app:icon="@drawable/ic_cart"
-            app:iconPadding="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/quantity_group"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/quantity_group" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -164,6 +160,7 @@
         </RadioGroup>
 
         <LinearLayout
+            android:id="@+id/temp_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -207,6 +204,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ice_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -251,6 +249,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/sugar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

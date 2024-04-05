@@ -10,7 +10,7 @@ import intech.co.starbug.model.cart.CartItemModel
 
 @Database(
     entities = [CartItemModel::class],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 abstract class StarbugDatabase: RoomDatabase() {

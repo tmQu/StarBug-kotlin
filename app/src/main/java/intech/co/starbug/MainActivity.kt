@@ -14,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import intech.co.starbug.activity.ContainerActivity
 import intech.co.starbug.activity.Feedback
 
 class MainActivity : AppCompatActivity() {
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         companyTV.setAnimation(bottomAnim);
 
         Handler().postDelayed({
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, ContainerActivity::class.java)
             val pairs = arrayOf<Pair<View, String>>(
                 Pair(image, "logo_image"),
                 Pair(logoTV, "brand_text"),

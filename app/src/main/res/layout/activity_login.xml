@@ -32,10 +32,11 @@
             android:fontFamily="@font/bungee"
             android:text="@string/starbug"
             android:textColor="#693F2C"
-            android:textSize="40sp"
+            android:textSize="35sp"
             android:transitionName="brand_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.36"
             app:layout_constraintStart_toEndOf="@+id/logoImage"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -47,7 +48,7 @@
         android:fontFamily="@font/bungee"
         android:text="Hello there, Welcome Back"
         android:textColor="#693F2C"
-        android:textSize="40sp"
+        android:textSize="35sp"
         android:transitionName="welcome_text" />
 
     <TextView
@@ -108,7 +109,7 @@
 
         <Button
             android:id="@+id/forgetPasswordBtn"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_margin="5dp"
@@ -117,13 +118,7 @@
             android:text="@string/forget_password"
             android:textColor="#000" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:buttonSize="standard"
-            app:colorScheme="light"
-            app:scopeUris="profile email" />
+
 
 
         <Button
@@ -137,7 +132,15 @@
             android:textColor="#fff"
             android:transitionName="go_button"
             app:cornerRadius="0dp" />
-
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:buttonSize="standard"
+            app:colorScheme="light"
+            app:scopeUris="profile email"
+            android:layout_marginTop="5dp"
+            />
         <Button
             android:id="@+id/haveUserBtn"
             android:layout_width="200dp"

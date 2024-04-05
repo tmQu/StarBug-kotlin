@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item  android:state_checked="true"
+        >
+        <layer-list
+            >
+            <item android:drawable="@drawable/app_bar_1_active"
+
+                android:width="24dp"
+                android:height="24dp"
+                >
+
+            </item>
+            <item android:drawable="@drawable/appbarshadow"
+                android:top="27dp"
+                android:width="10dp"
+                android:height="5dp"
+                android:left="7dp">
+            </item>
+        </layer-list>
+    </item>
+    <item android:state_checked="false"
+        >
+        <layer-list>
+        <item android:drawable="@drawable/app_bar_1"
+            android:width="24dp"
+            android:height="24dp"
+            />
+        <item
+            android:top="27dp"
+            android:width="10dp"
+            android:height="5dp"
+            android:left="7dp"
+
+            >
+            <shape android:shape="rectangle"
+                android:visible="false"
+                >
+                <size
+                    android:width="10dp"
+                    android:height="5dp"/>
+                <solid android:color="@android:color/transparent"/>
+            </shape>
+        </item>
+        </layer-list>
+    </item>
+</selector>

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -49,6 +50,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.Serializable
 import intech.co.starbug.utils.Utils
+
 
 private const val HOT_OPTION = 0
 private const val ICED_OPTION = 1
@@ -113,7 +115,7 @@ class DetailProductActivity : AppCompatActivity() {
         
         // show up the back button
         // set toolbar as support action bar
-        setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         supportActionBar?.apply {
             title = ""
@@ -186,20 +188,18 @@ class DetailProductActivity : AppCompatActivity() {
         }
         sizeGroup.setOnCheckedChangeListener { group, checkedId ->
             val checkedRadio = group.findViewById<RadioButton>(checkedId)
-            if(checkedRadio.text == "S"){
-                cartItem.productPrice = product.price
-                cartItem.size = "S"
+            when (checkedRadio.text) {
+                "S" -> {
+                    cartItem.size = "S"
+                }
+                "M" -> {
+                    cartItem.size = "M"
+                }
+                else -> {
+                    cartItem.size = "M"
+                }
             }
-            else if(checkedRadio.text == "M")
-            {
-                cartItem.productPrice = product.medium_price
-                cartItem.size = "M"
-            }
-            else{
-                cartItem.productPrice = product.large_price
-                cartItem.size = "M"
-            }
-            price.text = Utils.formatMoney(cartItem.productPrice)
+            price.text = Utils.formatMoney(cartItem.getProductPrice(product))
             showTheTotalPrice()
         }
         setDefaultMenu(sizeGroup)
@@ -215,7 +215,6 @@ class DetailProductActivity : AppCompatActivity() {
 
 
         if(product.tempOption) {
-            tempGroup.visibility = View.VISIBLE
             val tempOption = resources.getStringArray(R.array.temp_option)
             tempGroup.setOnCheckedChangeListener { group, checkedId ->
                 resetAllTheRadioButton(group)
@@ -234,6 +233,14 @@ class DetailProductActivity : AppCompatActivity() {
             setDefaultMenu(tempGroup)
 
         }
+        else {
+            findViewById<LinearLayout>(R.id.temp_view).visibility = View.GONE
+            if(product.iceOption == false)
+                findViewById<LinearLayout>(R.id.ice_view).visibility = View.GONE
+
+        }
+
+
 
         if(product.sugarOption) {
             sugarGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -244,6 +251,9 @@ class DetailProductActivity : AppCompatActivity() {
                 cartItem.amountSugar = resources.getStringArray(R.array.sugar_option)[idx]
             }
             setDefaultMenu(sugarGroup)
+        }
+        else {
+            findViewById<LinearLayout>(R.id.sugar_view).visibility = View.GONE
         }
 
 
@@ -274,12 +284,11 @@ class DetailProductActivity : AppCompatActivity() {
         val productRef = FirebaseDatabase.getInstance().getReference("Products/$productId")
         productRef.addChildEventListener(object: ChildEventListener {
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                val productSnapshot = snapshot.getValue(ProductModel::class.java)
-                if(productSnapshot != null)
-                {
-                    product = productSnapshot
-                    showProductInfor()
-                }
+                product.setter(snapshot.key?:"", snapshot.value?:0)
+                showProductInfor()
+                price.text = Utils.formatMoney(cartItem.getProductPrice(product))
+                showTheTotalPrice()
+
             }
 
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
@@ -299,6 +308,8 @@ class DetailProductActivity : AppCompatActivity() {
             }
         })
     }
+
+
     private fun getAllComment()
     {
         val commentRef = FirebaseDatabase.getInstance().getReference("Comments")
@@ -341,9 +352,6 @@ class DetailProductActivity : AppCompatActivity() {
         category.text = product.category
         desc.text = product.description
 
-        // more option on price
-        price.text = product.price.toString()
-
         initializeSliderImg()
     }
     private fun createCommentSlider(topComment: List<CommentModel>) {
@@ -373,7 +381,7 @@ class DetailProductActivity : AppCompatActivity() {
     }
 
     private fun initializeBottomSheet() {
-        bottemSheet = BottomSheetBehavior.from(findViewById<LinearLayout>(R.id.bottom_sheet))
+        bottemSheet = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet))
         bottemSheet.isHideable = true
         bottemSheet.peekHeight = 300
         bottemSheet.state = STATE_COLLAPSED
@@ -425,7 +433,7 @@ class DetailProductActivity : AppCompatActivity() {
 
     private fun showTheTotalPrice()
     {
-        val totalMoney = cartItem.quantity *  cartItem.productPrice
+        val totalMoney = cartItem.quantity *  cartItem.getProductPrice(product)
         totalPrice.text = Utils.formatMoney(totalMoney)
     }
 
