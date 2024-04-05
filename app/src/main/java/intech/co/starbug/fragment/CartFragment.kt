@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.R
 import intech.co.starbug.StarbugApp
+import intech.co.starbug.dialog.MenuEditDialog
 import intech.co.starbug.model.ProductModel
 import intech.co.starbug.model.cart.CartItemDAO
 import intech.co.starbug.model.cart.CartItemModel
@@ -49,7 +51,13 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
             cartItemDAO.findAllCartItem().collect{
                 val listCart = it
                 listDetailCart.clear()
-                queryProduct(listCart)
+                if(listCart.size == 0)
+                {
+                    setUpRv(listDetailCart)
+                }
+                else {
+                    queryProduct(listCart)
+                }
             }
 
         }
@@ -119,11 +127,17 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
     }
 
     override fun onItemClick(position: Int) {
-
+        val menuDialog = MenuEditDialog()
+        val args = Bundle()
+        args.putSerializable("option_menu", listDetailCart[position])
+        menuDialog.arguments = args
+        activity?.let { menuDialog.show(it.supportFragmentManager, "menu selection") }
     }
 
     override fun onDeleteClick(position: Int) {
         lifecycleScope.launch {
+            Log.i("test", listDetailCart.size.toString())
+
             cartItemDao.deleteCartItem(listDetailCart[position].cartItemModel)
         }
     }

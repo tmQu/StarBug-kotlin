@@ -196,7 +196,7 @@ class DetailProductActivity : AppCompatActivity() {
                     cartItem.size = "M"
                 }
                 else -> {
-                    cartItem.size = "M"
+                    cartItem.size = "L"
                 }
             }
             price.text = Utils.formatMoney(cartItem.getProductPrice(product))
