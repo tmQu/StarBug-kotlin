@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_IMAGES" />
+
     <application
         android:name=".StarbugApp"
         android:allowBackup="true"
@@ -26,12 +31,24 @@
             android:exported="false" />
         <activity
             android:name=".ProductManagementActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Feedback"
             android:exported="false" />
         <activity
             android:name=".activity.comment.CommentFormActivity"
             android:exported="false" />
         <activity
             android:name=".activity.comment.CommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccountSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".authentication.ResetPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".activity.product.DetailProductActivity"

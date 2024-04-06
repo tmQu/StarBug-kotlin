@@ -64,8 +64,7 @@ dependencies {
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
-
-
+    implementation("com.google.firebase:firebase-auth:21.0.1")
     implementation("io.coil-kt:coil:2.6.0")
     implementation("me.relex:circleindicator:2.1.6")
 
@@ -82,4 +81,5 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
     implementation(kotlin("reflect"))
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }

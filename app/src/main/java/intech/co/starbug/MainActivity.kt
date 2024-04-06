@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -16,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.auth.FirebaseAuth
 import intech.co.starbug.activity.ContainerActivity
+import com.google.firebase.FirebaseApp
 import intech.co.starbug.activity.Feedback
 import intech.co.starbug.activity.authentication.LoginActivity
 
@@ -53,6 +55,8 @@ class MainActivity : AppCompatActivity() {
         logoTV.setAnimation(bottomAnim);
         sloganTV.setAnimation(bottomAnim);
         companyTV.setAnimation(bottomAnim);
+
+        FirebaseApp.initializeApp(this);
 
         Handler().postDelayed({
             if(checkAuth() == false)
