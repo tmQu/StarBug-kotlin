@@ -87,15 +87,34 @@ class LoginActivity : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             val user = auth.currentUser
-                            Log.d("LoginActivity", "Successfully signed in")
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Successfully signed in",
-                                Toast.LENGTH_SHORT
-                            ).show()
 
-                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                            startActivity(intent)
+                            if (user != null) {
+                                Log.i("LoginActivity", user.isEmailVerified.toString())
+                                if(user.isEmailVerified) {
+                                    Log.d("LoginActivity", "Successfully signed in")
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        "Successfully signed in",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                                    startActivity(intent)
+                                } else {
+                                    Log.i("LoginActivity", "send email verfiy")
+
+                                    user.sendEmailVerification().addOnSuccessListener {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "An email Please verify your email",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                        .addOnFailureListener {
+                                            Log.e("LoginActivity", "Error sending email verification", it)
+                                        }
+                                }
+                            }
                         } else {
                             Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
                             Toast.makeText(
@@ -164,7 +183,6 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    Log.d("LoginActivity", "Successfully signed in")
                     Toast.makeText(
                         this@LoginActivity,
                         "Successfully signed in",
@@ -173,6 +191,7 @@ class LoginActivity : AppCompatActivity() {
 
                     val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                     startActivity(intent)
+
                 } else {
                     Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
                     Toast.makeText(

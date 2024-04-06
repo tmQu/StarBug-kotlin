@@ -121,22 +121,60 @@ class SignUpActivity : AppCompatActivity() {
             val database = Firebase.database
             val myRef = database.getReference("User")
 
-            val sanitizedEmail = emailValue.replace(".", "_")
+//            val sanitizedEmail = emailValue.replace(".", "_")
 
-            val emailRef = database.getReference("User").child(sanitizedEmail)
-            emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Log.d("SignUpActivity", "Email already exists")
-                        email.error = "This email has already been registered. Please use a different email."
-                        Toast.makeText(
-                            this@SignUpActivity,
-                            "This email has already been registered. Please use a different email.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        // Email does not exist, proceed with creating the account
-                        val userData = hashMapOf(
+//            val emailRef = database.getReference("User").child(sanitizedEmail)
+//            emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                    dataSnapshot.exists()
+//                    if (false) {
+//                        Log.d("SignUpActivity", "Email already exists")
+//                        email.error = "This email has already been registered. Please use a different email."
+//                        Toast.makeText(
+//                            this@SignUpActivity,
+//                            "This email has already been registered. Please use a different email.",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    } else {
+//                        // Email does not exist, proceed with creating the account
+//                        val userData = hashMapOf(
+//                            "Role" to role,
+//                            "Name" to fullNameValue,
+//                            "Username" to usernameValue,
+//                            "Email" to emailValue,
+//                            "Password" to passwordValue,
+//                            "Phone" to phoneNoValue
+//                        )
+//
+//                        myRef.child(sanitizedEmail).setValue(userData).addOnSuccessListener {
+//                            authenSignUp(emailValue, passwordValue)
+//                            Log.d("SignUpActivity", "Data saved successfully")
+//                            Toast.makeText(
+//                                this@SignUpActivity,
+//                                "Create account successfully",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }.addOnFailureListener {
+//                            Log.d("SignUpActivity", "Data not saved")
+//                            Toast.makeText(
+//                                this@SignUpActivity,
+//                                "Create account failed",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//                    }
+//                }
+//
+//                override fun onCancelled(databaseError: DatabaseError) {
+//                    Log.d("SignUpActivity", "Failed to check email existence: ${databaseError.message}")
+//                    Toast.makeText(
+//                        this@SignUpActivity,
+//                        "An error occurred. Please try again later.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//            })
+            val userData = hashMapOf(
                             "Role" to role,
                             "Name" to fullNameValue,
                             "Username" to usernameValue,
@@ -144,36 +182,7 @@ class SignUpActivity : AppCompatActivity() {
                             "Password" to passwordValue,
                             "Phone" to phoneNoValue
                         )
-
-                        myRef.child(sanitizedEmail).setValue(userData).addOnSuccessListener {
-                            authenSignUp(emailValue, passwordValue)
-                            Log.d("SignUpActivity", "Data saved successfully")
-                            Toast.makeText(
-                                this@SignUpActivity,
-                                "Create account successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }.addOnFailureListener {
-                            Log.d("SignUpActivity", "Data not saved")
-                            Toast.makeText(
-                                this@SignUpActivity,
-                                "Create account failed",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.d("SignUpActivity", "Failed to check email existence: ${databaseError.message}")
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        "An error occurred. Please try again later.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-
+            authenSignUp(emailValue, passwordValue)
         }
     }
     private fun validatePass(password: TextInputLayout) {
@@ -209,14 +218,23 @@ class SignUpActivity : AppCompatActivity() {
                         "Successfully signed up",
                         Toast.LENGTH_SHORT
                     ).show()
-
+                    finishAffinity()
                     val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                    if(user != null)
+                    {
+                        user.sendEmailVerification()
+                        Toast.makeText(this, "Please verify your email", Toast.LENGTH_SHORT).show()
+                    }
                     startActivity(intent)
+
                 } else {
-                    Log.d("SignUpActivity", "Failed to sign up: ${task.exception}")
+                    if (task.exception?.message == "The email address is already in use by another account.") {
+                        email.error = "This email has already been registered. Please use a different email."
+                    }
+                    Log.d("SignUpActivity", "Failed to sign up: ${task.exception?.message}")
                     Toast.makeText(
                         this@SignUpActivity,
-                        "An error occurred. Please try again later.",
+                        "Failed to sign up: ${task.exception?.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

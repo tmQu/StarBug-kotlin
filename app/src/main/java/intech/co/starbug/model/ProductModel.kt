@@ -17,7 +17,7 @@ class ProductModel(
     var description: String = "",
     var tempOption: Boolean = true,
     var iceOption: Boolean = true,
-    var sugarOption: Boolean = false,
+    var sugarOption: Boolean = true,
 ): Serializable
 {
     fun setter(key: String, value: Any) {

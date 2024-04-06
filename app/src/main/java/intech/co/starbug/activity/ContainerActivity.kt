@@ -31,6 +31,7 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
                 R.id.action_cart -> {
                     changeFragment(CartFragment())
                 }
+
             }
             true
         };

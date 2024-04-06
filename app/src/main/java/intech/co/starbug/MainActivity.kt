@@ -14,8 +14,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.firebase.auth.FirebaseAuth
 import intech.co.starbug.activity.ContainerActivity
 import intech.co.starbug.activity.Feedback
+import intech.co.starbug.activity.authentication.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,14 +55,31 @@ class MainActivity : AppCompatActivity() {
         companyTV.setAnimation(bottomAnim);
 
         Handler().postDelayed({
-            val intent = Intent(this, ContainerActivity::class.java)
-            val pairs = arrayOf<Pair<View, String>>(
-                Pair(image, "logo_image"),
-                Pair(logoTV, "brand_text"),
-            )
+            if(checkAuth() == false)
+            {
+                val intent = Intent(this, LoginActivity::class.java)
+                val pairs = arrayOf<Pair<View, String>>(
+                    Pair(image, "logo_image"),
+                    Pair(logoTV, "brand_text"),
+                )
 
-            val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
-            startActivity(intent, options.toBundle())
+                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
+                startActivity(intent, options.toBundle())
+            }
+            else {
+                val intent = Intent(this, ContainerActivity::class.java)
+                startActivity(intent)
+            }
+            finish()
+
         }, 3000)
+    }
+
+    private fun checkAuth(): Boolean
+    {
+        val user = FirebaseAuth.getInstance().currentUser
+        if(!(user?.isEmailVerified)!!)
+            return false
+        return user != null
     }
 }
