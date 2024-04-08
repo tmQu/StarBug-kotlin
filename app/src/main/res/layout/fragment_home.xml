@@ -27,7 +27,6 @@
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#090C10"
                 android:paddingBottom="20dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,71 +54,120 @@
                                 android:id="@+id/imageView2"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
+                                android:scaleType="centerCrop"
                                 app:srcCompat="@drawable/logostarbug" />
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/gl_1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    app:layout_constraintGuide_percent="0.5"
+                                    android:orientation="horizontal"
+                                    />
+
                                 <TextView
                                     android:id="@+id/usernameTV"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="36dp"
-                                    android:layout_marginBottom="24dp"
-                                    android:layout_weight="1"
+                                    android:layout_height="0dp"
                                     android:fontFamily="sans-serif"
-                                    android:text="Username"
-                                    android:textColor="#FEFEFE"
-                                    android:textStyle="bold"
-                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    android:text="Hi Quang"
+
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/welcomeHomeTV" />
+                                    app:layout_constraintBottom_toBottomOf="@id/gl_1" />
 
                                 <TextView
                                     android:id="@+id/welcomeHomeTV"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="47dp"
-                                    android:layout_marginTop="24dp"
+                                    android:layout_height="wrap_content"
                                     android:fontFamily="@font/bungee"
-                                    android:text="Welcome!"
-                                    android:textColor="#FEFEFE"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    android:text="Welcome back!"
 
-                                <ImageView
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:layout_marginTop="-10dp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/usernameTV"
+                                    />
+
+                                <com.google.android.material.imageview.ShapeableImageView
                                     android:id="@+id/imageView3"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
                                     android:layout_marginEnd="16dp"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="@+id/welcomeHomeTV"
-                                    tools:srcCompat="@tools:sample/avatars" />
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:shapeAppearanceOverlay="@style/circle"
+                                    android:src= "@drawable/default_avatar" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <EditText
-                        android:id="@+id/editTextText2"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:background="@drawable/edittext_background"
-                        android:drawableStart="@drawable/search_normal"
-                        android:drawablePadding="16dp"
-                        android:ems="10"
-                        android:fontFamily="@font/sora"
-                        android:hint="Search your favor"
-                        android:inputType="text"
+                    <ImageButton
+                        android:id="@+id/search_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:src="@drawable/search_normal"
+                        app:layout_constraintTop_toTopOf="@id/search_group"
+                        app:layout_constraintBottom_toBottomOf="@id/search_group"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:background="@drawable/bg_search_btn"
                         android:padding="16dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
+                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/search_group"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="5dp"
+                        app:layout_constraintRight_toLeftOf="@id/filter_btn"
+
+                        app:layout_constraintLeft_toRightOf="@id/search_btn"
+                        app:layout_constraintTop_toBottomOf="@id/constraintLayout2"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="#989898"
+                        app:hintEnabled="false"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
                         android:textColor="#989898"
                         android:textColorHint="#989898"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+                        >
+
+                        <intech.co.starbug.CustomeAutocompleteTextView
+                            android:id="@+id/search_box"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="@drawable/bg_search_edt"
+                            android:ems="10"
+                            android:fontFamily="@font/sora"
+                            android:hint="Search your favor"
+                            android:inputType="text"
+                            android:padding="16dp"
+                            android:textCursorDrawable="@null"
+                            android:textColor="#989898"
+                            android:textColorHint="#989898" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/filter_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:scaleType="centerInside"
+                        app:layout_constraintBottom_toBottomOf="@id/search_group"
+                        app:layout_constraintTop_toTopOf="@id/search_group"
+                        app:layout_constraintLeft_toRightOf="@id/search_group"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:src="@drawable/ic_filter"
+                        android:background="@drawable/bg_filter"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -145,8 +193,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/imageView6"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/slider_promotion"
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         app:circularflow_defaultRadius="40dp"
@@ -163,12 +211,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:id="@+id/categoryRecyclerViewContainer">
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/categoryRecyclerView"
                     android:layout_width="match_parent"
@@ -191,10 +238,7 @@
                 android:paddingEnd="16dp"
                 android:layout_marginBottom="60dp"
                 >
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -205,12 +249,14 @@
                             >
 
                             <include
+                                android:layout_margin="5dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 layout="@layout/product_card_placeholder"/>
 
                             <include
+                                android:layout_margin="5dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -223,22 +269,60 @@
                             >
 
                             <include
+                                android:layout_margin="5dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 layout="@layout/product_card_placeholder"/>
 
                             <include
+                                android:layout_margin="5dp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                layout="@layout/product_card_placeholder"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+
+                            <include
+                                android:layout_margin="5dp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                layout="@layout/product_card_placeholder"/>
+
+                            <include
+                                android:layout_margin="5dp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                layout="@layout/product_card_placeholder"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+
+                            <include
+                                android:layout_margin="5dp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                layout="@layout/product_card_placeholder"/>
+
+                            <include
+                                android:layout_margin="5dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 layout="@layout/product_card_placeholder"/>
                         </LinearLayout>
                     </LinearLayout>
-                </ScrollView
-
-
-
             </com.facebook.shimmer.ShimmerFrameLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/itemView"

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.R
@@ -26,6 +27,8 @@ import intech.co.starbug.model.cart.CartItemModel
 import intech.co.starbug.model.cart.DetailCartItem
 import intech.co.starbug.utils.Utils
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -34,6 +37,9 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
     private lateinit var mLayout: View
     private var listDetailCart = mutableListOf<DetailCartItem>()
     private lateinit var cartItemDao: CartItemDAO
+
+    private lateinit var productRef: DatabaseReference
+    private var job: Job? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,29 +47,45 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
         // Inflate the layout for this fragment
         mLayout =  inflater.inflate(R.layout.fragment_cart, container, false)
         cartItemDao = (activity?.application as StarbugApp).dbSQLite.cartItemDAO()
-        getCartItem(cartItemDao)
+        productRef = FirebaseDatabase.getInstance().getReference("Products")
+        queryProduct()
         return mLayout
     }
 
-    private fun getCartItem(cartItemDAO: CartItemDAO)
+    private fun getCartItem(cartItemDAO: CartItemDAO, listPrduct: MutableList<ProductModel>)
     {
-        lifecycleScope.launch {
-            cartItemDAO.findAllCartItem().collect{
-                val listCart = it
-                listDetailCart.clear()
-                if(listCart.size == 0)
-                {
-                    setUpRv(listDetailCart)
+        job?.cancel()
+        job = lifecycleScope.launch {
+            try {
+                cartItemDAO.findAllCartItem().cancellable().collect{
+                    val listCart = it
+                    listDetailCart.clear()
+                    if(listCart.size == 0)
+                    {
+                        setUpRv(listDetailCart)
+                    }
+                    else {
+
+                        for (cartItem in listCart) {
+                            val product = listPrduct.find { it.id == cartItem.productId }
+                            if (product != null) {
+                                listDetailCart.add(DetailCartItem(cartItem, product))
+                            }
+                        }
+                        setUpRv(listDetailCart)
+                    }
                 }
-                else {
-                    queryProduct(listCart)
-                }
+            }
+            finally {
+                Log.i("CartFragment", "cancel job")
+
             }
 
         }
     }
 
     private fun setUpRv(listDetailCart: MutableList<DetailCartItem>) {
+        Log.i("CartFragment", "detail " + listDetailCart.size.toString())
         val recyclerView = mLayout.findViewById<RecyclerView>(R.id.recyclerProductsView)
         val cartAdapter = CartAdapter(listDetailCart, this)
         recyclerView.adapter = cartAdapter
@@ -78,52 +100,30 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
     }
 
 
-    private fun queryProduct(listCartItem: List<CartItemModel>) {
-        val productRef = FirebaseDatabase.getInstance().getReference("Products")
+    private fun queryProduct() {
+        val listProduct = mutableListOf<ProductModel>()
+        val eventListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listProduct.clear()
 
-        productRef.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val product = snapshot.getValue(ProductModel::class.java)
-                for (item in listCartItem)
-                {
+                for (productSnapshot in snapshot.children) {
+                    val product = productSnapshot.getValue(ProductModel::class.java)
+
+
                     if (product != null) {
-                        if(item.productId == product.id) {
-                            listDetailCart.add(DetailCartItem(item, product))
-                            setUpRv(listDetailCart)
-                            Log.i("CartFragment", listDetailCart[0].product?.img?.get(0) ?:"no img" )
-                            break
-                        }
+                        listProduct.add(product)
                     }
                 }
-
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                val product = snapshot.getValue(ProductModel::class.java)
-                for (item in listDetailCart)
-                {
-                    if (product != null) {
-                        if(item.productId == product.id) {
-                            item.product = product
-                            setUpRv(listDetailCart)
-                        }
-                    }
-                }
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+                Log.i("CartFragment", "product " + listProduct.size.toString())
+                getCartItem(cartItemDao, listProduct)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w("CartFragment", "loadPost:onCancelled", error.toException())
             }
 
-        })
+        }
+        productRef.addValueEventListener(eventListener)
     }
 
     override fun onItemClick(position: Int) {
@@ -136,7 +136,6 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
 
     override fun onDeleteClick(position: Int) {
         lifecycleScope.launch {
-            Log.i("test", listDetailCart.size.toString())
 
             cartItemDao.deleteCartItem(listDetailCart[position].cartItemModel)
         }

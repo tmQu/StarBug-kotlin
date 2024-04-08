@@ -24,4 +24,7 @@ abstract class CartItemDAO {
 
     @Delete
     abstract suspend fun deleteCartItem(cartItem: CartItemModel)
+
+    @Query("Select * from CartItem where id!=:id and productId=:productId and size=:size and temperature=:temperature and amountSugar=:amountSugar and amountIce=:amountIce")
+    abstract fun isExistCartItem(id: Long, productId: String, size: String, temperature: String, amountSugar: String, amountIce: String): CartItemModel?
 }

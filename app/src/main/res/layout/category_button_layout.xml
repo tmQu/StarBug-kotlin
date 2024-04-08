@@ -11,15 +11,15 @@
         android:id="@+id/primaryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorSecondPrimary"
         android:fontFamily="@font/sora"
         android:gravity="center"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="Cappuccino"
-        android:textColor="#FEFEFE"
+        android:textColor="#D5D5D7"
         android:textStyle="bold"
         app:cornerRadius="12dp"
+        style="?attr/materialButtonOutlinedStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

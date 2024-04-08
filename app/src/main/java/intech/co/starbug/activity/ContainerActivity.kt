@@ -12,6 +12,7 @@ import intech.co.starbug.dialog.MenuEditDialog
 import intech.co.starbug.fragment.CartFragment
 import intech.co.starbug.fragment.HomeFragment
 import intech.co.starbug.model.cart.CartItemModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
@@ -46,8 +47,18 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
 
     override fun onDialogPositiveClick(dialog: DialogFragment, cartItem: CartItemModel) {
         val cartItemDAO = (application as StarbugApp).dbSQLite.cartItemDAO()
-        lifecycleScope.launch {
-            cartItemDAO.updateCartItem(cartItem)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val iseExist = cartItemDAO.isExistCartItem(cartItem.id,cartItem.productId, cartItem.size, cartItem.temperature, cartItem.amountSugar, cartItem.amountIce)
+            if(iseExist == null)
+            {
+                cartItemDAO.updateCartItem(cartItem)
+            }
+            else
+            {
+                iseExist.quantity += cartItem.quantity
+                cartItemDAO.updateCartItem(iseExist)
+                cartItemDAO.deleteCartItem(cartItem)
+            }
         }
     }
 }

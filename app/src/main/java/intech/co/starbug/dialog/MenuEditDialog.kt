@@ -120,6 +120,10 @@ class MenuEditDialog: DialogFragment() {
             builder
                 .setView(viewDialog)
                 .setPositiveButton("OK") { dialog, which ->
+                    if(cartItem.temperature == resources.getStringArray(R.array.temp_option)[0])
+                    {
+                        cartItem.amountIce = "no ice"
+                    }
                     listener.onDialogPositiveClick(this, cartItem)
                 }
 

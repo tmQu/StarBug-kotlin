@@ -1,8 +1,11 @@
 package intech.co.starbug
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,6 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
+import intech.co.starbug.constants.CONSTANT.Companion.READ_STORAGE_PERMISSION_REQUEST_CODE
 import java.util.regex.Pattern
 
 class AccountSettingActivity : AppCompatActivity() {
@@ -41,16 +45,7 @@ class AccountSettingActivity : AppCompatActivity() {
 
         // pick image from gallery
         avatar.setOnClickListener {
-            val pickImageIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPEN11ABLE)
-                type = "image/*" // Specify the MIME type to filter only images
-            }
-
-            if (pickImageIntent.resolveActivity(packageManager) != null) {
-                startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST_CODE)
-            } else {
-                Toast.makeText(this, "No app to handle image selection", Toast.LENGTH_SHORT).show()
-            }
+            requestPermission()
         }
 
         cancleBtn.setOnClickListener {
@@ -105,12 +100,64 @@ class AccountSettingActivity : AppCompatActivity() {
         }
     }
 
+    private fun requestPermission()
+    {
+        // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+        if (this.checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        {
+            // Permission is already available
+            // Start the image picker
+            pickImage()
+        }
+        else
+        {
+            // Request for permission
+            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), READ_STORAGE_PERMISSION_REQUEST_CODE)
+        }
+
+    }
+
+    private fun pickImage() {
+        val pickImageIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*" // Specify the MIME type to filter only images
+        }
+
+        if (pickImageIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST_CODE) // improve the deprecated code
+
+        } else {
+            Toast.makeText(this, "No app to handle image selection", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             // The user has successfully picked an image
             val selectedImageUri: Uri? = data.data
             avatar.setImageURI(selectedImageUri)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == READ_STORAGE_PERMISSION_REQUEST_CODE)
+        {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                // Permission is granted
+                pickImage()
+            }
+            else
+            {
+                // Permission is denied
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

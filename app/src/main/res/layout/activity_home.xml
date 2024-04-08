@@ -105,7 +105,7 @@
                         android:id="@+id/editTextText2"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:background="@drawable/edittext_background"
+                        android:background="@drawable/bg_filter"
                         android:drawableStart="@drawable/search_normal"
                         android:drawablePadding="16dp"
                         android:ems="10"

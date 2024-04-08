@@ -152,6 +152,7 @@ class DetailProductActivity : AppCompatActivity() {
         desc = findViewById(R.id.description)
         price = findViewById(R.id.price)
 
+
         initializeBottomSheet()
         getAllComment()
         showProductInfor()
@@ -271,7 +272,14 @@ class DetailProductActivity : AppCompatActivity() {
         val cartItemDAO = (application as StarbugApp).dbSQLite.cartItemDAO()
         GlobalScope.launch {
             try {
-                cartItemDAO.insertCartItem(cartItem)
+                val item = cartItemDAO.isExistCartItem(cartItem.id, cartItem.productId, cartItem.size, cartItem.temperature, cartItem.amountSugar, cartItem.amountIce)
+                if( item == null)
+                {
+                    cartItemDAO.insertCartItem(cartItem)
+                }else {
+                    item.quantity += cartItem.quantity
+                    cartItemDAO.updateCartItem(item)
+                }
             }
             finally {
 

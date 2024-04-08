@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sort_by_name_inc"
+        android:title="Alphabetical increasing"
+        android:icon="@drawable/ic_sort_name_inc"
+        android:actionLayout="@layout/icon_layout"
+
+        />
+    <item android:id="@+id/sort_by_name_desc"
+        android:title="Alphabetical decreasing"
+        android:icon="@drawable/ic_sort_name_desc"
+        android:actionLayout="@layout/icon_layout"
+        />
+    <item android:id="@+id/sort_by_price_inc"
+        android:title="Price increasing"
+        android:icon="@drawable/ic_sort_price_inc"
+        />
+    <item android:id="@+id/sort_by_price_desc"
+        android:title="Price decreasing"
+        android:icon="@drawable/ic_sort_price_desc"
+        />
+</menu>
