@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 
 import android.util.Log
 import android.util.TypedValue
@@ -25,6 +27,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.PopupMenu
 
@@ -34,6 +37,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.database.ChildEventListener
@@ -48,8 +52,10 @@ import intech.co.starbug.adapter.CategoryAdapter
 import intech.co.starbug.adapter.ItemAdapter
 import intech.co.starbug.adapter.SliderAdapter
 import intech.co.starbug.constants.CONSTANT
+import intech.co.starbug.constants.SETTING
 import intech.co.starbug.model.ProductModel
 import intech.co.starbug.model.SliderModel
+import me.relex.circleindicator.CircleIndicator3
 
 
 class HomeFragment : Fragment() {
@@ -83,6 +89,8 @@ class HomeFragment : Fragment() {
 
         shimmer = layout.findViewById(R.id.shimmerFrameLayout)
         shimmer.startShimmer()
+
+        showSliderPromotion()
         retrieveCategoriesFromFirebase()
         retrieveProductsFromFirebase()
 
@@ -357,7 +365,8 @@ class HomeFragment : Fragment() {
 
     private fun showSliderPromotion()
     {
-        val slider = layout.findViewById<RecyclerView>(R.id.slider_promotion)
+        val slider = layout.findViewById<ViewPager2>(R.id.slider_promotion)
+        val circleIndicator = layout.findViewById<CircleIndicator3>(R.id.circleIndicator)
         val sliderRef = FirebaseDatabase.getInstance().getReference("Sliders")
         sliderRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -368,8 +377,27 @@ class HomeFragment : Fragment() {
                         listSlider.add(slider)
                     }
                 }
-                val adapter = SliderAdapter(listSlider.map { it.imgUrl })
+
+                val adapter = SliderAdapter(listSlider.map { it.imgUrl }, 40F, ImageView.ScaleType.CENTER_INSIDE.toString())
+
                 slider.adapter = adapter
+                val handler: Handler = Handler(Looper.getMainLooper())
+                val runnable = Runnable {
+                    if(slider.currentItem == listSlider.size - 1) {
+                        slider.currentItem = 0
+                    } else{
+                        slider.currentItem = (slider.currentItem + 1)
+                    }
+                }
+                circleIndicator.setViewPager(slider)
+
+                slider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        handler.removeCallbacks(runnable)
+                        handler.postDelayed(runnable, SETTING.SLIDER_DELAY_TIME.toLong())
+                    }
+                })
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -378,5 +406,14 @@ class HomeFragment : Fragment() {
         })
     }
 
+//    override fun onPause() {
+//        super.onPause()
+//        handler.removeCallbacks(runnable)
+//    }
+//
+//    override fun onResume() {
+//        super.onResume()
+//        handler.postDelayed(runnable, SETTING.SLIDER_DELAY_TIME.toLong())
+//    }
 
 }

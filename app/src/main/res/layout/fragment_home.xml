@@ -193,17 +193,28 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.recyclerview.widget.RecyclerView
+                    <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/slider_promotion"
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
-                        app:circularflow_defaultRadius="40dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
+                    <me.relex.circleindicator.CircleIndicator3
+                        android:id="@+id/circleIndicator"
+                        android:layout_width="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@id/slider_promotion"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:ci_drawable="@drawable/ic_selected_indicator"
+                        app:ci_drawable_unselected="@drawable/ic_unselected_indicator"
+                        android:layout_height="48dp"
+                        app:ci_height="12dp"
+                        app:ci_width="20dp"
+                        app:ci_margin="0dp"
+                        app:ci_animator="@animator/alpha_slider"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -82,13 +82,14 @@ class MainActivity : AppCompatActivity() {
     private fun checkAuth(): Boolean
     {
         val user = FirebaseAuth.getInstance().currentUser
-        if (user == null)
-            return false
-        else {
-            if(!(user.isEmailVerified)!!)
-                return false
-        }
-
-        return true
+//        if (user == null)
+//            return false
+//        else {
+//            if(!(user.isEmailVerified)!!)
+//                return false
+//        }
+//
+//        return true
+        return user != null
     }
 }
