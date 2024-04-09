@@ -97,6 +97,7 @@ class LoginActivity : AppCompatActivity() {
                                         "Successfully signed in",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    finishAffinity()
 
                                     val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                                     startActivity(intent)

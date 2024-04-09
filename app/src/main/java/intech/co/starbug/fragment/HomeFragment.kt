@@ -377,8 +377,9 @@ class HomeFragment : Fragment() {
                         listSlider.add(slider)
                     }
                 }
+                Log.i("HomeFragment", "Slider: ${listSlider[0].imgUrl}")
 
-                val adapter = SliderAdapter(listSlider.map { it.imgUrl }, 40F, ImageView.ScaleType.CENTER_INSIDE.toString())
+                val adapter = SliderAdapter(listSlider.map { it.imgUrl }, 24F)
 
                 slider.adapter = adapter
                 val handler: Handler = Handler(Looper.getMainLooper())
