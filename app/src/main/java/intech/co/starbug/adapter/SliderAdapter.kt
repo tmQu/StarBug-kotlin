@@ -20,20 +20,17 @@ class SliderAdapter(val listImgUrl: List<String>, val radiusImage:Float = 0F): R
         fun bind(imgUrl: String) {
             Log.i("SliderAdapter", "bind: $imgUrl")
 
+            Log.i("SliderAdapter", imgSlider.scaleType.toString())
 
-            if(radiusImage != 0F)
-            {
-                val radiusInPx = radiusImage * view.resources.displayMetrics.density
-                val shapeOverlay =  imgSlider.shapeAppearanceModel.toBuilder()
-                    .setAllCornerSizes(radiusInPx)
-                    .build()
-                imgSlider.shapeAppearanceModel = shapeOverlay
-                imgSlider.load(imgUrl)
-                return
-            }
-            imgSlider.load(imgUrl) {
-                transformations(RoundedCornersTransformation(8f))
-            }
+
+            val radiusInPx = radiusImage * view.resources.displayMetrics.density
+            val shapeOverlay =  imgSlider.shapeAppearanceModel.toBuilder()
+                .setAllCornerSizes(radiusInPx)
+                .build()
+            imgSlider.shapeAppearanceModel = shapeOverlay
+            imgSlider.load(imgUrl)
+
+
         }
     }
 

@@ -94,7 +94,13 @@
                 android:text="Phone: 0987654321"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
-
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                />
             <View
                 android:layout_width="249dp"
                 android:layout_height="2dp"
@@ -116,10 +122,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerProductsView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:scrollbarStyle="insideInset"
+                />
 
             <View
                 android:layout_width="249dp"
@@ -174,43 +182,55 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="10dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@color/white"
 
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Order total"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/total_price"
+                app:layout_constraintLeft_toLeftOf="parent" />
             <TextView
                 android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="110.000 VND"
                 android:textColor="@color/colorPrimary"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.478" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <Button
                 android:id="@+id/btn_buy"
-                android:layout_width="128dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/colorSecondPrimary"
-                android:padding="10dp"
-                android:text="Buy"
+                android:padding="15dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Order Now"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                app:cornerRadius="8dp"
+                android:textSize="15sp"
+                app:cornerRadius="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/total_price"
+                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

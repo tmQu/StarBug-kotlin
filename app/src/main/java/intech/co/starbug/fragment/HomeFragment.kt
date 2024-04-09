@@ -407,14 +407,23 @@ class HomeFragment : Fragment() {
         })
     }
 
-//    override fun onPause() {
-//        super.onPause()
+    override fun onPause() {
+        super.onPause()
 //        handler.removeCallbacks(runnable)
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
+        productList
+    }
+
+    override fun onResume() {
+        super.onResume()
 //        handler.postDelayed(runnable, SETTING.SLIDER_DELAY_TIME.toLong())
-//    }
+        // save the product list
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("HomeFragment", "des")
+    }
 
 }

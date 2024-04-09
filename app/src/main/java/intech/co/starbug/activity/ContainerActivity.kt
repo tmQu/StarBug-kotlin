@@ -2,6 +2,7 @@ package intech.co.starbug.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -16,17 +17,36 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
+
+    private lateinit var bottomNav: BottomNavigationView
+    val homeFragment = HomeFragment()
+    private lateinit var prevFragment: Fragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_container)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNav = findViewById(R.id.bottom_nav)
         bottomNav.itemIconTintList = null
-        changeFragment(HomeFragment())
+        supportFragmentManager.beginTransaction().add(R.id.fragment_layout, homeFragment).commit()
+        prevFragment = homeFragment
+
+
         bottomNav.setOnItemSelectedListener { item ->
             val id = item.itemId
             when (id) {
                 R.id.action_home -> {
-                    changeFragment(HomeFragment())
+//                    homeFragment = HomeFragment()
+                    val transition = supportFragmentManager.beginTransaction()
+                    transition.apply {
+                        if(prevFragment != homeFragment)
+                        {
+                            Log.i("HomeFragment", "Remove")
+                            remove(prevFragment)
+                        }
+
+                        prevFragment = homeFragment
+                        show(homeFragment)
+                        commit()
+                    }
                 }
 
                 R.id.action_cart -> {
@@ -39,10 +59,19 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
     }
 
     private fun changeFragment(f: Fragment){
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_layout, f)
+        val transition = supportFragmentManager.beginTransaction()
+        transition.apply {
+            add(R.id.fragment_layout, f)
+            if(prevFragment != homeFragment)
+            {
+                Log.i("HomeFragment", "Remove")
+                remove(prevFragment)
+            }
+            prevFragment = f
+            hide(homeFragment)
             commit()
         }
+
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment, cartItem: CartItemModel) {
@@ -60,5 +89,16 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
                 cartItemDAO.deleteCartItem(cartItem)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        val fm = supportFragmentManager
+        if(bottomNav.selectedItemId == R.id.action_home){
+            super.onBackPressed()
+        }
+        else{
+            bottomNav.selectedItemId = R.id.action_home
+        }
+
     }
 }
