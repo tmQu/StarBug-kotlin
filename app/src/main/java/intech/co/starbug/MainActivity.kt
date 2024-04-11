@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
             else {
-                val intent = Intent(this, ContainerActivity::class.java)
+                val intent = Intent(this, ProductManagementActivity::class.java)
                 startActivity(intent)
             }
             finish()

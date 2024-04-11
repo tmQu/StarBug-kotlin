@@ -24,6 +24,12 @@
             android:exported="false" />
         <activity
             android:name=".activity.DetailOrderActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".AddProductManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateProductManagementActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ContainerActivity"
@@ -77,7 +83,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
