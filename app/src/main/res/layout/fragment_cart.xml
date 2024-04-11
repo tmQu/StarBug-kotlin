@@ -55,52 +55,52 @@
             android:layout_gravity="top"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/address_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Order summary"
-                android:textColor="@color/colorSecondPrimary"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/address_title"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:text="Order summary"-->
+<!--                android:textColor="@color/colorSecondPrimary"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textStyle="bold" />-->
 
-            <TextView
-                android:id="@+id/text_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="2dp"
-                android:text="Name: Nguyễn Văn A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/text_name"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="2dp"-->
+<!--                android:text="Name: Nguyễn Văn A"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/text_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Address: Số nhà 123, Đường ABC, Quận XYZ"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/text_address"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:text="Address: Số nhà 123, Đường ABC, Quận XYZ"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/text_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="Phone: 0987654321"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                />
+<!--            <TextView-->
+<!--                android:id="@+id/text_phone"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginBottom="16dp"-->
+<!--                android:text="Phone: 0987654321"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="16sp" />-->
+<!--            <ProgressBar-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
+<!--                />-->
             <View
                 android:layout_width="249dp"
                 android:layout_height="2dp"

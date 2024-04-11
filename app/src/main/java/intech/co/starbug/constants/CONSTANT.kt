@@ -10,5 +10,7 @@ class CONSTANT {
         val SORT_BY_NAME_DESC = "Name Desc"
 
         val READ_STORAGE_PERMISSION_REQUEST_CODE = 0
+
+
     }
 }

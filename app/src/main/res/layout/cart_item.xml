@@ -86,7 +86,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@color/buy_btn"
-            android:src="@drawable/ic_remove"
+            android:src="@drawable/ic_unsuccess"
             app:shapeAppearanceOverlay="@style/quantity_btn" />
 
         <TextView

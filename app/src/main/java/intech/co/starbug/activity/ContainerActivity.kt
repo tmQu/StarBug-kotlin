@@ -11,6 +11,7 @@ import intech.co.starbug.R
 import intech.co.starbug.StarbugApp
 import intech.co.starbug.dialog.MenuEditDialog
 import intech.co.starbug.fragment.CartFragment
+import intech.co.starbug.fragment.HistoryFragment
 import intech.co.starbug.fragment.HomeFragment
 import intech.co.starbug.model.cart.CartItemModel
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +54,9 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
                     changeFragment(CartFragment())
                 }
 
+                R.id.action_history -> {
+                    changeFragment(HistoryFragment())
+                }
             }
             true
         };
