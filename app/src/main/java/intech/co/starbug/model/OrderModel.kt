@@ -8,11 +8,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class OrderModel(
-    val listCartItem: MutableList<DetailCartItem>
+    val listCartItem: MutableList<DetailCartItem>,
+    var status: String
 ){
     val id: String = ""
-    val status: String = "Waiting approved"
-    val orderDate: Long =  Date().time
+    var paymentInforModel: PaymentInforModel = PaymentInforModel("", "", "", "")
+//    var status: String = "Waiting approved"
+    var orderDate: Long =  Date().time
+    var uidUser: String = ""
 
     fun getTotalPrice(): Int {
         var total = 0

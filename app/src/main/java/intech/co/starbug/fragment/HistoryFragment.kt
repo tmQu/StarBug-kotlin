@@ -1,6 +1,7 @@
 package intech.co.starbug.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ class HistoryFragment : Fragment() {
 
 
     private lateinit var history_rv: RecyclerView
+    private lateinit var listStatus: Array<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,17 +32,27 @@ class HistoryFragment : Fragment() {
     ): View? {
         layout = inflater.inflate(R.layout.fragment_history, container, false)
         history_rv = layout.findViewById<RecyclerView>(R.id.rv_history)
+        listStatus = resources.getStringArray(R.array.order_status)
 
         val listCart = listOf<DetailCartItem>(
             DetailCartItem(CartItemModel(), null)
         ).toMutableList()
-        listHistory = mutableListOf(
-            OrderModel(listCart),
-            OrderModel(listCart),
-            OrderModel(listCart),
-            OrderModel(listCart)
-        )
 
+        allHistory = mutableListOf()
+        listHistory = mutableListOf()
+
+        allHistory = mutableListOf(
+            OrderModel(listCart, listStatus[0]),
+            OrderModel(listCart, listStatus[1]),
+            OrderModel(listCart, listStatus[2]),
+            OrderModel(listCart, listStatus[3]),
+            OrderModel(listCart, listStatus[4]),
+            OrderModel(listCart, listStatus[5])
+        )
+        listHistory += filterHistory(listStatus[0])
+        setUpHistoryView()
+
+        setTablayoutListnener()
 
         return layout
     }
@@ -64,7 +76,6 @@ class HistoryFragment : Fragment() {
         val tabLayout = layout.findViewById<TabLayout>(R.id.tabLayout)
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val listStatus = resources.getStringArray(R.array.order_status)
                 if (tab != null)
                 {
                     val index = tab.position
@@ -76,9 +87,10 @@ class HistoryFragment : Fragment() {
                         }
                         1 -> {
                             listHistory += filterHistory(listStatus[1])
-                            listHistory += filterHistory(listStatus[2])
+
                         }
                         2 -> {
+                            listHistory += filterHistory(listStatus[2])
                             listHistory += filterHistory(listStatus[3])
                         }
                         3 -> {
@@ -88,16 +100,16 @@ class HistoryFragment : Fragment() {
                             listHistory += filterHistory(listStatus[5])
                         }
                     }
+                    setUpHistoryView()
 
                 }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
+
             }
         })
     }

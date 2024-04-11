@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.auth.FirebaseAuth
 import intech.co.starbug.activity.ContainerActivity
 import com.google.firebase.FirebaseApp
+import intech.co.starbug.activity.CheckoutActivity
 import intech.co.starbug.activity.Feedback
 import intech.co.starbug.activity.authentication.LoginActivity
 

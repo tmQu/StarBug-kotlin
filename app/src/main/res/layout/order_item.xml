@@ -17,8 +17,9 @@
             android:layout_height="match_parent">
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/order_img"
-                android:layout_width="60dp"
+                android:layout_width="80dp"
                 android:layout_height="0dp"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -45,9 +46,9 @@
                         android:id="@+id/order_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Order status: "
+                        android:text=""
+                        android:textSize="10sp"
                         android:padding="10dp"
-
                         />
                 </RelativeLayout>
                 <RelativeLayout
@@ -111,8 +112,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     app:cornerRadius="30dp"
-                    android:backgroundTint="@color/colorSecondPrimary"
-                    android:text="Detail"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:textSize="10sp"
+                    android:text="More Detail"
                     />
             </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import intech.co.starbug.R
 import intech.co.starbug.StarbugApp
@@ -15,6 +16,7 @@ import intech.co.starbug.fragment.HistoryFragment
 import intech.co.starbug.fragment.HomeFragment
 import intech.co.starbug.model.cart.CartItemModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
@@ -22,6 +24,8 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
     private lateinit var bottomNav: BottomNavigationView
     val homeFragment = HomeFragment()
     private lateinit var prevFragment: Fragment
+
+    private lateinit var badgeCart: BadgeDrawable
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_container)
@@ -30,6 +34,28 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
         supportFragmentManager.beginTransaction().add(R.id.fragment_layout, homeFragment).commit()
         prevFragment = homeFragment
 
+
+        badgeCart = bottomNav.getOrCreateBadge(R.id.action_cart)
+        badgeCart.isVisible = true
+
+        val cartItemDao = (this.application as StarbugApp).dbSQLite.cartItemDAO()
+        lifecycleScope.launch {
+            try {
+                cartItemDao.findAllCartItem().collect {
+                    val cartItems = it
+                    var total = 0
+                    for (cartItem in cartItems){
+                        total += cartItem.quantity
+                    }
+                    badgeCart.number = total
+                }
+            }
+            catch (e: Exception){
+                Log.e("ContainerActivity", e.message.toString())
+            }
+
+
+        }
 
         bottomNav.setOnItemSelectedListener { item ->
             val id = item.itemId
