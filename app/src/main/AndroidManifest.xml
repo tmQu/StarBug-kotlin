@@ -20,6 +20,12 @@
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
         <activity
+            android:name=".activity.CheckoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailOrderActivity"
+            android:exported="false"/>
+        <activity
             android:name=".AddProductManagementActivity"
             android:exported="false" />
         <activity
@@ -36,7 +42,7 @@
             android:exported="false" />
         <activity
             android:name=".ProductManagementActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".AccountActivity"
             android:exported="false" />

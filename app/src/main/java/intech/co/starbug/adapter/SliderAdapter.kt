@@ -9,30 +9,28 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.google.android.material.imageview.ShapeableImageView
 import intech.co.starbug.R
 
-class SliderAdapter(val listImgUrl: List<String>, val radiusImage:Float = 0F, val scaleType: String = ""): RecyclerView.Adapter<SliderAdapter.SliderHolderView>(){
+class SliderAdapter(val listImgUrl: List<String>, val radiusImage:Float = 0F): RecyclerView.Adapter<SliderAdapter.SliderHolderView>(){
     inner class SliderHolderView(private val view: View): RecyclerView.ViewHolder(view)
     {
-        private val imgSlider = view.findViewById<ImageView>(R.id.img_slider)
+        private val imgSlider = view.findViewById<ShapeableImageView>(R.id.img_slider)
 
         fun bind(imgUrl: String) {
             Log.i("SliderAdapter", "bind: $imgUrl")
 
-            if (scaleType != "")
-            {
-                imgSlider.scaleType = ImageView.ScaleType.valueOf(scaleType)
-            }
-            if(radiusImage != 0F)
-            {
-                imgSlider.load(imgUrl) {
-                    transformations(RoundedCornersTransformation(radiusImage))
-                }
-                return
-            }
-            imgSlider.load(imgUrl) {
-                transformations(RoundedCornersTransformation(8f))
-            }
+            Log.i("SliderAdapter", imgSlider.scaleType.toString())
+
+
+            val radiusInPx = radiusImage * view.resources.displayMetrics.density
+            val shapeOverlay =  imgSlider.shapeAppearanceModel.toBuilder()
+                .setAllCornerSizes(radiusInPx)
+                .build()
+            imgSlider.shapeAppearanceModel = shapeOverlay
+            imgSlider.load(imgUrl)
+
+
         }
     }
 

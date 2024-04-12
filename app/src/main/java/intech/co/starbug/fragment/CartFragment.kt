@@ -1,13 +1,17 @@
 package intech.co.starbug.fragment
 
 import CartAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.R
 import intech.co.starbug.StarbugApp
+import intech.co.starbug.activity.CheckoutActivity
 import intech.co.starbug.dialog.MenuEditDialog
 import intech.co.starbug.model.ProductModel
 import intech.co.starbug.model.cart.CartItemDAO
@@ -40,6 +45,8 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
 
     private lateinit var productRef: DatabaseReference
     private var job: Job? = null
+
+    private lateinit var buyBtn: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +56,18 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
         cartItemDao = (activity?.application as StarbugApp).dbSQLite.cartItemDAO()
         productRef = FirebaseDatabase.getInstance().getReference("Products")
         queryProduct()
+
+
+        buyBtn = mLayout.findViewById<Button>(R.id.btn_buy)
+        buyBtn.setOnClickListener {
+            if(listDetailCart.isEmpty())
+            {
+                Toast.makeText(activity, "Your cart is empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val intent = Intent(activity, CheckoutActivity::class.java)
+            startActivity(intent)
+        }
         return mLayout
     }
 
@@ -60,16 +79,28 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
                 cartItemDAO.findAllCartItem().cancellable().collect{
                     val listCart = it
                     listDetailCart.clear()
-                    if(listCart.size == 0)
+                    Log.i("CartFragment", "${listCart.size}")
+                    if(listCart.isEmpty())
                     {
+                        mLayout.findViewById<LinearLayout>(R.id.empty_cart).visibility = View.VISIBLE
+                        mLayout.findViewById<RecyclerView>(R.id.recyclerProductsView).visibility = View.GONE
+
+
                         setUpRv(listDetailCart)
+
+
                     }
                     else {
-
+                        mLayout.findViewById<LinearLayout>(R.id.empty_cart).visibility = View.GONE
+                        mLayout.findViewById<RecyclerView>(R.id.recyclerProductsView).visibility = View.VISIBLE
                         for (cartItem in listCart) {
                             val product = listPrduct.find { it.id == cartItem.productId }
                             if (product != null) {
                                 listDetailCart.add(DetailCartItem(cartItem, product))
+                            }
+                            else {
+//                                Toast.makeText(activity, "Product not found", Toast.LENGTH_SHORT).show()
+                                cartItemDao.deleteCartItem(cartItem)
                             }
                         }
                         setUpRv(listDetailCart)
@@ -85,17 +116,18 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
     }
 
     private fun setUpRv(listDetailCart: MutableList<DetailCartItem>) {
-        Log.i("CartFragment", "detail " + listDetailCart.size.toString())
         val recyclerView = mLayout.findViewById<RecyclerView>(R.id.recyclerProductsView)
         val cartAdapter = CartAdapter(listDetailCart, this)
         recyclerView.adapter = cartAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val totalPriceView = mLayout.findViewById<TextView>(R.id.total_price)
+        val productPriceView = mLayout.findViewById<TextView>(R.id.product_price)
         var totalPrice = 0
         for (item in listDetailCart)
         {
             totalPrice += item.quantity * item.getProductPrice()
         }
+        productPriceView.text = Utils.formatMoney(totalPrice)
         totalPriceView.text = Utils.formatMoney(totalPrice)
     }
 
@@ -114,7 +146,6 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
                         listProduct.add(product)
                     }
                 }
-                Log.i("CartFragment", "product " + listProduct.size.toString())
                 getCartItem(cartItemDao, listProduct)
             }
 

@@ -40,177 +40,197 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintBottom_toTopOf="@id/total_price_container"
-        >
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="top"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/address_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Order summary"
-                android:textColor="@color/colorSecondPrimary"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="2dp"
-                android:text="Name: Nguyễn Văn A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/text_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Address: Số nhà 123, Đường ABC, Quận XYZ"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/text_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="Phone: 0987654321"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-
-            <View
-                android:layout_width="249dp"
-                android:layout_height="2dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/colorPrimary" />
-
-            <TextView
-                android:id="@+id/products_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Selected products"
-                android:textColor="@color/colorSecondPrimary"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            app:layout_constraintBottom_toTopOf="@id/total_price_container"
+            >
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/recyclerProductsView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:scrollbarStyle="insideInset"
+                />
 
-            <View
-                android:layout_width="249dp"
-                android:layout_height="2dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/colorPrimary" />
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/empty_cart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/empty_cat"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your cart is empty"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/payment_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Payment"
-                android:textColor="@color/colorSecondPrimary"
-                android:textSize="24sp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="4dp"
-                android:text="Price: 100.000 VND"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/delivery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="16dp"
-                android:text="Delivery: 10.000 VND"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
 
         </LinearLayout>
 
-    </ScrollView>
 
 
     <LinearLayout
         android:id="@+id/total_price_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="10dp"
+
+        >
+        <View
+            android:layout_width="249dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/payment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Payment"
+            android:textColor="@color/colorSecondPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/payment_method"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Price: "
+                    android:layout_alignParentLeft="true"
+                    />
+                <TextView
+                    android:id="@+id/product_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100,000VNĐ"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shipping fee: "
+                    android:layout_alignParentLeft="true"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Discount "
+                    android:layout_alignParentLeft="true"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:src="@drawable/dashed_line"/>
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@color/white"
 
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Order total"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/total_price"
+                app:layout_constraintLeft_toLeftOf="parent" />
             <TextView
                 android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="110.000 VND"
                 android:textColor="@color/colorPrimary"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.478" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <Button
                 android:id="@+id/btn_buy"
-                android:layout_width="128dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/colorSecondPrimary"
-                android:padding="10dp"
-                android:text="Buy"
+                android:padding="15dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Order Now"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                app:cornerRadius="8dp"
+                android:textSize="15sp"
+                app:cornerRadius="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/total_price"
+                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
