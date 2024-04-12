@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".activity.Feedback">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,8 +14,6 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:fitsSystemWindows="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -42,7 +40,19 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutName"
+        android:id="@+id/textInputLayoutFeedback"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="106dp">
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -50,54 +60,92 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Your fullname"/>
+        app:layout_constraintTop_toTopOf="parent">
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutFeedback"
+        android:id="@+id/textInputLayoutPhoneNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:hintEnabled="true"
-    app:hintAnimationEnabled="false"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/textInputLayoutName">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="106dp">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextFeedback"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Feedback content"
-        android:paddingTop="16dp"
-    android:paddingBottom="8dp"
-    android:gravity="top"
-    android:minLines="5"
-    android:maxLines="10"
-    android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-</com.google.android.material.textfield.TextInputLayout>
+    <ImageView
+        android:id="@+id/imageViewFeedback"
+        android:layout_width="370dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/common_full_open_on_phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFeedback" />
+
+    <Button
+        android:id="@+id/buttonPickImage"
+        android:layout_width="347dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/colorSecondPrimary"
+        android:text="Pick Image"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSendFeedback"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonSendFeedback"
-        android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="40dp"
+        android:layout_width="347dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="28dp"
         android:backgroundTint="@color/colorSecondPrimary"
         android:text="Send feedback"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/textInputLayoutFeedback"
-        app:layout_constraintStart_toStartOf="@id/textInputLayoutFeedback" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextFeedback"
+        android:layout_width="370dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="4dp"
+        android:gravity="bottom"
+        android:hint="Feedback content"
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:minLines="5"
+        android:paddingTop="2dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumber" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextPhoneNumber"
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="4dp"
+        android:hint="Your phone number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextName"
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="104dp"
+        android:hint="Your fullname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

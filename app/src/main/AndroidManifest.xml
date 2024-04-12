@@ -20,6 +20,14 @@
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
         <activity
+            android:name=".FeedbackDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.StarBug" />
+        <activity
+            android:name=".FeedbackManager"
+            android:exported="false"
+            android:theme="@style/Theme.StarBug" />
+        <activity
             android:name=".AddProductManagementActivity"
             android:exported="false" />
         <activity
@@ -36,7 +44,7 @@
             android:exported="false" />
         <activity
             android:name=".ProductManagementActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".AccountActivity"
             android:exported="false" />
@@ -77,7 +85,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
