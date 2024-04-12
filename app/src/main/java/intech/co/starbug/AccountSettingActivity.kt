@@ -125,7 +125,6 @@ class AccountSettingActivity : AppCompatActivity() {
 
         if (pickImageIntent.resolveActivity(packageManager) != null) {
             startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST_CODE) // improve the deprecated code
-
         } else {
             Toast.makeText(this, "No app to handle image selection", Toast.LENGTH_SHORT).show()
         }

@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
             else {
-                val intent = Intent(this, ProductManagementActivity::class.java)
+                val intent = Intent(this, ContainerActivity::class.java)
                 startActivity(intent)
             }
             finish()
@@ -91,6 +91,8 @@ class MainActivity : AppCompatActivity() {
 //        }
 //
 //        return true
-        return user != null
+
+
+        return false
     }
 }

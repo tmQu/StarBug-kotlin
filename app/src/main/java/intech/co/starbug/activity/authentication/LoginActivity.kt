@@ -30,6 +30,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import intech.co.starbug.activity.ContainerActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var email: TextInputLayout
@@ -99,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
                                     ).show()
                                     finishAffinity()
 
-                                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                                    val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
                                     startActivity(intent)
                                 } else {
                                     Log.i("LoginActivity", "send email verfiy")
@@ -190,7 +191,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                    val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
                     startActivity(intent)
 
                 } else {

@@ -116,7 +116,8 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
-                val distinctCategories = categoryList.distinct()
+                val distinctCategories = categoryList.distinct().toMutableList()
+                distinctCategories.add(0, CONSTANT.ALL_CATEGORY)
                 showCategories(distinctCategories)
             }
 

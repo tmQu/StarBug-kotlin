@@ -1,5 +1,6 @@
 package intech.co.starbug.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import intech.co.starbug.AccountActivity
 import intech.co.starbug.R
 import intech.co.starbug.StarbugApp
 import intech.co.starbug.dialog.MenuEditDialog
@@ -82,6 +84,11 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
 
                 R.id.action_history -> {
                     changeFragment(HistoryFragment())
+                }
+
+                R.id.action_user -> {
+                    val intent = Intent(this, AccountActivity::class.java)
+                    startActivity(intent)
                 }
             }
             true
