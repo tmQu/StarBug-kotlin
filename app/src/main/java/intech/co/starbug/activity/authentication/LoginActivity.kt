@@ -25,6 +25,7 @@ import intech.co.starbug.HomeActivity
 import intech.co.starbug.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -183,6 +184,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    addUserToDatabase(user)
                     Toast.makeText(
                         this@LoginActivity,
                         "Successfully signed in",
@@ -201,6 +203,38 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                 }
             }
+    }
+
+    private fun addUserToDatabase(user: FirebaseUser?) {
+        val database = Firebase.database
+        val myRef = database.getReference("User")
+
+        // Kiểm tra xem người dùng đã đăng nhập bằng Google có tồn tại trong cơ sở dữ liệu chưa
+        user?.uid?.let { userId ->
+            myRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        // Nếu người dùng chưa tồn tại trong cơ sở dữ liệu, thêm người dùng mới
+                        val userData = hashMapOf(
+                            "Role" to "Customer",
+                            "Name" to user.displayName, // Tên của người dùng từ tài khoản Google
+                            "Email" to user.email // Email của người dùng từ tài khoản Google
+                        )
+                        myRef.child(userId).setValue(userData)
+                            .addOnSuccessListener {
+                                Log.d("LoginActivity", "User added to database successfully")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("LoginActivity", "Error adding user to database", e)
+                            }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e("LoginActivity", "Database error: ${databaseError.message}")
+                }
+            })
+        }
     }
 
 }
