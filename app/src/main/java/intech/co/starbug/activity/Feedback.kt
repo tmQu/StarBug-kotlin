@@ -7,19 +7,32 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import intech.co.starbug.R
 import intech.co.starbug.constants.CONSTANT
+import intech.co.starbug.model.FeedbackModel
 
 class Feedback : AppCompatActivity() {
     private lateinit var sendBtn: Button
     private lateinit var pickImageBtn: Button
     private lateinit var image: ImageView
+
+    private lateinit var database: FirebaseDatabase
+    private lateinit var feedbackRef: DatabaseReference
+
+    private lateinit var name : TextInputEditText
+    private lateinit var phone : TextInputEditText
+    private lateinit var description : TextInputEditText
 
     private val PICK_IMAGE_REQUEST_CODE = 101
 
@@ -32,8 +45,15 @@ class Feedback : AppCompatActivity() {
         pickImageBtn = findViewById(R.id.buttonPickImage)
         image = findViewById(R.id.imageViewFeedback)
 
+        name = findViewById(R.id.editTextName)
+        phone = findViewById(R.id.editTextPhoneNumber)
+        description = findViewById(R.id.editTextFeedback)
+
+        database = FirebaseDatabase.getInstance()
+        feedbackRef = database.getReference("Feedbacks")
+
         sendBtn.setOnClickListener {
-            // call the sendFeedback api here
+            addFirebase()
             showToast("Your feedback has been sent successfully!")
         }
 
@@ -48,6 +68,20 @@ class Feedback : AppCompatActivity() {
         }
     }
 
+    private fun addFirebase() {
+
+        val feedback = FeedbackModel(
+            description.text.toString(),
+            "",
+            name.text.toString(),
+            phone.text.toString(),
+
+        )
+        val id = feedbackRef.push().key
+        id?.let {
+            feedbackRef.child(id).setValue(feedback)
+        }
+    }
     private fun requestPermission() {
         if (this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             pickImage()

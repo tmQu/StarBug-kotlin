@@ -31,7 +31,6 @@ class FeedbackDetailActivity : AppCompatActivity() {
         val feedback:FeedbackModel = getSerializable(this,"EXTRA_FEEDBACK",FeedbackModel::class.java)
 
         // Hiển thị dữ liệu trong các thành phần UI
-        binding.textViewTitle.text = feedback?.title
         binding.textViewDescription.text = feedback?.description
         binding.textViewSenderName.text = feedback?.senderName
         binding.textViewSenderPhoneNumber.text = feedback?.senderPhoneNumber

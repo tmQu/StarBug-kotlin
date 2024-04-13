@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         companyTV.setAnimation(bottomAnim);
 
         FirebaseApp.initializeApp(this);
-
         Handler().postDelayed({
             if(checkAuth() == false)
             {

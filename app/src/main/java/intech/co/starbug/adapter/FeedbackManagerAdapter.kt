@@ -7,9 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import intech.co.starbug.model.FeedbackModel
 import intech.co.starbug.R
+import intech.co.starbug.model.ProductModel
 
 class FeedbackManagerAdapter(private val feedbackList: List<FeedbackModel>) : RecyclerView.Adapter<FeedbackManagerAdapter.FeedbackViewHolder>() {
 
+    private var itemList: List<ProductModel> = emptyList()
     private var listener: ((FeedbackModel) -> Unit)? = null
 
     fun setOnItemClickListener(listener: (FeedbackModel) -> Unit) {
@@ -17,7 +19,7 @@ class FeedbackManagerAdapter(private val feedbackList: List<FeedbackModel>) : Re
     }
 
     inner class FeedbackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val textViewTitle: TextView = itemView.findViewById(R.id.feedbackTitleTextView)
+        val textViewSender: TextView = itemView.findViewById(R.id.feedbackSenderNameTextView)
         val textViewDescription: TextView = itemView.findViewById(R.id.feedbackDescriptionTextView)
 
         init {
@@ -40,7 +42,7 @@ class FeedbackManagerAdapter(private val feedbackList: List<FeedbackModel>) : Re
 
     override fun onBindViewHolder(holder: FeedbackViewHolder, position: Int) {
         val currentItem = feedbackList[position]
-        holder.textViewTitle.text = currentItem.title
+        holder.textViewSender.text= currentItem.senderName
         holder.textViewDescription.text = currentItem.description
     }
 
