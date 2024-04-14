@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import intech.co.starbug.R
 import intech.co.starbug.constants.CONSTANT
 import intech.co.starbug.model.FeedbackModel
@@ -26,6 +28,8 @@ class Feedback : AppCompatActivity() {
     private lateinit var sendBtn: Button
     private lateinit var pickImageBtn: Button
     private lateinit var image: ImageView
+
+    private lateinit var uploadImageUrl: String
 
     private lateinit var database: FirebaseDatabase
     private lateinit var feedbackRef: DatabaseReference
@@ -58,7 +62,7 @@ class Feedback : AppCompatActivity() {
         }
 
         pickImageBtn.setOnClickListener {
-            requestPermission()
+            pickImage()
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -72,39 +76,21 @@ class Feedback : AppCompatActivity() {
 
         val feedback = FeedbackModel(
             description.text.toString(),
-            "",
+            uploadImageUrl,
             name.text.toString(),
             phone.text.toString(),
 
-        )
+            )
         val id = feedbackRef.push().key
         id?.let {
             feedbackRef.child(id).setValue(feedback)
         }
     }
-    private fun requestPermission() {
-        if (this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            pickImage()
-        } else {
-            requestPermissions(
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                CONSTANT.READ_STORAGE_PERMISSION_REQUEST_CODE
-            )
-        }
-    }
 
     private fun pickImage() {
-        val pickImageIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "image/*" // Specify the MIME type to filter only images
-        }
-
-        if (pickImageIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST_CODE)
-
-        } else {
-            Toast.makeText(this, "No app to handle image selection", Toast.LENGTH_SHORT).show()
-        }
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*" // Specify the MIME type to filter only images
+        startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -112,25 +98,41 @@ class Feedback : AppCompatActivity() {
         if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             // The user has successfully picked an image
             val selectedImageUri: Uri? = data.data
-            image.setImageURI(selectedImageUri)
+            // Upload the selected image to Firebase Storage
+            uploadImageToFirebase(selectedImageUri)
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == CONSTANT.READ_STORAGE_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                pickImage()
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-            }
+    private fun uploadImageToFirebase(imageUri: Uri?) {
+        if (imageUri != null) {
+            val storageRef = FirebaseStorage.getInstance().reference
+                .child("feedback_img/${System.currentTimeMillis()}")
+
+            storageRef.putFile(imageUri)
+                .addOnSuccessListener { taskSnapshot ->
+                    storageRef.downloadUrl.addOnSuccessListener { uri ->
+                        val imageUrl = uri.toString()
+                        uploadImageUrl = imageUrl
+                        val feedback = FeedbackModel(
+                            description.text.toString(),
+                            imageUrl,
+                            name.text.toString(),
+                            phone.text.toString()
+                        )
+                        // Push the feedback object to Firebase Database
+                        val id = feedbackRef.push().key
+                        id?.let {
+                            feedbackRef.child(id).setValue(feedback)
+                        }
+                        showToast("Your feedback has been sent successfully!")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("FeedbackActivity", "Error uploading image: ${e.message}")
+                    showToast("Failed to send feedback. Please try again.")
+                }
         }
     }
-
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
