@@ -73,13 +73,11 @@ class Feedback : AppCompatActivity() {
     }
 
     private fun addFirebase() {
-
         val feedback = FeedbackModel(
             description.text.toString(),
             uploadImageUrl,
             name.text.toString(),
             phone.text.toString(),
-
             )
         val id = feedbackRef.push().key
         id?.let {
@@ -89,16 +87,14 @@ class Feedback : AppCompatActivity() {
 
     private fun pickImage() {
         val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*" // Specify the MIME type to filter only images
+        intent.type = "image/*"
         startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            // The user has successfully picked an image
             val selectedImageUri: Uri? = data.data
-            // Upload the selected image to Firebase Storage
             uploadImageToFirebase(selectedImageUri)
         }
     }
@@ -113,22 +109,10 @@ class Feedback : AppCompatActivity() {
                     storageRef.downloadUrl.addOnSuccessListener { uri ->
                         val imageUrl = uri.toString()
                         uploadImageUrl = imageUrl
-                        val feedback = FeedbackModel(
-                            description.text.toString(),
-                            imageUrl,
-                            name.text.toString(),
-                            phone.text.toString()
-                        )
-                        // Push the feedback object to Firebase Database
-                        val id = feedbackRef.push().key
-                        id?.let {
-                            feedbackRef.child(id).setValue(feedback)
-                        }
                         showToast("Your feedback has been sent successfully!")
                     }
                 }
                 .addOnFailureListener { e ->
-                    Log.e("FeedbackActivity", "Error uploading image: ${e.message}")
                     showToast("Failed to send feedback. Please try again.")
                 }
         }
