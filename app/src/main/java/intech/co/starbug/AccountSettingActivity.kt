@@ -114,7 +114,6 @@ class AccountSettingActivity : AppCompatActivity() {
             // Request for permission
             requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), READ_STORAGE_PERMISSION_REQUEST_CODE)
         }
-
     }
 
     private fun pickImage() {
