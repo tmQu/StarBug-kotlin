@@ -1,12 +1,13 @@
 package intech.co.starbug
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RadioButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DataSnapshot
@@ -14,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import intech.co.starbug.model.ProductModel
 import kotlin.properties.Delegates
@@ -40,6 +42,8 @@ class UpdateProductManagementActivity : AppCompatActivity() {
 
     private lateinit var tempImage : List<String>
     private var tempAvgRate by Delegates.notNull<Double>()
+    private val IMAGE_PICK_CODE = 1000 // Mã để xác định kết quả trả về từ hộp thoại chọn ảnh
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_product_management)
@@ -87,7 +91,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                     editTextDescription.setText(it.description)
                     editTextMedium.setText(it.medium_price.toString())
                     editTextLarge.setText(it.large_price.toString())
-                    Picasso.get().load(it.img[0]).into(itemPictureImage)
+                    Picasso.get().load(it.img[it.img.size - 1]).into(itemPictureImage)
 
                     tempImage = it.img
                     tempAvgRate = it.avgRate
@@ -109,7 +113,55 @@ class UpdateProductManagementActivity : AppCompatActivity() {
             startActivity(Intent(this@UpdateProductManagementActivity, ProductManagementActivity::class.java)) // Khởi động ProductManagementActivity
         }
 
+        // Xử lý sự kiện khi người dùng chọn ảnh từ thư viện
+        itemPictureImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, IMAGE_PICK_CODE)
+        }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null) {
+            val imageUri = data.data
+            updateImageToFirebase(imageUri)
+        }
+    }
+
+    private fun updateImageToFirebase(imageUri: Uri?) {
+        if (imageUri != null) {
+            Log.i("UpdateProductManagementActivity", "imageUri: $imageUri")
+            val storageRef = FirebaseStorage.getInstance().reference.child("product_img/${System.currentTimeMillis()}")
+
+            storageRef.putFile(imageUri)
+                .addOnSuccessListener { taskSnapshot ->
+                    // Lấy URL của ảnh đã tải lên từ Firebase Storage
+                    storageRef.downloadUrl.addOnSuccessListener { uri ->
+                        val updatedImageURL = uri.toString()
+                        val productImageRef = productsRef.child(productId).child("img")
+                        val newImageList = tempImage.toMutableList()
+                        Log.i("UpdateProductManagementActivity", "updateImageToFirebase: $updatedImageURL")
+                        Log.i("UpdateProductManagementActivity", "newImageList: $newImageList")
+                        newImageList.add(updatedImageURL)
+                        tempImage = newImageList
+                        productImageRef.setValue(newImageList)
+                            .addOnSuccessListener {
+                                Toast.makeText(this@UpdateProductManagementActivity, "Image updated successfully", Toast.LENGTH_SHORT).show()
+                                // Hiển thị ảnh mới lên ImageView
+                                Picasso.get().load(updatedImageURL).into(itemPictureImage)
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this@UpdateProductManagementActivity, "Failed to update image", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun updateProductInFirebase() {
@@ -122,7 +174,6 @@ class UpdateProductManagementActivity : AppCompatActivity() {
         val newDescription = editTextDescription.text.toString()
         val newMedium = editTextMedium.text.toString().toIntOrNull()
         val newLarge = editTextLarge.text.toString().toIntOrNull()
-
 
         // Kiểm tra dữ liệu nhập liệu có hợp lệ không
         if (newName.isNotEmpty() && newPrice != null && newCategory.isNotEmpty()) {

@@ -13,72 +13,43 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+            <ImageButton
+                android:id="@+id/imageBackButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/left_arrow" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:srcCompat="@drawable/logostarbug" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/usernameTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:layout_marginBottom="24dp"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif"
-                            android:text="Username"
-                            android:textColor="@color/colorPrimary"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/welcomeHomeTV" />
-
-                        <TextView
-                            android:id="@+id/welcomeHomeTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="47dp"
-                            android:layout_marginTop="24dp"
-                            android:fontFamily="@font/bungee"
-                            android:text="Welcome!"
-                            android:textColor="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="48dp"
+                android:fontFamily="@font/bungee"
+                android:gravity="left"
+                android:padding="16dp"
+                android:text="QUẢN LÝ SẢN PHẨM"
+                android:textColor="@color/colorPrimary"
+                android:textSize="27sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.428"
+                app:layout_constraintStart_toEndOf="@+id/imageButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -93,7 +64,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/rounded_corners"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/full_rounded_corners"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,37 +73,6 @@
         app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout">
 
         <!-- Tiêu đề -->
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="QUẢN LÝ SẢN PHẨM"
-            android:textColor="@color/colorPrimary"
-            android:fontFamily="@font/bungee"
-            android:textSize="27sp"
-            android:gravity="center"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:id="@+id/categoryRecyclerViewContainer">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoryRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:padding="8dp"
-                android:scrollbars="none"/>
-
-        </LinearLayout>
 
         <!-- Danh sách sản phẩm -->
 
@@ -149,16 +90,16 @@
             android:id="@+id/buttonAddProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thêm sản phẩm"
-            android:textColor="@color/white"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            app:cornerRadius="16dp"
-            android:fontFamily="@font/bungee"
-            android:textSize="16sp"
-            android:textAllCaps="true"
             android:backgroundTint="@color/colorPrimary"
-            android:onClick="onAddProductClicked" />
+            android:fontFamily="@font/bungee"
+            android:onClick="onAddProductClicked"
+            android:text="Thêm sản phẩm"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="16dp" />
 
     </LinearLayout>
 

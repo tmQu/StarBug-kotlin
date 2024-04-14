@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             if(checkAuth() == false)
             {
-                val intent = Intent(this, LoginActivity::class.java)
+                val intent = Intent(this, ContainerActivity::class.java)
                 val pairs = arrayOf<Pair<View, String>>(
                     Pair(image, "logo_image"),
                     Pair(logoTV, "brand_text"),
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
             else {
-                val intent = Intent(this, ProductManagementActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
             finish()

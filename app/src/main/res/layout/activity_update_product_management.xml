@@ -121,14 +121,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <!-- ImageView hiển thị ảnh -->
 
-                <ImageView
-                    android:id="@+id/itemPictureImage"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    tools:srcCompat="@tools:sample/avatars" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <!-- ImageView chứa hình ảnh -->
+                    <ImageView
+                        android:id="@+id/itemPictureImage"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_avatar" />
+
+                    <!-- ImageView của biểu tượng máy ảnh -->
+                    <ImageView
+                        android:id="@+id/camera"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_centerInParent="true"
+                        android:clickable="false"
+                        android:src="@drawable/ic_edit_camera"
+                        android:translationZ="10dp" />
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

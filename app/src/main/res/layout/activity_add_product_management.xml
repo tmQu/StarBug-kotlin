@@ -114,11 +114,45 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">>
+            android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <!-- ImageView chứa hình ảnh -->
+                        <ImageView
+                            android:id="@+id/itemPictureImage"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_avatar" />
+
+                        <!-- ImageView của biểu tượng máy ảnh -->
+                        <ImageView
+                            android:id="@+id/camera"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_centerInParent="true"
+                            android:clickable="false"
+                            android:src="@drawable/ic_edit_camera"
+                            android:translationZ="10dp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -245,24 +279,6 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/productAvgRate"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="AvgRate"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:cursorColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="@color/colorPrimary" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -379,11 +395,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:fontFamily="@font/bungee"
-            android:textColor="@color/white"
             android:backgroundTint="@color/LightGrey"
+            android:fontFamily="@font/bungee"
             android:text="HỦY"
             android:textAllCaps="true"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:cornerRadius="16dp" />
 

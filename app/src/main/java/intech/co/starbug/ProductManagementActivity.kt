@@ -24,6 +24,7 @@ class ProductManagementActivity : AppCompatActivity() {
     private lateinit var recyclerViewProducts: RecyclerView
 
     private lateinit var buttonAddProduct: Button
+    private lateinit var imageBackButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,8 @@ class ProductManagementActivity : AppCompatActivity() {
 
         // Khởi tạo recyclerViewProducts
         recyclerViewProducts = findViewById(R.id.recyclerViewProducts)
+        buttonAddProduct = findViewById(R.id.buttonAddProduct)
+        imageBackButton = findViewById(R.id.imageBackButton)
 
         database = FirebaseDatabase.getInstance()
         productsRef = database.getReference("Products")
@@ -56,7 +59,8 @@ class ProductManagementActivity : AppCompatActivity() {
 
         adapter.setOnDetailClickListener { product ->
             // Chuyển sang UpdateProductManagementActivity và truyền ID sản phẩm
-            val intent = Intent(this@ProductManagementActivity, UpdateProductManagementActivity::class.java)
+            val intent =
+                Intent(this@ProductManagementActivity, UpdateProductManagementActivity::class.java)
             intent.putExtra("PRODUCT_ID", product.id)
             startActivity(intent)
         }
@@ -97,11 +101,13 @@ class ProductManagementActivity : AppCompatActivity() {
             alertDialog.show()
         }
 
-        buttonAddProduct = findViewById(R.id.buttonAddProduct)
         buttonAddProduct.setOnClickListener {
-            val intent = Intent(this@ProductManagementActivity, AddProductManagementActivity::class.java)
+            val intent =
+                Intent(this@ProductManagementActivity, AddProductManagementActivity::class.java)
             startActivity(intent)
         }
+
+        imageBackButton.setOnClickListener { finish() }
 
     }
 }
