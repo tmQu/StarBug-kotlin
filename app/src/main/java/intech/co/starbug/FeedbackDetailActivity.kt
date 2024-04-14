@@ -1,6 +1,7 @@
 package intech.co.starbug
 
 import android.app.Activity
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -31,6 +32,7 @@ class FeedbackDetailActivity : AppCompatActivity() {
         val feedback:FeedbackModel = getSerializable(this,"EXTRA_FEEDBACK",FeedbackModel::class.java)
 
         // Hiển thị dữ liệu trong các thành phần UI
+        binding.imageViewFeedback.setImageURI(Uri.parse(feedback.imageUrl))
         binding.textViewDescription.text = feedback?.description
         binding.textViewSenderName.text = feedback?.senderName
         binding.textViewSenderPhoneNumber.text = feedback?.senderPhoneNumber
