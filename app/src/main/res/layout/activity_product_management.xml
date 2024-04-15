@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Gray"
+    android:background="@color/Black"
     tools:context=".ProductManagementActivity">
 
     <!-- Thanh header -->
@@ -38,16 +38,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="48dp"
                 android:fontFamily="@font/bungee"
-                android:gravity="left"
+                android:gravity="center"
                 android:padding="16dp"
                 android:text="QUẢN LÝ SẢN PHẨM"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorSecondPrimary"
                 android:textSize="27sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.428"
-                app:layout_constraintStart_toEndOf="@+id/imageButton"
+                app:layout_constraintStart_toEndOf="@+id/imageBackButton"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -62,10 +62,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/full_rounded_corners"
+        android:elevation="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -50,13 +50,17 @@
             android:exported="false" />
         <activity
             android:name=".ProductManagementActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.StarBug" />
         <activity
             android:name=".AccountActivity"
             android:exported="false" />
         <activity
             android:name=".activity.Feedback"
             android:exported="false" />
+        <activity
+            android:name=".HomeManageActivity"
+            android:exported="false"/>
         <activity
             android:name=".activity.comment.CommentFormActivity"
             android:exported="false" />

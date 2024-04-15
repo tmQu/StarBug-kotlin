@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +26,7 @@ class ProductManagementActivity : AppCompatActivity() {
     private lateinit var recyclerViewProducts: RecyclerView
 
     private lateinit var buttonAddProduct: Button
-    private lateinit var imageBackButton: Button
+    private lateinit var imageBackButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

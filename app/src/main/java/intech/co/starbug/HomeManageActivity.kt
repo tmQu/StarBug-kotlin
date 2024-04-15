@@ -1,20 +1,57 @@
 package intech.co.starbug
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class HomeManageActivity : AppCompatActivity() {
+
+    private lateinit var productLayout: LinearLayout
+    private lateinit var staffLayout: LinearLayout
+    private lateinit var feedbackLayout: LinearLayout
+    private lateinit var orderLayout: LinearLayout
+    private lateinit var promotionLayout: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_home_manage)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        // Initialize views
+        productLayout = findViewById(R.id.productLayout)
+        staffLayout = findViewById(R.id.staffLayout)
+        feedbackLayout = findViewById(R.id.feedbackLayout)
+        orderLayout = findViewById(R.id.orderLayout)
+        promotionLayout = findViewById(R.id.promotionLayout)
+
+        // Set click listeners for each layout
+        productLayout.setOnClickListener {
+            // Handle click on product layout
+            val intent = Intent(this, ProductManagementActivity::class.java)
+            startActivity(intent)
+        }
+
+        staffLayout.setOnClickListener {
+            // Handle click on staff layout
+            val intent = Intent(this, StaffManagementActivity::class.java)
+            startActivity(intent)
+        }
+
+        feedbackLayout.setOnClickListener {
+            // Handle click on feedback layout
+            val intent = Intent(this, FeedbackManager::class.java)
+            startActivity(intent)
+        }
+
+        orderLayout.setOnClickListener {
+            // Handle click on order layout
+            val intent = Intent(this, OrderManagementActivity::class.java)
+            startActivity(intent)
+        }
+
+        promotionLayout.setOnClickListener {
+            // Handle click on promotion layout
         }
     }
 }

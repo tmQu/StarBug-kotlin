@@ -18,20 +18,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
-import intech.co.starbug.HomeActivity
-import intech.co.starbug.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.database
+import intech.co.starbug.FeedbackManager
+import intech.co.starbug.HomeActivity
+import intech.co.starbug.HomeManageActivity
+import intech.co.starbug.R
 import intech.co.starbug.activity.ContainerActivity
+import intech.co.starbug.model.UserModel
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var email: TextInputLayout
@@ -47,9 +48,10 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getWindow().setFlags(
+        window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
@@ -79,7 +81,6 @@ class LoginActivity : AppCompatActivity() {
             signInGoogle()
         }
 
-
         signInBtn.setOnClickListener {
             val emailValue = email.editText?.text.toString()
             val passwordValue = password.editText?.text.toString()
@@ -87,37 +88,44 @@ class LoginActivity : AppCompatActivity() {
             if (emailValue.isNotEmpty() && passwordValue.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(emailValue, passwordValue)
                     .addOnCompleteListener { task ->
-                        Log.d("LoginActivity", "EmailValue ${emailValue}")
-                        Log.d("LoginActivity", "PasswordValue ${passwordValue}")
+                        Log.d("LoginActivity", "EmailValue $emailValue")
+                        Log.d("LoginActivity", "PasswordValue $passwordValue")
                         if (task.isSuccessful) {
                             val user = auth.currentUser
                             if (user != null) {
-                                Log.i("LoginActivity", user.isEmailVerified.toString())
-                                if(user.isEmailVerified || emailValue == "admin@gmail.com") {
-                                    Log.d("LoginActivity", "Successfully signed in")
-                                    Toast.makeText(
-                                        this@LoginActivity,
-                                        "Successfully signed in",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    finishAffinity()
+                                val userId = user.uid
+                                val database = FirebaseDatabase.getInstance()
+                                val myRef = database.getReference("User").child(userId)
 
-                                    val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
-                                    startActivity(intent)
-                                } else {
-                                    Log.i("LoginActivity", "send email verfiy")
-
-                                    user.sendEmailVerification().addOnSuccessListener {
-                                        Toast.makeText(
-                                            this@LoginActivity,
-                                            "Please verify your email",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                        .addOnFailureListener {
-                                            Log.e("LoginActivity", "Error sending email verification", it)
+                                myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        val userData = dataSnapshot.getValue(UserModel::class.java)
+                                        if (userData != null) {
+                                            val userRole = userData.role
+                                            if (userRole == "Admin") {
+                                                Toast.makeText(
+                                                    this@LoginActivity,
+                                                    "User is Admin",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                val intent = Intent(this@LoginActivity, HomeManageActivity::class.java)
+                                                startActivity(intent)
+                                            } else {
+                                                Toast.makeText(
+                                                    this@LoginActivity,
+                                                    "User is not Admin",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
+                                                startActivity(intent)
+                                            }
                                         }
-                                }
+                                    }
+
+                                    override fun onCancelled(databaseError: DatabaseError) {
+                                        Log.e("LoginActivity", "Database error: ${databaseError.message}")
+                                    }
+                                })
                             }
                         } else {
                             Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
@@ -187,16 +195,45 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    addUserToDatabase(user)
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Successfully signed in",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if (user != null) {
+                        addUserToDatabase(user)
 
-                    val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
-                    startActivity(intent)
+                        val userId = user.uid
+                        val database = FirebaseDatabase.getInstance()
+                        val myRef = database.getReference("User").child(userId)
 
+                        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                val userData = dataSnapshot.getValue(UserModel::class.java)
+                                Log.i("LoginActivity", "User data: $userData.email")
+                                if (userData != null) {
+                                    val userRole = userData.role
+                                    if (userRole == "Admin") {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "User is Admin",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        val intent = Intent(this@LoginActivity, HomeManageActivity::class.java)
+                                        Log.i("LoginActivity", "intent: $intent")
+                                        startActivity(intent)
+                                    } else {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "User is not Admin",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
+                                        startActivity(intent)
+                                    }
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                Log.e("LoginActivity", "Database error: ${databaseError.message}")
+                            }
+                        })
+                    }
                 } else {
                     Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
                     Toast.makeText(
@@ -209,19 +246,20 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun addUserToDatabase(user: FirebaseUser?) {
-        val database = Firebase.database
+        val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("User")
 
-        // Kiểm tra xem người dùng đã đăng nhập bằng Google có tồn tại trong cơ sở dữ liệu chưa
         user?.uid?.let { userId ->
             myRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (!dataSnapshot.exists()) {
-                        // Nếu người dùng chưa tồn tại trong cơ sở dữ liệu, thêm người dùng mới
-                        val userData = hashMapOf(
-                            "Role" to "Customer",
-                            "Name" to user.displayName, // Tên của người dùng từ tài khoản Google
-                            "Email" to user.email // Email của người dùng từ tài khoản Google
+                        val userData = UserModel(
+                            uid = userId,
+                            email = user.email ?: "",
+                            name = user.displayName ?: "",
+                            password = "", // Optional: add a password if needed
+                            phoneNumber = "", // Optional: add a phone number if needed
+                            role = "Customer"
                         )
                         myRef.child(userId).setValue(userData)
                             .addOnSuccessListener {
@@ -239,5 +277,4 @@ class LoginActivity : AppCompatActivity() {
             })
         }
     }
-
 }
