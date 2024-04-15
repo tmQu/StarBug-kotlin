@@ -4,6 +4,7 @@ import android.app.Activity
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.squareup.picasso.Picasso
 import intech.co.starbug.databinding.ActivityFeedbackDetailBinding
 import intech.co.starbug.model.FeedbackModel
 import java.io.Serializable
@@ -28,11 +30,9 @@ class FeedbackDetailActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        // Nhận dữ liệu từ Intent
         val feedback:FeedbackModel = getSerializable(this,"EXTRA_FEEDBACK",FeedbackModel::class.java)
 
-        // Hiển thị dữ liệu trong các thành phần UI
-        binding.imageViewFeedback.setImageURI(Uri.parse(feedback.imageUrl))
+        Picasso.get().load(feedback?.imageUrl).into(binding.imageViewFeedback)
         binding.textViewDescription.text = feedback?.description
         binding.textViewSenderName.text = feedback?.senderName
         binding.textViewSenderPhoneNumber.text = feedback?.senderPhoneNumber
