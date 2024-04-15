@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -20,6 +21,7 @@ import intech.co.starbug.activity.ContainerActivity
 import com.google.firebase.FirebaseApp
 import intech.co.starbug.activity.CheckoutActivity
 import intech.co.starbug.activity.Feedback
+import intech.co.starbug.activity.GetAddressActivity
 import intech.co.starbug.activity.authentication.LoginActivity
 
 class MainActivity : AppCompatActivity() {
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             if(checkAuth() == false)
             {
-                val intent = Intent(this, LoginActivity::class.java)
+                val intent = Intent(this, GetAddressActivity::class.java)
                 val pairs = arrayOf<Pair<View, String>>(
                     Pair(image, "logo_image"),
                     Pair(logoTV, "brand_text"),
@@ -72,7 +74,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
             else {
-                val intent = Intent(this, ContainerActivity::class.java)
+                val intent = Intent(this, GetAddressActivity::class.java)
+                Log.i("MainActivity", "Starting ContainerActivity")
                 startActivity(intent)
             }
             finish()
