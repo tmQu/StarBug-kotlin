@@ -1,20 +1,33 @@
 package intech.co.starbug.activity
 
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
+import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import intech.co.starbug.R
+import intech.co.starbug.StarbugApp
 import intech.co.starbug.adapter.PaymentMethodAdapter
+import intech.co.starbug.model.OrderModel
 import intech.co.starbug.model.PaymentInforModel
+import intech.co.starbug.model.cart.DetailCartItem
+import intech.co.starbug.utils.Utils
+import kotlinx.coroutines.launch
+import java.util.Date
 
 class CheckoutActivity : AppCompatActivity() {
 
@@ -22,10 +35,13 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var phoneEdtv : TextInputEditText
     private lateinit var addressTv: TextView
 
-    var paymentMethod = ""
+    var paymentMethod = "Zalo Pay"
     private lateinit var paymentMethodView: MaterialCardView
     private lateinit var sharedPref: SharedPreferences
     private lateinit var paymentInfor: PaymentInforModel
+
+
+    private lateinit var listDetailCartItem: List<DetailCartItem>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_checkout)
@@ -48,6 +64,38 @@ class CheckoutActivity : AppCompatActivity() {
             paymentInfor = PaymentInforModel("", "", "", "")
         }
         setUpPaymentMethodView()
+
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            listDetailCartItem = intent.getParcelableArrayListExtra("listDetailOrder", DetailCartItem::class.java)!!
+        else
+            listDetailCartItem = intent.getParcelableArrayListExtra("listDetailOrder")!!
+
+        setUpPriceView()
+
+        var mLastClickTime = 0L
+        findViewById<Button>(R.id.btn_buy).setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+
+            }else {
+                Log.i("CheckoutActivity", "Buy now")
+                mLastClickTime = SystemClock.elapsedRealtime();
+                buyNow()
+            }
+
+        }
+    }
+
+    private fun setUpPriceView() {
+        val totalPrice = listDetailCartItem.sumOf { it.getProductPrice() * it.quantity}
+        val productPrice = findViewById<TextView>(R.id.product_price)
+        productPrice.text = Utils.formatMoney(totalPrice)
+
+        // set up price view
+        val priceTv = findViewById<TextView>(R.id.total_price)
+        priceTv.text = Utils.formatMoney(totalPrice)
+
+
     }
 
     private fun setUpPaymentMethodView()
@@ -93,6 +141,8 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun getDeliveryInfor()
     {
         // get delivery infor
@@ -105,6 +155,70 @@ class CheckoutActivity : AppCompatActivity() {
 
 
     }
+
+    private fun checkDeliveryInfor(): Boolean
+    {
+        // check delivery infor
+        if(nameEdtv.text.toString().isEmpty() || phoneEdtv.text.toString().isEmpty() || addressTv.text.toString().isEmpty() || paymentMethod.isEmpty())
+        {
+            return false
+        }
+        return true
+    }
+
+    private fun buyNow()
+    {
+        // buy now
+        getDeliveryInfor()
+        if(checkDeliveryInfor())
+        {
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null)
+            {
+                // save order to firebase
+                saveOrder()
+            }
+            else {
+                Log.e("CheckoutActivity", "User is null")
+
+            }
+        }
+        else {
+            Log.e("CheckoutActivity", "Delivery infor is not valid")
+        }
+    }
+
+    private fun saveOrder() {
+        val dbRef = FirebaseDatabase.getInstance().getReference("Orders")
+        val key = dbRef.push().key
+        val listStatus = resources.getStringArray(R.array.order_status)
+        if (key != null) {
+            val myOrder = OrderModel(Date().time, listDetailCartItem.toList(), paymentInfor, FirebaseAuth.getInstance().currentUser!!.uid, listStatus[0])
+            myOrder.id = key
+            dbRef.child(key).setValue(myOrder).addOnSuccessListener {
+                Log.d("CheckoutActivity", "Order saved successfully")
+                // delete cart in DAO database
+                val cartItemDao = (application as StarbugApp).dbSQLite.cartItemDAO()
+                lifecycleScope.launch {
+                    try {
+                        for (item in listDetailCartItem) {
+                            cartItemDao.deleteCartItem(item.cartItemModel)
+                        }
+                    }
+                    finally {
+                        finish()
+                    }
+
+                }
+            }.addOnFailureListener {
+                Log.e("CheckoutActivity", "Order save failed")
+            }
+        }
+        else {
+            Log.e("CheckoutActivity", "Key is null")
+        }
+    }
+
 
     override fun onBackPressed() {
         // save payment infor

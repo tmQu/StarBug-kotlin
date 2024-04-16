@@ -73,6 +73,8 @@ class HomeFragment : Fragment() {
     private var selectedCategory: String = CONSTANT.ALL_CATEGORY
     private var sortCriteria: String = CONSTANT.SORT_BY_DEFAULT
 
+    private lateinit var categoryAdapter: CategoryAdapter
+
     private lateinit var layout: View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -129,7 +131,7 @@ class HomeFragment : Fragment() {
 
     private fun showCategories(categories: List<String>) {
         val categoryRecyclerView: RecyclerView = layout.findViewById(R.id.categoryRecyclerView)
-        val categoryAdapter = CategoryAdapter(categories) { category ->
+        categoryAdapter = CategoryAdapter(categories) { category ->
             selectedCategory = category
             filterProduct()
         }
@@ -204,7 +206,6 @@ class HomeFragment : Fragment() {
                 val product = snapshot.getValue(ProductModel::class.java)
                 product?.let {
                     var index = productList.indexOfFirst { it.id == product.id }
-                    Log.d("HomeActivity", "Index: $index")
                     if (index != -1) {
                         productList[index] = product
                     }
@@ -330,6 +331,7 @@ class HomeFragment : Fragment() {
             val product = listAllProduct.find { it.name == searchView.text.toString() }
             val intent = Intent(activity, DetailProductActivity::class.java)
             if (product != null) {
+
                 intent.putExtra("product_id", product.id)
                 intent.putExtra("product", product)
                 startActivity(intent)
@@ -342,6 +344,8 @@ class HomeFragment : Fragment() {
         searchView.setOnKeyListener{ v, keyCode, event ->   // v: View, keyCode: Int, event: KeyEvent
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 queryName = searchView.text.toString()
+                selectedCategory = CONSTANT.ALL_CATEGORY
+                categoryAdapter.updateDefaultCategory()
                 filterProduct()
                 clearFocusAndHideKeyboard(searchView)
                 return@setOnKeyListener true

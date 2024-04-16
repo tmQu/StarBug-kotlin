@@ -99,10 +99,11 @@ class ContainerActivity : AppCompatActivity(), MenuEditDialog.DialogListener{
         val transition = supportFragmentManager.beginTransaction()
         transition.apply {
             add(R.id.fragment_layout, f)
-            if(prevFragment != homeFragment)
+            if((prevFragment != homeFragment))
             {
                 Log.i("HomeFragment", "Remove")
                 remove(prevFragment)
+
             }
             prevFragment = f
             hide(homeFragment)

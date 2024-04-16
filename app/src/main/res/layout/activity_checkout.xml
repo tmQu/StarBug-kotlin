@@ -220,6 +220,7 @@
                     android:layout_alignParentLeft="true"
                     />
                 <TextView
+                    android:id="@+id/product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="100,000VNĐ"
@@ -238,6 +239,7 @@
                     android:layout_alignParentLeft="true"
                     />
                 <TextView
+                    android:id="@+id/shipping_fee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="100,000VNĐ"
@@ -256,6 +258,7 @@
                     android:layout_alignParentLeft="true"
                     />
                 <TextView
+                    android:id="@+id/discount_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
@@ -268,8 +271,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:src="@drawable/dashed_line"/>
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total: "
+                    android:layout_alignParentLeft="true"
+                    />
+                <TextView
+                    android:id="@+id/total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="200,000VNĐ"
+                    android:textColor="@color/colorSecondPrimary"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_buy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/colorSecondPrimary"
+            android:padding="10dp"
+            android:text="Buy"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
         android:id="@+id/bottom_sheet"

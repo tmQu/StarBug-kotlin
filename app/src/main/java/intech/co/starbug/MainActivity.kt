@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
             else {
-                val intent = Intent(this, ContainerActivity::class.java)
+                val intent = Intent(this, OrderManagementActivity::class.java)
                 startActivity(intent)
             }
             finish()
@@ -93,6 +93,6 @@ class MainActivity : AppCompatActivity() {
 //        return true
 
 
-        return false
+        return true
     }
 }
