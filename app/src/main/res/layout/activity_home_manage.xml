@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Black"
-    tools:context=".HomeManageActivity">
+    android:background="@color/white"
+    tools:context=".activity.admin.HomeManageActivity">
 
     <ImageView
         android:id="@+id/imageView5"
@@ -22,6 +22,7 @@
         android:id="@+id/linearLayout8"
         android:layout_width="400dp"
         android:layout_height="447dp"
+        android:elevation="12dp"
         android:background="@drawable/rounded_corners"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,153 +30,160 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:id="@+id/productLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/full_rounded_corners"
-            android:gravity="center|left"
-            android:orientation="horizontal"
-            android:padding="8dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/background">
 
-            <ImageView
-                android:id="@+id/imageViewProduct"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/productLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/product" />
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/full_rounded_corners"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/textViewProduct"
-                android:layout_width="fill_parent"
+                <ImageView
+                    android:id="@+id/imageViewProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/product" />
+
+                <TextView
+                    android:id="@+id/textViewProduct"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bungee"
+                    android:gravity="center"
+                    android:text="Product managing"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/staffLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/bungee"
-                android:gravity="center"
-                android:text="Product managing"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/full_rounded_corners"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-        <LinearLayout
-            android:id="@+id/staffLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/full_rounded_corners"
-            android:gravity="center|left"
-            android:orientation="horizontal"
-            android:padding="8dp">
+                <ImageView
+                    android:id="@+id/imageViewStaff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/staff" />
 
-            <ImageView
-                android:id="@+id/imageViewStaff"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textViewStaff"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bungee"
+                    android:gravity="center"
+                    android:text="Staff Managing"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/feedbackLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/staff" />
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/full_rounded_corners"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/textViewStaff"
-                android:layout_width="fill_parent"
+                <ImageView
+                    android:id="@+id/imageViewFeedback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/feedback" />
+
+                <TextView
+                    android:id="@+id/textViewFeedback"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bungee"
+                    android:gravity="center"
+                    android:text="Feedback managing"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/orderLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/bungee"
-                android:gravity="center"
-                android:text="Staff Managing"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/full_rounded_corners"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-        <LinearLayout
-            android:id="@+id/feedbackLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/full_rounded_corners"
-            android:gravity="center|left"
-            android:orientation="horizontal"
-            android:padding="8dp">
+                <ImageView
+                    android:id="@+id/imageViewOrder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/order" />
 
-            <ImageView
-                android:id="@+id/imageViewFeedback"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textViewOrder"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bungee"
+                    android:gravity="center"
+                    android:text="Order managing"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/promotionLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/feedback" />
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/full_rounded_corners"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/textViewFeedback"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bungee"
-                android:gravity="center"
-                android:text="Feedback managing"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageViewPromotion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/promotion" />
 
-        <LinearLayout
-            android:id="@+id/orderLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/full_rounded_corners"
-            android:gravity="center|left"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <ImageView
-                android:id="@+id/imageViewOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/order" />
-
-            <TextView
-                android:id="@+id/textViewOrder"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bungee"
-                android:gravity="center"
-                android:text="Order managing"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/promotionLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/full_rounded_corners"
-            android:gravity="center|left"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <ImageView
-                android:id="@+id/imageViewPromotion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/promotion" />
-
-            <TextView
-                android:id="@+id/textViewPromotion"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bungee"
-                android:gravity="center"
-                android:text="Promotion managing"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/textViewPromotion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bungee"
+                    android:gravity="center"
+                    android:text="Promotion managing"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

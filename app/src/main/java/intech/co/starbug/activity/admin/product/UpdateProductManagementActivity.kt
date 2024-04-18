@@ -1,4 +1,4 @@
-package intech.co.starbug
+package intech.co.starbug.activity.admin.product
 
 import android.content.Intent
 import android.net.Uri
@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import intech.co.starbug.R
 import intech.co.starbug.model.ProductModel
 import kotlin.properties.Delegates
 

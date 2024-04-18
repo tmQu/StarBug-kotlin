@@ -27,9 +27,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import intech.co.starbug.FeedbackManager
-import intech.co.starbug.HomeActivity
-import intech.co.starbug.HomeManageActivity
+import intech.co.starbug.activity.admin.HomeManageActivity
 import intech.co.starbug.R
 import intech.co.starbug.activity.ContainerActivity
 import intech.co.starbug.model.UserModel

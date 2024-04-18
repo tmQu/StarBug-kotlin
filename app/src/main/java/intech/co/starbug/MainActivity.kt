@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             if(checkAuth() == false)
             {
-                val intent = Intent(this, ContainerActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 val pairs = arrayOf<Pair<View, String>>(
                     Pair(image, "logo_image"),
                     Pair(logoTV, "brand_text"),
@@ -82,14 +82,14 @@ class MainActivity : AppCompatActivity() {
     private fun checkAuth(): Boolean
     {
         val user = FirebaseAuth.getInstance().currentUser
-//        if (user == null)
-//            return false
-//        else {
-//            if(!(user.isEmailVerified)!!)
-//                return false
-//        }
-//
-//        return true
+        if (user == null)
+            return false
+        else {
+            if(!(user.isEmailVerified)!!)
+                return false
+        }
+
+        return true
         return user != null
     }
 }

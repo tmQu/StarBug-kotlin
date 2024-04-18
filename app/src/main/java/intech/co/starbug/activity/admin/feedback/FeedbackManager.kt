@@ -1,4 +1,4 @@
-package intech.co.starbug
+package intech.co.starbug.activity.admin.feedback
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import intech.co.starbug.R
 import intech.co.starbug.adapter.FeedbackManagerAdapter
 import intech.co.starbug.model.FeedbackModel
 

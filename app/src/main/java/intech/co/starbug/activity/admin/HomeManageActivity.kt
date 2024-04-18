@@ -1,11 +1,15 @@
-package intech.co.starbug
+package intech.co.starbug.activity.admin
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import intech.co.starbug.activity.admin.feedback.FeedbackManager
+import intech.co.starbug.OrderManagementActivity
+import intech.co.starbug.R
+import intech.co.starbug.StaffManagementActivity
+import intech.co.starbug.activity.admin.product.ProductManagementActivity
+import intech.co.starbug.activity.admin.promotion.PromotionManagementActivity
 
 class HomeManageActivity : AppCompatActivity() {
 
@@ -51,7 +55,8 @@ class HomeManageActivity : AppCompatActivity() {
         }
 
         promotionLayout.setOnClickListener {
-            // Handle click on promotion layout
+            val intent = Intent(this, PromotionManagementActivity::class.java)
+            startActivity(intent)
         }
     }
 }

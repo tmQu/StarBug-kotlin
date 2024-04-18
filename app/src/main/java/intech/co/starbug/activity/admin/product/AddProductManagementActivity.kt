@@ -1,4 +1,4 @@
-package intech.co.starbug
+package intech.co.starbug.activity.admin.product
 
 import android.app.Activity
 import android.content.Intent
@@ -15,8 +15,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import intech.co.starbug.R
 import intech.co.starbug.model.ProductModel
-import kotlin.properties.Delegates
 
 class AddProductManagementActivity : AppCompatActivity() {
 
