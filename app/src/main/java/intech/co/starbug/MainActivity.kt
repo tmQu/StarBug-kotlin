@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -17,12 +16,8 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.auth.FirebaseAuth
-import intech.co.starbug.activity.ContainerActivity
 import com.google.firebase.FirebaseApp
-import intech.co.starbug.activity.CheckoutActivity
-import intech.co.starbug.activity.Feedback
 import intech.co.starbug.activity.GetAddressActivity
-import intech.co.starbug.activity.authentication.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
