@@ -5,11 +5,11 @@ import kotlin.reflect.full.memberProperties
 
 data class FeedbackModel(
     var id: String = "",
-    val description: String,
+    var description: String = "",
     var img: List<String> = listOf(),
-    val senderName: String,
-    val senderPhoneNumber: String = "0909090909",
-    val time: String = "19/04/2024",
+    var senderName: String = "",
+    var senderPhoneNumber: String = "0909090909",
+    var time: String = "19/04/2024"
 ): Serializable
 {
     fun setter(key: String, value: Any) {
