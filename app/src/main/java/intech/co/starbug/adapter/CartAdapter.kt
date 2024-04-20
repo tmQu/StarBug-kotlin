@@ -106,12 +106,12 @@ class CartAdapter(private val productList: List<DetailCartItem>, private  val li
             option += " | Hot cup"
         }
         else {
-            option += " | ${cartItem.amountIce} Ice"
+            option += " | ${cartItem.amountIce}"
         }
 
         if(cartItem.amountSugar != "")
         {
-            option += " | ${cartItem.amountSugar} sugar"
+            option += " | ${cartItem.amountSugar}"
         }
 
         return option;

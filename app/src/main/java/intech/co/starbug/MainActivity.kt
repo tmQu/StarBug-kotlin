@@ -18,7 +18,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.auth.FirebaseAuth
 import intech.co.starbug.activity.ContainerActivity
 import com.google.firebase.FirebaseApp
+import intech.co.starbug.activity.CheckoutActivity
 import intech.co.starbug.activity.Feedback
+import intech.co.starbug.activity.admin.feedback.FeedbackManager
 import intech.co.starbug.activity.authentication.LoginActivity
 
 class MainActivity : AppCompatActivity() {
@@ -57,7 +59,6 @@ class MainActivity : AppCompatActivity() {
         companyTV.setAnimation(bottomAnim);
 
         FirebaseApp.initializeApp(this);
-
         Handler().postDelayed({
             if(checkAuth() == false)
             {
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
             else {
-                val intent = Intent(this, ContainerActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
             finish()
@@ -82,14 +83,14 @@ class MainActivity : AppCompatActivity() {
     private fun checkAuth(): Boolean
     {
         val user = FirebaseAuth.getInstance().currentUser
-//        if (user == null)
-//            return false
-//        else {
-//            if(!(user.isEmailVerified)!!)
-//                return false
-//        }
-//
-//        return true
+        if (user == null)
+            return false
+        else {
+            if(!(user.isEmailVerified)!!)
+                return false
+        }
+
+        return true
         return user != null
     }
 }

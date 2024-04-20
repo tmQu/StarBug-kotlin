@@ -185,7 +185,7 @@
                     android:layout_height="160dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/red_banner"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -195,8 +195,8 @@
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/slider_promotion"
-                        android:layout_width="fill_parent"
-                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

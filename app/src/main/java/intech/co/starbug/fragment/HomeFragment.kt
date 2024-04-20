@@ -377,8 +377,9 @@ class HomeFragment : Fragment() {
                         listSlider.add(slider)
                     }
                 }
+                Log.i("HomeFragment", "Slider: ${listSlider[0].imgUrl}")
 
-                val adapter = SliderAdapter(listSlider.map { it.imgUrl }, 40F, ImageView.ScaleType.CENTER_INSIDE.toString())
+                val adapter = SliderAdapter(listSlider.map { it.imgUrl }, 24F)
 
                 slider.adapter = adapter
                 val handler: Handler = Handler(Looper.getMainLooper())
@@ -406,14 +407,23 @@ class HomeFragment : Fragment() {
         })
     }
 
-//    override fun onPause() {
-//        super.onPause()
+    override fun onPause() {
+        super.onPause()
 //        handler.removeCallbacks(runnable)
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
+        productList
+    }
+
+    override fun onResume() {
+        super.onResume()
 //        handler.postDelayed(runnable, SETTING.SLIDER_DELAY_TIME.toLong())
-//    }
+        // save the product list
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("HomeFragment", "des")
+    }
 
 }

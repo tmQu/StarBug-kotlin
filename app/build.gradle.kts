@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-firestore-ktx:24.11.0")
     val room_version = "2.6.1"
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
@@ -86,4 +87,5 @@ dependencies {
 
     implementation(kotlin("reflect"))
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+
 }

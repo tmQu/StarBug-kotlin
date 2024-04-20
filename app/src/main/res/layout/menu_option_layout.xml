@@ -93,6 +93,7 @@
             android:textSize="15sp"
             app:cornerRadius="10dp"
             app:icon="@drawable/ic_cart"
+            app:iconPadding="0dp"
             app:layout_constraintLeft_toRightOf="@+id/quantity_group"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/quantity_group" />

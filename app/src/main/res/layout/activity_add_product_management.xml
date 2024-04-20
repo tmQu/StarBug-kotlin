@@ -5,361 +5,312 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Gray"
-    tools:context=".AddProductManagementActivity">
+    android:background="@drawable/background"
+    tools:context=".activity.admin.product.AddProductManagementActivity">
 
     <!-- Thanh header -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:srcCompat="@drawable/logostarbug" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/usernameTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:layout_marginBottom="24dp"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif"
-                            android:text="Username"
-                            android:textColor="@color/colorPrimary"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/welcomeHomeTV" />
-
-                        <TextView
-                            android:id="@+id/welcomeHomeTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="47dp"
-                            android:layout_marginTop="24dp"
-                            android:fontFamily="@font/bungee"
-                            android:text="Welcome!"
-                            android:textColor="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
         android:id="@+id/bodyLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/full_rounded_corners"
         android:orientation="vertical"
+        android:elevation="8dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Tiêu đề -->
-        <TextView
-            android:id="@+id/textViewTitle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bungee"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="TẠO MỚI SẢN PHẨM"
-            android:textColor="@color/colorPrimary"
-            android:textSize="27sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/background">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">>
-            <LinearLayout
+            <TextView
+                android:id="@+id/textViewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:fontFamily="@font/bungee"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="TẠO MỚI SẢN PHẨM"
+                android:textColor="@color/colorPrimary"
+                android:textSize="27sp"
+                android:textStyle="bold" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/productName"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Product name"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:cursorColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        android:gravity="center">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="@color/colorPrimary" />
+                            android:gravity="center">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <!-- ImageView chứa hình ảnh -->
+                            <ImageView
+                                android:id="@+id/itemPictureImage"
+                                android:layout_width="140dp"
+                                android:layout_height="140dp"
+                                android:background="@drawable/full_rounded_corners"
+                                android:layout_alignParentTop="true"
+                                android:layout_margin="8dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_avatar" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/productCategory"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            <!-- ImageView của biểu tượng máy ảnh -->
+                            <ImageView
+                                android:id="@+id/camera"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_centerInParent="true"
+                                android:clickable="false"
+                                android:src="@drawable/ic_edit_camera"
+                                android:translationZ="10dp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Category"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:counterMaxLength="15"
-                        app:counterTextColor="@color/colorPrimary"
-                        app:cursorColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/productName"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="@color/colorPrimary" />
+                            android:hint="Product name"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:textColor="@color/colorPrimary" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/productPrice"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/productCategory"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Category"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:counterMaxLength="15"
+                            app:counterTextColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/productPrice"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Price"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/productMediumPrice"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Medium price"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/productLargePrice"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Large Price"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/productDescription"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Description"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Price"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:cursorColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/txtIce"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:textColor="@color/colorPrimary" />
+                            android:layout_weight="0.3"
+                            android:gravity="left"
+                            android:text="Ice option"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <RadioGroup
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/productMediumPrice"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/radio"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Yes"
+                                android:textColor="@color/black"
+                                app:buttonTint="@color/colorSecondPrimary" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/radio2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="No"
+                                android:textColor="@color/black"
+                                app:buttonTint="@color/colorSecondPrimary" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Medium price"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:cursorColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/txtSugar"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:textColor="@color/colorPrimary" />
+                            android:layout_weight="0.3"
+                            android:gravity="left"
+                            android:text="Sugar option"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <RadioGroup
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/productLargePrice"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Large Price"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:cursorColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                            <RadioButton
+                                android:id="@+id/radioSugar"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Yes"
+                                android:textColor="@color/black"
+                                app:buttonTint="@color/colorSecondPrimary" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:textColor="@color/colorPrimary" />
+                            <RadioButton
+                                android:id="@+id/radio2Sugar"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="No"
+                                android:textColor="@color/black"
+                                app:buttonTint="@color/colorSecondPrimary" />
+                        </RadioGroup>
 
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/productDescription"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Description"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:cursorColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="@color/colorPrimary" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/productAvgRate"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="AvgRate"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:cursorColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="@color/colorPrimary" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
-
-                    <TextView
-                        android:id="@+id/txtIce"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:gravity="left"
-                        android:text="Ice option"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-
-                    <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/radio"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Yes"
-                            android:textColor="@color/black"
-                            app:buttonTint="@color/colorSecondPrimary" />
-
-                        <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/radio2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="No"
-                            android:textColor="@color/black"
-                            app:buttonTint="@color/colorSecondPrimary" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
-
-                    <TextView
-                        android:id="@+id/txtSugar"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:gravity="left"
-                        android:text="Sugar option"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-
-                    <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioSugar"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Yes"
-                            android:textColor="@color/black"
-                            app:buttonTint="@color/colorSecondPrimary" />
-
-                        <RadioButton
-                            android:id="@+id/radio2Sugar"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="No"
-                            android:textColor="@color/black"
-                            app:buttonTint="@color/colorSecondPrimary" />
-                    </RadioGroup>
-
-                </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+            </ScrollView>
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -379,11 +330,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:fontFamily="@font/bungee"
-            android:textColor="@color/white"
             android:backgroundTint="@color/LightGrey"
+            android:fontFamily="@font/bungee"
             android:text="HỦY"
             android:textAllCaps="true"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:cornerRadius="16dp" />
 

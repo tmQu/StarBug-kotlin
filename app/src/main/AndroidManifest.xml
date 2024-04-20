@@ -21,10 +21,33 @@
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
         <activity
-            android:name=".AddProductManagementActivity"
+            android:name=".activity.admin.promotion.UpdatePromotionManagementActivity"
             android:exported="false" />
         <activity
-            android:name=".UpdateProductManagementActivity"
+            android:name=".activity.admin.promotion.AddPromotionManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.promotion.PromotionManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.feedback.FeedbackDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.StarBug" />
+        <activity
+            android:name=".activity.admin.feedback.FeedbackManager"
+            android:exported="false"
+            android:theme="@style/Theme.StarBug" />
+        <activity
+            android:name=".activity.CheckoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.product.AddProductManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.product.UpdateProductManagementActivity"
             android:exported="false" />
         <activity
             android:name=".AccountItemAddActivity"
@@ -45,13 +68,17 @@
             android:name=".OrderManagementActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductManagementActivity"
-            android:exported="false"/>
+            android:name=".activity.admin.product.ProductManagementActivity"
+            android:exported="false"
+            android:theme="@style/Theme.StarBug" />
         <activity
             android:name=".AccountActivity"
             android:exported="false" />
         <activity
             android:name=".activity.Feedback"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.HomeManageActivity"
             android:exported="false" />
         <activity
             android:name=".activity.comment.CommentFormActivity"
@@ -87,7 +114,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

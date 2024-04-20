@@ -50,6 +50,16 @@
         <item>100% sugar</item>
     </string-array>
 
+
+    <string-array name="order_status">
+        <item>Waiting approved</item>
+        <item>Approved</item>
+        <item>Ready to pickup</item>
+        <item>Delivering</item>
+        <item>Successful</item>
+        <item>Unsuccessful</item>
+    </string-array>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
@@ -88,6 +98,7 @@
     </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="saved_payment_infor_key">SAVE PAYMENT INFOR</string>
 
 
 </resources>
