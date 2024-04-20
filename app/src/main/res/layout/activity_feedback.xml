@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@drawable/background"
     tools:context=".activity.Feedback">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -30,6 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="@font/bungee"
                 android:text="Feedback"
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
@@ -39,76 +40,176 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/imageViewFeedback"
-        android:layout_width="370dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/common_full_open_on_phone"
+    <LinearLayout
+        android:id="@+id/bodyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/full_rounded_corners"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFeedback" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
-    <Button
-        android:id="@+id/buttonPickImage"
-        android:layout_width="347dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/colorSecondPrimary"
-        android:text="Pick Image"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSendFeedback"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <!-- Tiêu đề -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonSendFeedback"
-        android:layout_width="347dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="28dp"
-        android:backgroundTint="@color/colorSecondPrimary"
-        android:text="Send feedback"
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
+
+                            <!-- ImageView chứa hình ảnh -->
+                            <ImageView
+                                android:id="@+id/itemPictureImage"
+                                android:layout_width="300dp"
+                                android:layout_height="300dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_margin="24dp"
+                                android:layout_marginStart="24dp"
+                                android:layout_marginEnd="24dp"
+                                android:background="@drawable/full_rounded_corners"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_avatar" />
+
+                            <!-- ImageView của biểu tượng máy ảnh -->
+                            <ImageView
+                                android:id="@+id/camera"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_centerInParent="true"
+                                android:clickable="false"
+                                android:src="@drawable/ic_edit_camera"
+                                android:translationZ="10dp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/SenderName"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Tên người feeback"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/phoneNumber"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Số điện thoại"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:counterMaxLength="15"
+                            app:counterTextColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/PromotionMinimumBill"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Mô tả feedback"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            app:cursorColor="@color/colorPrimary"
+                            app:hintTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textLongMessage"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextFeedback"
-        android:layout_width="370dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="4dp"
-        android:gravity="bottom"
-        android:hint="Feedback content"
-        android:inputType="textMultiLine"
-        android:maxLines="10"
-        android:minLines="5"
-        android:paddingTop="2dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumber" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextPhoneNumber"
-        android:layout_width="370dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="4dp"
-        android:hint="Your phone number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextName"
-        android:layout_width="370dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="104dp"
-        android:hint="Your fullname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/buttonCreateFeedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorSecondPrimary"
+            android:fontFamily="@font/bungee"
+            android:onClick="onAddPromotionClicked"
+            android:text="GỬI FEEDBACK"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="16dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

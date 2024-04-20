@@ -24,14 +24,13 @@ class FeedbackDetailActivity : AppCompatActivity() {
         binding = ActivityFeedbackDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-
         val feedback:FeedbackModel = getSerializable(this,"EXTRA_FEEDBACK",FeedbackModel::class.java)
 
-        Picasso.get().load(feedback?.imageUrl).into(binding.imageViewFeedback)
-        binding.textViewDescription.text = feedback?.description
-        binding.textViewSenderName.text = feedback?.senderName
-        binding.textViewSenderPhoneNumber.text = feedback?.senderPhoneNumber
+        Picasso.get().load(feedback.img[feedback.img.size - 1]).into(binding.itemPictureImage)
+        binding.txtDescription.text = feedback?.description
+        binding.txtCustomerName.text = feedback?.senderName
+        binding.txtDate.text = feedback?.time
+        binding.txtPhone.text = feedback?.senderPhoneNumber
     }
 
     fun <T : Serializable?> getSerializable(activity: Activity, name: String, clazz: Class<T>): T

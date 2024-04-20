@@ -3,6 +3,8 @@ package intech.co.starbug.activity.admin.feedback
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,32 +53,53 @@ class FeedbackManager : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewFeedback)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewFeedbacks)
         recyclerView.layoutManager = LinearLayoutManager(this)
         feedbackAdapter = FeedbackManagerAdapter(feedbackList)
 
         recyclerView.adapter = feedbackAdapter
 
-        feedbackAdapter.setOnItemClickListener { feedback ->
+        feedbackAdapter.setOnDetailClickListener { feedback ->
             val intent = Intent(this, FeedbackDetailActivity::class.java)
 
             intent.putExtra("EXTRA_FEEDBACK", feedback)
 
             startActivity(intent)
         }
-    }
 
-    private fun generateSampleFeedbackList(): ArrayList<FeedbackModel> {
-        val feedbackList = ArrayList<FeedbackModel>()
-
-        feedbackList.add(FeedbackModel( "Description 1", "", "Sender 1", "123456789"))
-        feedbackList.add(FeedbackModel( "Description 2", "", "Sender 2", "987654321"))
-        feedbackList.add(FeedbackModel( "Description 2", "", "Sender 2", "987654321"))
-        feedbackList.add(FeedbackModel( "Description 2", "", "Sender 2", "987654321"))
-        feedbackList.add(FeedbackModel( "Description 2", "", "Sender 2", "987654321"))
-        feedbackList.add(FeedbackModel( "Description 2", "", "Sender 2", "987654321"))
-        feedbackList.add(FeedbackModel( "Description 2", "", "Sender 2", "987654321"))
-
-        return feedbackList
+        // Trong phương thức onCreate của ProductManagementActivity
+        feedbackAdapter.setOnDeleteClickListener { feedback ->
+            val alertDialogBuilder = AlertDialog.Builder(this@FeedbackManager)
+            alertDialogBuilder.apply {
+                setTitle("Confirm Delete")
+                setMessage("Are you sure you want to delete this feedback?")
+                setPositiveButton("Yes") { _, _ ->
+                    // Xóa feedback từ cơ sở dữ liệu Firebase
+                    feedbackRef.child(feedback.id).removeValue()
+                        .addOnSuccessListener {
+                            // Xử lý thành công
+                            Toast.makeText(
+                                this@FeedbackManager,
+                                "Feedback deleted successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        .addOnFailureListener { e ->
+                            // Xử lý thất bại
+                            Log.e("Feedback Manager", "Error deleting feedback", e)
+                            Toast.makeText(
+                                this@FeedbackManager,
+                                "Failed to delete feedback",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
+                setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+            }
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+        }
     }
 }
