@@ -97,13 +97,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewDescription"
-        android:layout_width="match_parent"
-        android:layout_height="2sp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
-        android:background="@color/Gray"
-        android:paddingTop="8dp" />
-
 </LinearLayout>
