@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -32,11 +33,14 @@ class AccountItemAddActivity : AppCompatActivity() {
         password = findViewById(R.id.passwordInputLayout)
         role = findViewById(R.id.roleInputLayout)
 
-
         addBtn = findViewById(R.id.addToDB)
 
         addBtn.setOnClickListener {
-            addData()
+            showConfirmationDialog(
+                title = "Add Account",
+                message = "Are you sure you want to add this account?",
+                onConfirm = { addData() }
+            )
         }
 
         role.setOnClickListener() {
@@ -54,7 +58,22 @@ class AccountItemAddActivity : AppCompatActivity() {
             putExtra("Role", role.text.toString())
         }
         setResult(RESULT_OK, resultIntent)
+        Toast.makeText(this, "Account added successfully", Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    private fun showConfirmationDialog(title: String, message: String, onConfirm: () -> Unit) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Yes") { dialog, _ ->
+                onConfirm()
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 
     private fun showRoleDialog() {

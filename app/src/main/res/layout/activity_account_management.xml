@@ -123,26 +123,31 @@
             android:gravity="center"
             android:textStyle="bold" />
 
+        <!-- Danh sách sản phẩm -->
+
         <LinearLayout
+            android:id="@+id/categoryRecyclerViewContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:id="@+id/categoryRecyclerViewContainer">
+            android:layout_marginEnd="0dp"
+            android:orientation="horizontal">
 
             <Button
+                android:id="@+id/addButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="ADD"
-                android:textColor="#FFF"
-                android:id="@+id/addButton"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:fontFamily="@font/bungee"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="16dp"
+                tools:text="ADD ACCOUNT" />
 
         </LinearLayout>
-
-        <!-- Danh sách sản phẩm -->
 
         <ListView
             android:id="@+id/listViewProducts"

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputLayout
 
@@ -46,11 +47,19 @@ class AccountItemUpdateActivity : AppCompatActivity() {
         deleteBtn = findViewById(R.id.deleteBtn)
 
         saveBtn.setOnClickListener {
-            saveData()
+            showConfirmationDialog(
+                title = "Save Changes",
+                message = "Are you sure you want to save changes?",
+                onConfirm = { saveData() }
+            )
         }
 
         deleteBtn.setOnClickListener {
-            deleteData()
+            showConfirmationDialog(
+                title = "Delete Account",
+                message = "Are you sure you want to delete this account?",
+                onConfirm = { deleteData() }
+            )
         }
 
         role.setOnClickListener() {
@@ -88,6 +97,7 @@ class AccountItemUpdateActivity : AppCompatActivity() {
             putExtra("Role", role.editText?.text.toString())
         }
         setResult(RESULT_OK, resultIntent)
+        Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show()
         finish()
     }
 
@@ -104,7 +114,22 @@ class AccountItemUpdateActivity : AppCompatActivity() {
             putExtra("Delete", "true")
         }
         setResult(RESULT_OK, resultIntent)
+        Toast.makeText(this, "Account deleted", Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    private fun showConfirmationDialog(title: String, message: String, onConfirm: () -> Unit) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Yes") { dialog, _ ->
+                onConfirm()
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 
     private fun showRoleDialog() {
