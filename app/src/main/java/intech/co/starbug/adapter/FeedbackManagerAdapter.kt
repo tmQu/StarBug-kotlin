@@ -1,6 +1,7 @@
 package intech.co.starbug.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,8 @@ class FeedbackManagerAdapter(
         context = parent.context
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.feedback_manager_item, parent, false)
+
+        Log.i("FeedbackManagerAdapter", "onCreateViewHolder: $itemView")
         val viewHolder = FeedbackViewHolder(itemView)
 
         // Xử lý sự kiện click cho nút "Detail"
@@ -68,6 +71,8 @@ class FeedbackManagerAdapter(
         Picasso.get().load(currentItem.img[currentItem.img.size - 1]).into(holder.feedbackImageView)
         holder.textViewSender.text = currentItem.senderName
         holder.feedbackTimeTextView.text = currentItem.time
+
+        Log.i("FeedbackManagerAdapter", "onBindViewHolder: $currentItem")
     }
 
     override fun getItemCount() = itemList.size
