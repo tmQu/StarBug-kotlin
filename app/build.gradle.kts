@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx:24.11.0")
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
     val room_version = "2.6.1"
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
