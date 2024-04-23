@@ -2,6 +2,10 @@ package intech.co.starbug.activity.admin.product
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +21,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import intech.co.starbug.R
 import intech.co.starbug.model.ProductModel
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class AddProductManagementActivity : AppCompatActivity() {
 
@@ -65,6 +71,11 @@ class AddProductManagementActivity : AppCompatActivity() {
         // Khi người dùng nhấn vào hình ảnh, mở hộp thoại chọn hình ảnh từ thư viện
         itemPictureImage.setOnClickListener{
             openImageChooser()
+        }
+
+        // Khi người dùng nhấn vào nút "Hủy"
+        cancelButton.setOnClickListener {
+            finish()
         }
 
         // Khi người dùng nhấn vào nút "Tạo sản phẩm"
@@ -151,34 +162,105 @@ class AddProductManagementActivity : AppCompatActivity() {
         if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK && data != null) {
             selectedImageUri = data.data
             // Cập nhật hình ảnh lên Firebase
-            updateImageToFirebase(selectedImageUri)
+            uploadImageToFirebase(selectedImageUri)
         }
     }
 
     // Hàm để tải lên hình ảnh lên Firebase Storage
     // Trong hàm updateImageToFirebase()
-    private fun updateImageToFirebase(imageUri: Uri?) {
+    private fun uploadImageToFirebase(imageUri: Uri?) {
         if (imageUri != null) {
-            val storageRef = FirebaseStorage.getInstance().reference
-                .child("product_img/${System.currentTimeMillis()}")
+            var convertedImageUri: Uri? = null
+            try {
+                // Kiểm tra định dạng của hình ảnh
+                val inputStream = contentResolver.openInputStream(imageUri)
+                val options = BitmapFactory.Options()
+                options.inJustDecodeBounds = true
+                BitmapFactory.decodeStream(inputStream, null, options)
+                inputStream?.close()
 
-            storageRef.putFile(imageUri)
-                .addOnSuccessListener { taskSnapshot ->
-                    // Lấy URL của ảnh đã tải lên từ Firebase Storage
-                    storageRef.downloadUrl.addOnSuccessListener { uri ->
-                        val updatedImageURL = uri.toString()
-                        // Thêm URL mới vào danh sách ảnh tạm thời
-                        tempImage.add(updatedImageURL)
-                        Log.i("AddProductManagement", "Image URL: $updatedImageURL")
+                val imageMimeType = options.outMimeType ?: ""
 
-                        // Hiển thị hình ảnh trong ImageView
-                        Picasso.get().load(updatedImageURL).into(itemPictureImage)
+                if (imageMimeType != "image/jpg" || imageMimeType != "image/jpeg" || imageMimeType != "image/png" || imageMimeType != "image/webp") {
+                    // Chuyển đổi hình ảnh sang định dạng JPG
+                    convertedImageUri = convertImageToJpeg(imageUri)
+                } else {
+                    convertedImageUri = imageUri
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            if (convertedImageUri != null) {
+                val storageRef = FirebaseStorage.getInstance().reference
+                    .child("product_img/${System.currentTimeMillis()}")
+
+                storageRef.putFile(convertedImageUri)
+                    .addOnSuccessListener { taskSnapshot ->
+                        storageRef.downloadUrl.addOnSuccessListener { uri ->
+                            val updatedImageURL = uri.toString()
+                            tempImage.add(updatedImageURL)
+                            Picasso.get().load(updatedImageURL).fit().centerInside().into(itemPictureImage)
+                        }
                     }
-                }
-                .addOnFailureListener { e ->
-                    Log.e("AddProductManagement", "Error: ${e.message}")
-                }
+                    .addOnFailureListener{
+                        Toast.makeText(this, "Không thể tải ảnh lên", Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
+    }
+
+
+    private fun convertImageToJpeg(inputUri: Uri): Uri? {
+        try {
+            var inputStream = contentResolver.openInputStream(inputUri)
+
+            // Đọc thông tin kích thước của ảnh gốc
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream?.close()
+
+            // Đặt lại đọc ảnh từ đầu
+            inputStream = contentResolver.openInputStream(inputUri)
+
+            // Decode bitmap với thông tin kích thước đã lấy
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+
+            val exif = inputStream?.let { ExifInterface(it) }
+            val orientation = exif?.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+            val rotatedBitmap = when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
+                else -> bitmap
+            }
+
+            inputStream?.close()
+
+            val outputStream = ByteArrayOutputStream()
+            rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+
+            val tempFile = createTempFile("tempImage", ".jpg")
+            tempFile.deleteOnExit()
+
+            tempFile.outputStream().use { output ->
+                output.write(outputStream.toByteArray())
+            }
+
+            return Uri.fromFile(tempFile)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+
+    private fun rotateBitmap(source: Bitmap?, angle: Float): Bitmap? {
+        source ?: return null
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 
 }

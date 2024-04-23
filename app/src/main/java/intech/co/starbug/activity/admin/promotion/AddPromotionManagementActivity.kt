@@ -2,12 +2,15 @@ package intech.co.starbug.activity.admin.promotion
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
@@ -17,6 +20,9 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import intech.co.starbug.R
 import intech.co.starbug.model.PromotionModel
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
 
 class AddPromotionManagementActivity : AppCompatActivity() {
 
@@ -43,7 +49,6 @@ class AddPromotionManagementActivity : AppCompatActivity() {
         val database = FirebaseDatabase.getInstance()
         PromotionsRef = database.getReference("Promotions")
 
-
         // Lấy tham chiếu đến các trường nhập liệu từ layout
         itemPictureImage = findViewById(R.id.itemPictureImage)
         PromotionNameEditText = findViewById(R.id.PromotionName)
@@ -54,10 +59,13 @@ class AddPromotionManagementActivity : AppCompatActivity() {
         createButton = findViewById(R.id.buttonCreatePromotion)
         cancelButton = findViewById(R.id.cancelButton)
 
-
         // Khi người dùng nhấn vào hình ảnh, mở hộp thoại chọn hình ảnh từ thư viện
-        itemPictureImage.setOnClickListener{
+        itemPictureImage.setOnClickListener {
             openImageChooser()
+        }
+
+        cancelButton.setOnClickListener {
+            finish()
         }
 
         // Khi người dùng nhấn vào nút "Tạo sản phẩm"
@@ -86,12 +94,10 @@ class AddPromotionManagementActivity : AppCompatActivity() {
             }
 
             // Kiểm tra các giá trị giá và đánh giá có âm không
-            if (PromotionDiscountPercentage <= 0 || PromotionMinimumBillMoney <= 0 ) {
+            if (PromotionDiscountPercentage <= 0 || PromotionMinimumBillMoney <= 0) {
                 Toast.makeText(this, "Số phải lớn hơn 0.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-            Log.i("AddPromotionManagement", "tempImage: $tempImage")
 
             // Tạo đối tượng PromotionModel từ dữ liệu nhập liệu
             val newPromotion = PromotionModel(
@@ -133,13 +139,96 @@ class AddPromotionManagementActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK && data != null) {
             selectedImageUri = data.data
+            // Kiểm tra và chuyển đổi định dạng hình ảnh (nếu cần)
+            val convertedImageUri = convertImageToSupportedFormat(selectedImageUri)
             // Cập nhật hình ảnh lên Firebase
-            updateImageToFirebase(selectedImageUri)
+            updateImageToFirebase(convertedImageUri)
         }
     }
 
+    // Hàm để chuyển đổi định dạng hình ảnh nếu cần
+    private fun convertImageToSupportedFormat(imageUri: Uri?): Uri? {
+        if (imageUri != null) {
+            try {
+                // Kiểm tra định dạng của hình ảnh
+                val inputStream = contentResolver.openInputStream(imageUri)
+                val options = BitmapFactory.Options()
+                options.inJustDecodeBounds = true
+                BitmapFactory.decodeStream(inputStream, null, options)
+                inputStream?.close()
+
+                val imageMimeType = options.outMimeType ?: ""
+
+                if (imageMimeType != "image/jpeg" && imageMimeType != "image/png") {
+                    // Chuyển đổi hình ảnh sang định dạng JPG (nếu không phải là JPG hoặc PNG)
+                    return convertImageToJpeg(imageUri)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        // Trả về URI của hình ảnh (đã được kiểm tra và không cần chuyển đổi)
+        return imageUri
+    }
+
+    // Hàm để chuyển đổi hình ảnh sang định dạng JPG
+    private fun convertImageToJpeg(inputUri: Uri): Uri? {
+        try {
+            var inputStream = contentResolver.openInputStream(inputUri)
+
+            // Đọc thông tin kích thước của ảnh gốc
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream?.close()
+
+            // Đặt lại đọc ảnh từ đầu
+            inputStream = contentResolver.openInputStream(inputUri)
+
+            // Decode bitmap với thông tin kích thước đã lấy
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+
+            // Thực hiện xoay hình ảnh nếu cần
+            val rotatedBitmap = rotateBitmap(bitmap, getOrientation(inputUri))
+
+            // Tiến hành nén và lưu hình ảnh dưới dạng JPG
+            val outputStream = ByteArrayOutputStream()
+            rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+
+            // Tạo và trả về URI của tệp hình ảnh đã chuyển đổi
+            val tempFile = File.createTempFile("tempImage", ".jpg", cacheDir)
+            tempFile.deleteOnExit()
+            tempFile.outputStream().use { output ->
+                output.write(outputStream.toByteArray())
+            }
+            return Uri.fromFile(tempFile)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    // Hàm để xoay hình ảnh dựa trên thông tin định dạng Exif
+    private fun rotateBitmap(source: Bitmap?, orientation: Int): Bitmap? {
+        source ?: return null
+        val matrix = Matrix()
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+            else -> return source
+        }
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+    }
+
+    // Hàm để lấy thông tin xoay hình ảnh từ Exif
+    private fun getOrientation(uri: Uri): Int {
+        val inputStream = contentResolver.openInputStream(uri)
+        val exif = ExifInterface(inputStream!!)
+        return exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+    }
+
     // Hàm để tải lên hình ảnh lên Firebase Storage
-    // Trong hàm updateImageToFirebase()
     private fun updateImageToFirebase(imageUri: Uri?) {
         if (imageUri != null) {
             val storageRef = FirebaseStorage.getInstance().reference

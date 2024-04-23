@@ -1,6 +1,10 @@
 package intech.co.starbug.activity.admin.product
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +14,7 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -19,6 +24,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import intech.co.starbug.R
 import intech.co.starbug.model.ProductModel
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import kotlin.properties.Delegates
 
 class UpdateProductManagementActivity : AppCompatActivity() {
@@ -41,7 +50,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
     private lateinit var itemPictureImage: ImageView
     private lateinit var cancelButton: Button
 
-    private lateinit var tempImage : List<String>
+    private lateinit var tempImage: MutableList<String>
     private var tempAvgRate by Delegates.notNull<Double>()
     private val IMAGE_PICK_CODE = 1000 // Mã để xác định kết quả trả về từ hộp thoại chọn ảnh
 
@@ -79,12 +88,12 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                     editTextProductName.setText(it.name)
                     editTextProductPrice.setText(it.price.toString())
                     editTextProductCategory.setText(it.category)
-                    if(it.sugarOption) {
+                    if (it.sugarOption) {
                         radioSugarYes.isChecked = true
                     } else {
                         radioSugarNo.isChecked = true
                     }
-                    if(it.iceOption) {
+                    if (it.iceOption) {
                         radioYes.isChecked = true
                     } else {
                         radioNo.isChecked = true
@@ -94,7 +103,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                     editTextLarge.setText(it.large_price.toString())
                     Picasso.get().load(it.img[it.img.size - 1]).into(itemPictureImage)
 
-                    tempImage = it.img
+                    tempImage = it.img.toMutableList()
                     tempAvgRate = it.avgRate
                 }
             }
@@ -126,43 +135,103 @@ class UpdateProductManagementActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null) {
             val imageUri = data.data
-            updateImageToFirebase(imageUri)
+            uploadImageToFirebase(imageUri)
         }
     }
 
-    private fun updateImageToFirebase(imageUri: Uri?) {
+    private fun uploadImageToFirebase(imageUri: Uri?) {
         if (imageUri != null) {
-            Log.i("UpdateProductManagementActivity", "imageUri: $imageUri")
-            val storageRef = FirebaseStorage.getInstance().reference.child("product_img/${System.currentTimeMillis()}")
+            var convertedImageUri: Uri? = null
+            try {
+                // Kiểm tra định dạng của hình ảnh
+                val inputStream = contentResolver.openInputStream(imageUri)
+                val options = BitmapFactory.Options()
+                options.inJustDecodeBounds = true
+                BitmapFactory.decodeStream(inputStream, null, options)
+                inputStream?.close()
 
-            storageRef.putFile(imageUri)
-                .addOnSuccessListener { taskSnapshot ->
-                    // Lấy URL của ảnh đã tải lên từ Firebase Storage
-                    storageRef.downloadUrl.addOnSuccessListener { uri ->
-                        val updatedImageURL = uri.toString()
-                        val productImageRef = productsRef.child(productId).child("img")
-                        val newImageList = tempImage.toMutableList()
-                        Log.i("UpdateProductManagementActivity", "updateImageToFirebase: $updatedImageURL")
-                        Log.i("UpdateProductManagementActivity", "newImageList: $newImageList")
-                        newImageList.add(updatedImageURL)
-                        tempImage = newImageList
-                        productImageRef.setValue(newImageList)
-                            .addOnSuccessListener {
-                                Toast.makeText(this@UpdateProductManagementActivity, "Image updated successfully", Toast.LENGTH_SHORT).show()
-                                // Hiển thị ảnh mới lên ImageView
-                                Picasso.get().load(updatedImageURL).into(itemPictureImage)
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(this@UpdateProductManagementActivity, "Failed to update image", Toast.LENGTH_SHORT).show()
-                            }
+                val imageMimeType = options.outMimeType ?: ""
+
+                if (imageMimeType != "image/jpg" && imageMimeType != "image/jpeg" && imageMimeType != "image/png" && imageMimeType != "image/webp") {
+                    // Chuyển đổi hình ảnh sang định dạng JPG
+                    convertedImageUri = convertImageToJpeg(imageUri)
+                } else {
+                    convertedImageUri = imageUri
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            if (convertedImageUri != null) {
+                val storageRef = FirebaseStorage.getInstance().reference
+                    .child("product_img/${System.currentTimeMillis()}")
+
+                storageRef.putFile(convertedImageUri)
+                    .addOnSuccessListener { taskSnapshot ->
+                        storageRef.downloadUrl.addOnSuccessListener { uri ->
+                            val updatedImageURL = uri.toString()
+                            tempImage.add(updatedImageURL)
+                            Picasso.get().load(updatedImageURL).fit().centerInside().into(itemPictureImage)
+                        }
                     }
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+                    .addOnFailureListener{
+                        Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                    }
+            }
         } else {
             Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun convertImageToJpeg(inputUri: Uri): Uri? {
+        try {
+            var inputStream = contentResolver.openInputStream(inputUri)
+
+            // Đọc thông tin kích thước của ảnh gốc
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream?.close()
+
+            // Đặt lại đọc ảnh từ đầu
+            inputStream = contentResolver.openInputStream(inputUri)
+
+            // Decode bitmap với thông tin kích thước đã lấy
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+
+            val exif = inputStream?.let { ExifInterface(it) }
+            val orientation = exif?.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+            val rotatedBitmap = when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
+                else -> bitmap
+            }
+
+            inputStream?.close()
+
+            val outputStream = ByteArrayOutputStream()
+            rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+
+            val tempFile = File.createTempFile("tempImage", ".jpg", cacheDir)
+            val uri = FileProvider.getUriForFile(this, "your.package.name.fileprovider", tempFile)
+
+            tempFile.outputStream().use { output ->
+                output.write(outputStream.toByteArray())
+            }
+
+            return uri
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    private fun rotateBitmap(source: Bitmap?, angle: Float): Bitmap? {
+        source ?: return null
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 
     private fun updateProductInFirebase() {
