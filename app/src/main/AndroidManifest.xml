@@ -20,6 +20,15 @@
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
         <activity
+            android:name=".activity.admin.staff.UpdateStaffManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.staff.AddStaffManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.staff.StaffManagementActivity"
+            android:exported="true"/>
+        <activity
             android:name=".activity.admin.promotion.UpdatePromotionManagementActivity"
             android:exported="false" />
         <activity
@@ -47,6 +56,15 @@
             android:exported="false" />
         <activity
             android:name=".activity.admin.product.UpdateProductManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.account.AccountItemAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.account.AccountItemUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.admin.account.AccountManagement"
             android:exported="false" />
         <activity
             android:name=".activity.ContainerActivity"
