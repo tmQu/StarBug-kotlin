@@ -50,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
 
         cartBtn.setOnClickListener {
             // Go to CartActivity
-            startActivity(Intent(this, CartActivity::class.java))
+//            startActivity(Intent(this, CartActivity::class.java))
         }
 
         profileBtn.setOnClickListener {

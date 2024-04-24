@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".CartActivity">
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -51,7 +50,10 @@
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
             app:layout_constraintBottom_toTopOf="@id/total_price_container"
             >
+
+
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="5dp"
                 android:visibility="gone"
                 android:id="@+id/recyclerProductsView"
                 android:layout_width="match_parent"
@@ -138,7 +140,7 @@
                     android:id="@+id/product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100,000VNĐ"
+                    android:text="0 VNĐ"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_alignParentRight="true"/>

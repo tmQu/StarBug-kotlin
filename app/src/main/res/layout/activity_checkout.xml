@@ -96,15 +96,17 @@
                     app:layout_constraintTop_toBottomOf="@id/phone_title"
                     app:layout_constraintLeft_toLeftOf="parent"
                     />
-                <TextView
+                <com.google.android.material.button.MaterialButton
+                    android:padding="10dp"
+                    android:id="@+id/edit_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
                     android:text="Edit"
                     android:textSize="15sp"
                     android:textColor="@color/colorSecondPrimary"
+                    style="@style/Widget.Material3.Button.TextButton"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/address_title"
+                    app:layout_constraintBaseline_toBaselineOf="@id/address_title"
                     />
 
                 <LinearLayout
@@ -337,5 +339,20 @@
             android:visibility="invisible"
             android:layout_marginBottom="30dp"
             />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/paypal_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+        <com.paypal.checkout.paymentbutton.PaymentButtonContainer
+
+            android:id="@+id/payment_button_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:paypal_button_color="silver"
+            app:paypal_button_label="pay"
+            app:paypal_button_shape="rectangle"
+            app:paypal_button_size="large" />
+
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,9 +10,10 @@ import java.util.Date
 class OrderModel(
     val orderDate: Long = Date().time,
     val listCartItem: List<DetailCartItem> = listOf(),
-    var paymentInforModel: PaymentInforModel = PaymentInforModel("", "", "", ""),
+    var paymentInforModel: PaymentInforModel = PaymentInforModel("", "", "", 0.0, 0.0, "", ""),
     var uidUser: String = "",
-    var status: String = ""
+    var status: String = "",
+    var orderToken: String = ""
 ){
     var id: String = ""
 

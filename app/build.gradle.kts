@@ -4,6 +4,22 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+}
+
+secrets {
+    // Optionally specify a different file name containing your secrets.
+    // The plugin defaults to "local.properties"
+    propertiesFileName = "secrets.properties"
+
+    // A properties file containing default secret values. This file can be
+    // checked in version control.
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    // Configure which keys should be ignored by the plugin by providing regular expressions.
+    // "sdk.dir" is ignored by default.
+    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
 }
 
 
@@ -39,11 +55,17 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
 dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx:24.11.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation(fileTree(mapOf(
+        "dir" to "libs",
+        "include" to listOf("*.aar", "*.jar")
+    )))
     val room_version = "2.6.1"
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
@@ -90,4 +112,12 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.libraries.places:places:3.3.0")
+
+    // okhttp
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    implementation("com.paypal.sdk:paypal-android-sdk:2.16.0")
+    implementation("com.paypal.checkout:android-sdk:1.3.2")
 }

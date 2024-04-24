@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="district_hcm" >
+        <item>Quận 1</item>
+        <item>Quận 3</item>
+        <item>Quận 4</item>
+        <item>Quận 5</item>
+        <item>Quận 6</item>
+        <item>Quận 7</item>
+        <item>Quận 8</item>
+        <item>Quận 10</item>
+        <item>Quận 11</item>
+        <item>Quận 12</item>
+        <item>Quận Tân Bình</item>
+        <item>Quận Bình Tân</item>
+        <item>Quận Bình Thạnh</item>
+        <item>Quận Tân Phú</item>
+        <item>Quận Gò Vấp</item>
+        <item>Quận Phú Nhuận</item>
+        <item>Bình Chánh</item>
+        <item>Hóc Môn</item>
+        <item>Cần Giờ</item>
+        <item>Củ Chi</item>
+        <item>Nhà Bè</item>
+    </string-array>
+</resources>
