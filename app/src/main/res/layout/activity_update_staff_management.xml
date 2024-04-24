@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.admin.account.AccountItemUpdateActivity">
+    tools:context=".activity.admin.staff.UpdateStaffManagementActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -37,7 +37,7 @@
                 android:fontFamily="@font/bungee"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="QUẢN LÝ TÀI KHOẢN"
+                android:text="QUẢN LÝ NHÂN VIÊN"
                 android:textColor="@color/colorSecondPrimary"
                 android:textSize="27sp"
                 android:textStyle="bold"
@@ -157,7 +157,7 @@
                 android:inputType="text"
                 android:clickable="true"
                 android:focusable="false"
-                tools:text="Customer"
+                tools:text="Staff"
                 android:textColor="@color/colorPrimary" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -198,6 +198,5 @@
             android:transitionName="go_button" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

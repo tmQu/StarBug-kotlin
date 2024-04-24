@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/Gray"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Gray"
-    tools:context=".activity.admin.product.ProductManagementActivity">
+    tools:context=".activity.admin.staff.StaffManagementActivity">
 
     <!-- Thanh header -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -89,38 +89,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabAppLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabItemOrderManagement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ĐƠN HÀNG"
-                    android:textColor="@color/colorPrimary" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabItemEmployeeManagement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
-                    android:text="Nhân viên" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabItemMenuManagement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
-                    android:text="Sản phẩm" />
-
-            </com.google.android.material.tabs.TabLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -155,30 +123,31 @@
             android:gravity="center"
             android:textStyle="bold" />
 
+        <!-- Danh sách sản phẩm -->
+
         <LinearLayout
+            android:id="@+id/categoryRecyclerViewContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:id="@+id/categoryRecyclerViewContainer">
+            android:layout_marginEnd="0dp"
+            android:orientation="horizontal">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoryRecyclerView"
+            <Button
+                android:id="@+id/addButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="8dp"
-                android:scrollbars="none"/>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:fontFamily="@font/bungee"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="16dp"
+                tools:text="ADD ACCOUNT" />
 
         </LinearLayout>
-
-        <!-- Danh sách sản phẩm -->
 
         <ListView
             android:id="@+id/listViewProducts"

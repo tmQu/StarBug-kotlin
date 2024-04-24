@@ -1,4 +1,4 @@
-package intech.co.starbug
+package intech.co.starbug.activity.admin.account
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +7,9 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import intech.co.starbug.R
 
 class AccountItemUpdateActivity : AppCompatActivity() {
     private var idData: String? = null
@@ -47,6 +50,15 @@ class AccountItemUpdateActivity : AppCompatActivity() {
         deleteBtn = findViewById(R.id.deleteBtn)
 
         saveBtn.setOnClickListener {
+            if (fullName.editText?.text.toString().isEmpty() || userName.editText?.text.toString()
+                    .isEmpty() || email.editText?.text.toString()
+                    .isEmpty() || password.editText?.text.toString()
+                    .isEmpty() || phoneNo.editText?.text.toString().isEmpty() || role.editText?.text.toString().isEmpty()
+            ) {
+                // Show error message indicating fields are empty
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener // Exit the function early
+            }
             showConfirmationDialog(
                 title = "Save Changes",
                 message = "Are you sure you want to save changes?",
@@ -114,6 +126,7 @@ class AccountItemUpdateActivity : AppCompatActivity() {
             putExtra("Delete", "true")
         }
         setResult(RESULT_OK, resultIntent)
+        updatePassword(emailData!!, passwordData!!, password.editText?.text.toString())
         Toast.makeText(this, "Account deleted", Toast.LENGTH_SHORT).show()
         finish()
     }
@@ -136,7 +149,7 @@ class AccountItemUpdateActivity : AppCompatActivity() {
         var selectedRole = roleOptions[0] // Default selected role
 
         Log.d("AccountItemActivity", "showRoleDialog: $roleOptions")
-
+        role.editText?.setText(selectedRole)
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Choose Role")
             .setSingleChoiceItems(roleOptions, 0) { _, which ->
@@ -153,4 +166,38 @@ class AccountItemUpdateActivity : AppCompatActivity() {
         val alertDialog = builder.create()
         alertDialog.show()
     }
+
+    private fun updatePassword(email: String, oldPassword: String, newPassword: String) {
+        val auth = FirebaseAuth.getInstance()
+        val credential = EmailAuthProvider.getCredential(email, oldPassword)
+
+        auth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                user?.updatePassword(newPassword)?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("UpdatePassword", "User password updated.")
+                        Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Log.d(
+                            "UpdatePassword",
+                            "Failed to update password: ${task.exception?.message}"
+                        )
+                        Toast.makeText(
+                            this,
+                            "Failed to update password: ${task.exception?.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
+                Log.d("SignIn", "Failed to sign in: ${task.exception?.message}")
+                Toast.makeText(
+                    this, "Failed to sign in: ${task.exception?.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
 }
