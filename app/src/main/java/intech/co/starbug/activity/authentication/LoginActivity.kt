@@ -90,11 +90,12 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("LoginActivity", "PasswordValue $passwordValue")
                         if (task.isSuccessful) {
                             val user = auth.currentUser
+                            Log.d("LoginActivity", "User: $user")
                             if (user != null) {
                                 val userId = user.uid
                                 val database = FirebaseDatabase.getInstance()
                                 val myRef = database.getReference("User").child(userId)
-
+                                Log.d("LoginActivity", "User ID: $userId")
                                 myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                                         val userData = dataSnapshot.getValue(UserModel::class.java)
