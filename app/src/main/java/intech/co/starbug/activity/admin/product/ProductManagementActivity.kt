@@ -1,9 +1,10 @@
-package intech.co.starbug
+package intech.co.starbug.activity.admin.product
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import intech.co.starbug.ProductAdapter
+import intech.co.starbug.R
 import intech.co.starbug.model.ProductModel
 
 class ProductManagementActivity : AppCompatActivity() {
@@ -24,6 +27,7 @@ class ProductManagementActivity : AppCompatActivity() {
     private lateinit var recyclerViewProducts: RecyclerView
 
     private lateinit var buttonAddProduct: Button
+    private lateinit var imageBackButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,8 @@ class ProductManagementActivity : AppCompatActivity() {
 
         // Khởi tạo recyclerViewProducts
         recyclerViewProducts = findViewById(R.id.recyclerViewProducts)
+        buttonAddProduct = findViewById(R.id.buttonAddProduct)
+        imageBackButton = findViewById(R.id.imageBackButton)
 
         database = FirebaseDatabase.getInstance()
         productsRef = database.getReference("Products")
@@ -56,7 +62,8 @@ class ProductManagementActivity : AppCompatActivity() {
 
         adapter.setOnDetailClickListener { product ->
             // Chuyển sang UpdateProductManagementActivity và truyền ID sản phẩm
-            val intent = Intent(this@ProductManagementActivity, UpdateProductManagementActivity::class.java)
+            val intent =
+                Intent(this@ProductManagementActivity, UpdateProductManagementActivity::class.java)
             intent.putExtra("PRODUCT_ID", product.id)
             startActivity(intent)
         }
@@ -97,11 +104,13 @@ class ProductManagementActivity : AppCompatActivity() {
             alertDialog.show()
         }
 
-        buttonAddProduct = findViewById(R.id.buttonAddProduct)
         buttonAddProduct.setOnClickListener {
-            val intent = Intent(this@ProductManagementActivity, AddProductManagementActivity::class.java)
+            val intent =
+                Intent(this@ProductManagementActivity, AddProductManagementActivity::class.java)
             startActivity(intent)
         }
+
+        imageBackButton.setOnClickListener { finish() }
 
     }
 }

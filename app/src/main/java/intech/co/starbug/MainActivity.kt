@@ -17,8 +17,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.FirebaseApp
+
 import intech.co.starbug.activity.ContainerActivity
 import intech.co.starbug.activity.GetAddressActivity
+import intech.co.starbug.activity.CheckoutActivity
+import intech.co.starbug.activity.Feedback
+import intech.co.starbug.activity.admin.HomeManageActivity
+import intech.co.starbug.activity.admin.feedback.FeedbackManager
+
 import intech.co.starbug.activity.authentication.LoginActivity
 
 class MainActivity : AppCompatActivity() {
@@ -56,8 +62,7 @@ class MainActivity : AppCompatActivity() {
         sloganTV.setAnimation(bottomAnim);
         companyTV.setAnimation(bottomAnim);
 
-        FirebaseApp.initializeApp(this);
-
+        FirebaseApp.initializeApp(this)
         Handler().postDelayed({
             if(checkAuth() == false)
             {
@@ -84,16 +89,15 @@ class MainActivity : AppCompatActivity() {
     private fun checkAuth(): Boolean
     {
         val user = FirebaseAuth.getInstance().currentUser
-//        if (user == null)
-//            return false
-//        else {
-//            if(!(user.isEmailVerified)!!)
-//                return false
-//        }
-//
-//        return true
 
+        if (user == null)
+            return false
+        else {
+            if(!(user.isEmailVerified)!!)
+                return false
+        }
 
         return true
+        return user != null
     }
 }

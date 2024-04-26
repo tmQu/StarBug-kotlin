@@ -67,7 +67,7 @@ class ProductAdapter(
         holder.itemNameTextView.text = currentItem.name
         holder.itemPriceTextView.text = currentItem.price.toString()
         holder.itemCategoryTextView.text = currentItem.category
-        Picasso.get().load(currentItem.img[0]).into(holder.itemImageView)
+        Picasso.get().load(currentItem.img[currentItem.img.size - 1]).into(holder.itemImageView)
 
     }
 
