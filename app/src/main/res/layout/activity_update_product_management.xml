@@ -141,8 +141,8 @@
                                 android:layout_weight="1"
                                 android:orientation="vertical">
 
-                                <EditText
-                                    android:id="@+id/editTextCategory"
+                                <Spinner
+                                    android:id="@+id/spinnerCategory"
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
                                     android:layout_weight="1"
@@ -150,7 +150,6 @@
                                     android:gravity="left"
                                     android:minHeight="48dp"
                                     android:padding="4dp"
-                                    android:text="Tea"
                                     android:textColor="@color/black"
                                     tools:ignore="TouchTargetSizeCheck" />
 

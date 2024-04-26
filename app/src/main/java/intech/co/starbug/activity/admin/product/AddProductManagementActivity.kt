@@ -9,9 +9,11 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
@@ -37,6 +39,7 @@ class AddProductManagementActivity : AppCompatActivity() {
     private lateinit var radioSugarOption: RadioButton
     private lateinit var createButton: Button
     private lateinit var cancelButton: Button
+    private lateinit var spinnerCategory: Spinner
 
     private lateinit var productsRef: DatabaseReference
     private lateinit var tempImage: MutableList<String>
@@ -58,7 +61,7 @@ class AddProductManagementActivity : AppCompatActivity() {
         // Lấy tham chiếu đến các trường nhập liệu từ layout
         itemPictureImage = findViewById(R.id.itemPictureImage)
         productNameEditText = findViewById(R.id.productName)
-        productCategoryEditText = findViewById(R.id.productCategory)
+        spinnerCategory = findViewById(R.id.spinnerCategory)
         productPriceEditText = findViewById(R.id.productPrice)
         productDescriptionEditText = findViewById(R.id.productDescription)
         productMediumPriceEditText = findViewById(R.id.productMediumPrice)
@@ -67,6 +70,17 @@ class AddProductManagementActivity : AppCompatActivity() {
         radioSugarOption = findViewById(R.id.radioSugar)
         createButton = findViewById(R.id.buttonCreateProduct)
         cancelButton = findViewById(R.id.cancelButton)
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.category_array, // This is an array of strings defined in your strings.xml resource file
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinnerCategory.adapter = adapter
+        }
 
         // Khi người dùng nhấn vào hình ảnh, mở hộp thoại chọn hình ảnh từ thư viện
         itemPictureImage.setOnClickListener{
@@ -81,7 +95,7 @@ class AddProductManagementActivity : AppCompatActivity() {
         // Khi người dùng nhấn vào nút "Tạo sản phẩm"
         createButton.setOnClickListener {
             val productName = productNameEditText.editText?.text.toString()
-            val productCategory = productCategoryEditText.editText?.text.toString()
+            val productCategory = spinnerCategory.selectedItem.toString()
             val productPriceText = productPriceEditText.editText?.text.toString()
             val productDescription = productDescriptionEditText.editText?.text.toString()
             val productMediumPriceText = productMediumPriceEditText.editText?.text.toString()

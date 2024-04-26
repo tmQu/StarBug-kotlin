@@ -97,6 +97,14 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp">
 
+                        <Spinner
+                            android:id="@+id/spinnerCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:background="@drawable/spinner_background"
+                            android:entries="@array/category_array"
+                            android:spinnerMode="dropdown" />
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/productName"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -105,27 +113,6 @@
                             android:hint="Product name"
                             android:textColorHint="@color/colorPrimary"
                             app:boxStrokeColor="@color/colorPrimary"
-                            app:cursorColor="@color/colorPrimary"
-                            app:hintTextColor="@color/colorPrimary">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="text"
-                                android:textColor="@color/colorPrimary" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/productCategory"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Category"
-                            android:textColorHint="@color/colorPrimary"
-                            app:boxStrokeColor="@color/colorPrimary"
-                            app:counterMaxLength="15"
-                            app:counterTextColor="@color/colorPrimary"
                             app:cursorColor="@color/colorPrimary"
                             app:hintTextColor="@color/colorPrimary">
 
