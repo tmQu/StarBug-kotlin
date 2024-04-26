@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             if(checkAuth() == false)
             {
-                val intent = Intent(this, ProductManagementActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 val pairs = arrayOf<Pair<View, String>>(
                     Pair(image, "logo_image"),
                     Pair(logoTV, "brand_text"),
@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
                 val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
                 startActivity(intent, options.toBundle())
+
             }
             else {
                 val pairs = arrayOf<Pair<View, String>>(
@@ -92,7 +93,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAuth(): Boolean
     {
-        return false
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user == null)
