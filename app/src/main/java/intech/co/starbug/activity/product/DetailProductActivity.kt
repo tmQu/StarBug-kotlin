@@ -152,7 +152,6 @@ class DetailProductActivity : AppCompatActivity() {
         desc = findViewById(R.id.description)
         price = findViewById(R.id.price)
 
-
         initializeBottomSheet()
         getAllComment()
         showProductInfor()
@@ -165,6 +164,7 @@ class DetailProductActivity : AppCompatActivity() {
         }
         btnSeeMore.setOnClickListener {
             val intent = Intent(this, CommentActivity::class.java)
+            intent.putExtra("product_id", productId)
             startActivity(intent)
         }
 
