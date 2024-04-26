@@ -29,6 +29,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 
 import androidx.annotation.MenuRes
@@ -47,6 +48,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.R
+import intech.co.starbug.SharedPreferencesHelper
 import intech.co.starbug.activity.product.DetailProductActivity
 import intech.co.starbug.adapter.CategoryAdapter
 import intech.co.starbug.adapter.ItemAdapter
@@ -74,6 +76,7 @@ class HomeFragment : Fragment() {
     private var sortCriteria: String = CONSTANT.SORT_BY_DEFAULT
 
     private lateinit var layout: View
+    private lateinit var userNameTV: TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,6 +89,11 @@ class HomeFragment : Fragment() {
 
         listAllProduct = mutableListOf()
         productList = mutableListOf()
+
+        userNameTV = layout.findViewById(R.id.usernameTV)
+        val sharedPrefManager = SharedPreferencesHelper(requireContext())
+        val userName = sharedPrefManager.getName()
+        userNameTV.text = "Hello " + userName
 
         shimmer = layout.findViewById(R.id.shimmerFrameLayout)
         shimmer.startShimmer()
@@ -134,7 +142,8 @@ class HomeFragment : Fragment() {
         }
         Log.d("HomeActivity", "Category selected: $categoryAdapter")
         categoryRecyclerView.adapter = categoryAdapter
-        categoryRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        categoryRecyclerView.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
     }
 
 
@@ -161,7 +170,7 @@ class HomeFragment : Fragment() {
     private fun filterProduct() {
         productList = mutableListOf<ProductModel>()
         for (product in listAllProduct) {
-            if (product.category == selectedCategory || selectedCategory == CONSTANT.ALL_CATEGORY){
+            if (product.category == selectedCategory || selectedCategory == CONSTANT.ALL_CATEGORY) {
                 productList.add(product)
             }
         }
@@ -169,18 +178,22 @@ class HomeFragment : Fragment() {
         // sort product by Price, Name
         if (sortCriteria == CONSTANT.SORT_BY_PRICE) {
             productList.sortBy { it.price }
-        }else if (sortCriteria == CONSTANT.SORT_BY_NAME) {
+        } else if (sortCriteria == CONSTANT.SORT_BY_NAME) {
             productList.sortBy { it.name }
-        }
-        else if (sortCriteria == CONSTANT.SORT_BY_PRICE_DESC) {
+        } else if (sortCriteria == CONSTANT.SORT_BY_PRICE_DESC) {
             productList.sortByDescending { it.price }
-        }else if (sortCriteria == CONSTANT.SORT_BY_NAME_DESC) {
+        } else if (sortCriteria == CONSTANT.SORT_BY_NAME_DESC) {
             productList.sortByDescending { it.name }
         }
 
         // query by name
         if (queryName.isNotEmpty()) {
-            productList = productList.filter { it.name.contains(queryName, ignoreCase = true) } as MutableList<ProductModel>
+            productList = productList.filter {
+                it.name.contains(
+                    queryName,
+                    ignoreCase = true
+                )
+            } as MutableList<ProductModel>
         }
 
         setupProductRecyclerView(productList)
@@ -251,7 +264,7 @@ class HomeFragment : Fragment() {
 
     @SuppressLint("RestrictedApi")
     private fun showMenuSort(v: View, @MenuRes menuRes: Int) {
-        if(context == null)
+        if (context == null)
             return
         val popup = PopupMenu(/* context = */ requireContext(), /* anchor = */ v)
 
@@ -259,7 +272,7 @@ class HomeFragment : Fragment() {
 
         Log.i("HomeFragment", "MenuBuilder out")
 
-        if (popup.menu is  MenuBuilder) {
+        if (popup.menu is MenuBuilder) {
             val menuBuilder = popup.menu as MenuBuilder
             menuBuilder.setOptionalIconsVisible(true)
             for (item in menuBuilder.visibleItems) {
@@ -289,21 +302,25 @@ class HomeFragment : Fragment() {
                     filterProduct()
                     true
                 }
+
                 R.id.sort_by_name_inc -> {
                     sortCriteria = CONSTANT.SORT_BY_NAME
                     filterProduct()
                     true
                 }
+
                 R.id.sort_by_price_desc -> {
                     sortCriteria = CONSTANT.SORT_BY_PRICE_DESC
                     filterProduct()
                     true
                 }
+
                 R.id.sort_by_name_desc -> {
                     sortCriteria = CONSTANT.SORT_BY_NAME_DESC
                     filterProduct()
                     true
                 }
+
                 else -> false
             }
         }
@@ -338,7 +355,7 @@ class HomeFragment : Fragment() {
 
         }
 
-        searchView.setOnKeyListener{ v, keyCode, event ->   // v: View, keyCode: Int, event: KeyEvent
+        searchView.setOnKeyListener { v, keyCode, event ->   // v: View, keyCode: Int, event: KeyEvent
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 queryName = searchView.text.toString()
                 filterProduct()
@@ -363,8 +380,7 @@ class HomeFragment : Fragment() {
         imm?.hideSoftInputFromWindow(searchBox.windowToken, 0)
     }
 
-    private fun showSliderPromotion()
-    {
+    private fun showSliderPromotion() {
         val slider = layout.findViewById<ViewPager2>(R.id.slider_promotion)
         val circleIndicator = layout.findViewById<CircleIndicator3>(R.id.circleIndicator)
         val sliderRef = FirebaseDatabase.getInstance().getReference("Sliders")
@@ -384,9 +400,9 @@ class HomeFragment : Fragment() {
                 slider.adapter = adapter
                 val handler: Handler = Handler(Looper.getMainLooper())
                 val runnable = Runnable {
-                    if(slider.currentItem == listSlider.size - 1) {
+                    if (slider.currentItem == listSlider.size - 1) {
                         slider.currentItem = 0
-                    } else{
+                    } else {
                         slider.currentItem = (slider.currentItem + 1)
                     }
                 }
