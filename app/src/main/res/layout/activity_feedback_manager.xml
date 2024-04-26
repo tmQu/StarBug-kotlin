@@ -40,7 +40,7 @@
                 android:fontFamily="@font/bungee"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="QUẢN LÝ FeedbackS"
+                android:text="Feedbacks management"
                 android:textColor="@color/colorSecondPrimary"
                 android:textSize="27sp"
                 android:textStyle="bold"
