@@ -24,6 +24,11 @@ class OrderHistoryAdapter(val listOrder: List<OrderModel>, val context: Context)
     inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         fun bind(order: OrderModel) {
         }
+        init {
+            view.setOnClickListener{
+                onItemClick?.invoke(it,adapterPosition)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

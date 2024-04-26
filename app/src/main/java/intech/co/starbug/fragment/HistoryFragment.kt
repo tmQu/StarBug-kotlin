@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
+import intech.co.starbug.HistoryDetailActivity
 import intech.co.starbug.R
 import intech.co.starbug.adapter.OrderHistoryAdapter
 import intech.co.starbug.model.OrderModel
@@ -61,10 +62,10 @@ class HistoryFragment : Fragment() {
         history_rv.adapter = adapter
         history_rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
-        // On click item listener
-        // onclick to a HistoryDetailFragment
-
-
+        adapter.onItemClick = { view, position ->
+            val intent = Intent(activity, HistoryDetailActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun filterHistory(status: String): List<OrderModel>
