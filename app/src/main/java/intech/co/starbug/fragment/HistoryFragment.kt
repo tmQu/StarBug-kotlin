@@ -1,13 +1,11 @@
 package intech.co.starbug.fragment
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.findFragment
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
@@ -21,7 +19,6 @@ class HistoryFragment : Fragment() {
     private lateinit var layout: View
     private lateinit var allHistory: MutableList<OrderModel>
     private lateinit var listHistory: MutableList<OrderModel>
-
 
     private lateinit var history_rv: RecyclerView
     private lateinit var listStatus: Array<String>
@@ -60,9 +57,14 @@ class HistoryFragment : Fragment() {
 
     fun setUpHistoryView()
     {
-        val adpater = OrderHistoryAdapter(listHistory, activity?.baseContext!!)
-        history_rv.adapter = adpater
+        val adapter = OrderHistoryAdapter(listHistory, activity?.baseContext!!)
+        history_rv.adapter = adapter
         history_rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+
+        // On click item listener
+        // onclick to a HistoryDetailFragment
+
+
     }
 
     fun filterHistory(status: String): List<OrderModel>
