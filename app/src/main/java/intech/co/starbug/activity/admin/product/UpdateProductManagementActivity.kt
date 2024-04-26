@@ -10,10 +10,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RadioButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,7 +46,6 @@ class UpdateProductManagementActivity : AppCompatActivity() {
 
     private lateinit var editTextProductName: EditText
     private lateinit var editTextProductPrice: EditText
-    private lateinit var editTextProductCategory: EditText
     private lateinit var radioYes: RadioButton
     private lateinit var radioNo: RadioButton
     private lateinit var radioSugarYes: RadioButton
@@ -55,6 +56,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
     private lateinit var editTextLarge: EditText
     private lateinit var itemPictureImage: ViewPager2
     private lateinit var cancelButton: Button
+    private lateinit var spinnerCategory: Spinner
 
     private var currentImage: MutableList<String> = mutableListOf()
     private lateinit var tempImage: MutableList<String>
@@ -85,7 +87,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
 
         editTextProductName = findViewById(R.id.editTextProductName)
         editTextProductPrice = findViewById(R.id.editTextPrice)
-        editTextProductCategory = findViewById(R.id.editTextCategory)
+        spinnerCategory = findViewById(R.id.spinnerCategory)
         radioYes = findViewById(R.id.radio)
         radioNo = findViewById(R.id.radio2)
         radioSugarYes = findViewById(R.id.radioSugar)
@@ -96,6 +98,17 @@ class UpdateProductManagementActivity : AppCompatActivity() {
         editTextLarge = findViewById(R.id.editTextLarge)
         itemPictureImage = findViewById(R.id.itemPictureImage)
         cancelButton = findViewById(R.id.cancelButton)
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.category_array, // This is an array of strings defined in your strings.xml resource file
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinnerCategory.adapter = adapter
+        }
 
         // Nhận ID sản phẩm từ Intent
         productId = intent.getStringExtra("PRODUCT_ID") ?: ""
@@ -118,7 +131,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                     // Hiển thị thông tin sản phẩm lên giao diện
                     editTextProductName.setText(it.name)
                     editTextProductPrice.setText(it.price.toString())
-                    editTextProductCategory.setText(it.category)
+                    spinnerCategory.setSelection((spinnerCategory.adapter as ArrayAdapter<String>).getPosition(it.category))
                     if (it.sugarOption) {
                         radioSugarYes.isChecked = true
                     } else {
@@ -391,7 +404,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
         // Lấy dữ liệu mới từ giao diện
         val newName = editTextProductName.text.toString()
         val newPrice = editTextProductPrice.text.toString().toDoubleOrNull()
-        val newCategory = editTextProductCategory.text.toString()
+        val newCategory = spinnerCategory.selectedItem.toString()
         val newRadioYes = radioYes.isChecked
         val newRadioSugarYes = radioSugarYes.isChecked
         val newDescription = editTextDescription.text.toString()

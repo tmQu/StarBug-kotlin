@@ -1,5 +1,6 @@
 package intech.co.starbug.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import intech.co.starbug.HistoryDetailActivity
 import intech.co.starbug.R
 import intech.co.starbug.adapter.OrderHistoryAdapter
 import intech.co.starbug.model.OrderModel
@@ -25,7 +27,6 @@ class HistoryFragment : Fragment() {
     private lateinit var layout: View
     private lateinit var allHistory: MutableList<OrderModel>
     private lateinit var listHistory: MutableList<OrderModel>
-
 
     private lateinit var history_rv: RecyclerView
     private lateinit var listStatus: Array<String>
@@ -69,9 +70,15 @@ class HistoryFragment : Fragment() {
     fun setUpHistoryView()
     {
         filterHistory()
+
         val adapter = OrderHistoryAdapter(listHistory, activity?.baseContext!!)
         history_rv.adapter = adapter
         history_rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+
+        adapter.onItemClick = { view, position ->
+            val intent = Intent(activity, HistoryDetailActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun filterHistory()

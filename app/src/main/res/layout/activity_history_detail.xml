@@ -8,7 +8,6 @@
     android:background="@drawable/background"
     tools:context=".activity.admin.feedback.FeedbackManager">
 
-    <!-- Thanh header -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
@@ -40,7 +39,7 @@
                 android:fontFamily="@font/bungee"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="Feedbacks management"
+                android:text="History detail"
                 android:textColor="@color/colorSecondPrimary"
                 android:textSize="27sp"
                 android:textStyle="bold"
@@ -56,37 +55,5 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-    <!-- Nội dung chính -->
-    <LinearLayout
-        android:id="@+id/bodyLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/full_rounded_corners"
-        android:elevation="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout">
-
-        <!-- Tiêu đề -->
-
-        <!-- Danh sách sản phẩm -->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewFeedbacks"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/background"
-            android:divider="@drawable/divider_gray"
-            android:dividerHeight="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categoryRecyclerView" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

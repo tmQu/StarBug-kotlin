@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.admin.account.AccountItemUpdateActivity">
+    tools:context=".activity.admin.staff.AddStaffManagementActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -37,7 +37,7 @@
                 android:fontFamily="@font/bungee"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="QUẢN LÝ TÀI KHOẢN"
+                android:text="QUẢN LÝ NHÂN VIÊN"
                 android:textColor="@color/colorSecondPrimary"
                 android:textSize="27sp"
                 android:textStyle="bold"
@@ -105,8 +105,6 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:clickable="false"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/colorPrimary" />
 
@@ -145,44 +143,26 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/roleInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Staff"
             android:textColorHint="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/roleInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:clickable="true"
                 android:focusable="false"
-                tools:text="Customer"
+                tools:text="Staff"
                 android:textColor="@color/colorPrimary" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/deleteBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/Red"
-            android:elevation="0dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Delete ACCOUNT"
-            android:textSize="16sp"
-            app:cornerRadius="16dp"
-            android:fontFamily="@font/bungee"
-            android:textColor="@color/white"
-            android:transitionName="ask_button" />
-
-        <Button
-            android:id="@+id/saveBtn"
+            android:id="@+id/addToDB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -190,14 +170,13 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="SAVE ACCOUNT"
-            android:textSize="16sp"
-            app:cornerRadius="16dp"
             android:fontFamily="@font/bungee"
-            android:textColor="#FFF"
+            app:cornerRadius="16dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="ADD NEW ACCOUNT"
             android:transitionName="go_button" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,8 +19,15 @@ import intech.co.starbug.utils.Utils
 
 class OrderHistoryAdapter(val listOrder: List<OrderModel>, val context: Context): RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>() {
 
+    var onItemClick: ((View,Int) -> Unit)? = null
+
     inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         fun bind(order: OrderModel) {
+        }
+        init {
+            view.setOnClickListener{
+                onItemClick?.invoke(it,adapterPosition)
+            }
         }
     }
 

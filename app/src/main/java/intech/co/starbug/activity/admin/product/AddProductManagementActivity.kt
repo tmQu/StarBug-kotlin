@@ -9,9 +9,11 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,7 +36,7 @@ class AddProductManagementActivity : AppCompatActivity() {
     private lateinit var imageAdapter: EditImageAdapter
 
     private lateinit var productNameEditText: TextInputLayout
-    private lateinit var productCategoryEditText: TextInputLayout
+//    private lateinit var productCategoryEditText: TextInputLayout
     private lateinit var productPriceEditText: TextInputLayout
     private lateinit var productDescriptionEditText: TextInputLayout
     private lateinit var productMediumPriceEditText: TextInputLayout
@@ -43,6 +45,7 @@ class AddProductManagementActivity : AppCompatActivity() {
     private lateinit var radioSugarOption: RadioButton
     private lateinit var createButton: Button
     private lateinit var cancelButton: Button
+    private lateinit var spinnerCategory: Spinner
 
     private lateinit var productsRef: DatabaseReference
     private lateinit var tempImage: MutableList<String>
@@ -67,7 +70,7 @@ class AddProductManagementActivity : AppCompatActivity() {
         // Lấy tham chiếu đến các trường nhập liệu từ layout
         itemPictureImage = findViewById(R.id.itemPictureImage)
         productNameEditText = findViewById(R.id.productName)
-        productCategoryEditText = findViewById(R.id.productCategory)
+        spinnerCategory = findViewById(R.id.spinnerCategory)
         productPriceEditText = findViewById(R.id.productPrice)
         productDescriptionEditText = findViewById(R.id.productDescription)
         productMediumPriceEditText = findViewById(R.id.productMediumPrice)
@@ -77,6 +80,17 @@ class AddProductManagementActivity : AppCompatActivity() {
         createButton = findViewById(R.id.buttonCreateProduct)
         cancelButton = findViewById(R.id.cancelButton)
 
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.category_array, // This is an array of strings defined in your strings.xml resource file
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinnerCategory.adapter = adapter
+        }
+
         // Khi người dùng nhấn vào hình ảnh, mở hộp thoại chọn hình ảnh từ thư viện
         imageAdapter = EditImageAdapter(mutableListOf())
         {
@@ -84,7 +98,7 @@ class AddProductManagementActivity : AppCompatActivity() {
             countNewImage--
         }
         itemPictureImage.adapter = imageAdapter
-        findViewById<Button>(R.id.camera).setOnClickListener{
+        findViewById<ImageView>(R.id.camera).setOnClickListener{
             openImageChooser()
         }
 
@@ -95,6 +109,43 @@ class AddProductManagementActivity : AppCompatActivity() {
 
         // Khi người dùng nhấn vào nút "Tạo sản phẩm"
         createButton.setOnClickListener {
+            val productName = productNameEditText.editText?.text.toString()
+            val productCategory = spinnerCategory.selectedItem.toString()
+            val productPriceText = productPriceEditText.editText?.text.toString()
+            val productDescription = productDescriptionEditText.editText?.text.toString()
+            val productMediumPriceText = productMediumPriceEditText.editText?.text.toString()
+            val productLargePriceText = productLargePriceEditText.editText?.text.toString()
+
+            // Kiểm tra xem các trường thông tin có bị bỏ trống không
+            if (productName.isEmpty() || productCategory.isEmpty() || productPriceText.isEmpty() ||
+                productDescription.isEmpty() || productMediumPriceText.isEmpty() ||
+                productLargePriceText.isEmpty()) {
+                Toast.makeText(this, "Vui lòng điền đầy đủ thông tin sản phẩm.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Kiểm tra các trường giá có định dạng số không
+            val productPrice = productPriceText.toIntOrNull()
+            val productMediumPrice = productMediumPriceText.toIntOrNull()
+            val productLargePrice = productLargePriceText.toIntOrNull()
+
+            if (productPrice == null || productMediumPrice == null || productLargePrice == null) {
+                Toast.makeText(this, "Vui lòng nhập giá và đánh giá dưới dạng số.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Kiểm tra các giá trị giá và đánh giá có âm không
+            if (productPrice <= 0 || productMediumPrice <= 0 || productLargePrice <= 0 ) {
+                Toast.makeText(this, "Giá và đánh giá phải lớn hơn 0.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val iceOption = radioIceOption.isChecked
+            val sugarOption = radioSugarOption.isChecked
+
+            Log.i("AddProductManagement", "tempImage: $tempImage")
+
+
             for (i in tempImage) {
                 uploadImageToFirebase(Uri.parse(i))
             }
@@ -104,7 +155,7 @@ class AddProductManagementActivity : AppCompatActivity() {
     private fun createProduct()
     {
         val productName = productNameEditText.editText?.text.toString()
-        val productCategory = productCategoryEditText.editText?.text.toString()
+        val productCategory = spinnerCategory.selectedItem.toString()
         val productPriceText = productPriceEditText.editText?.text.toString()
         val productDescription = productDescriptionEditText.editText?.text.toString()
         val productMediumPriceText = productMediumPriceEditText.editText?.text.toString()
@@ -151,7 +202,7 @@ class AddProductManagementActivity : AppCompatActivity() {
             iceOption = iceOption,
             sugarOption = sugarOption,
             tempOption = true,
-            img = tempImage
+            img = listImageGoogleStore
         )
 
         // Thêm sản phẩm mới vào Firebase
@@ -242,6 +293,10 @@ class AddProductManagementActivity : AppCompatActivity() {
                     }
                     .addOnFailureListener{
                         Toast.makeText(this, "Không thể tải ảnh lên", Toast.LENGTH_SHORT).show()
+                        countNewImage--
+                        if (countNewImage == 0) {
+                            createProduct()
+                        }
                     }
             }
         }

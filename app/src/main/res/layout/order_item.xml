@@ -36,6 +36,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="20dp"
                 android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 >
                 <RelativeLayout
                     android:orientation="horizontal"
@@ -107,15 +108,6 @@
                         android:layout_alignParentRight="true"
                         android:text="10"/>
                 </RelativeLayout>
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    app:cornerRadius="30dp"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:textSize="10sp"
-                    android:text="More Detail"
-                    />
             </LinearLayout>
 
 

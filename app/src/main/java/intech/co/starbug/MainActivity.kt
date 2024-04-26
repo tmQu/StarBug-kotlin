@@ -24,6 +24,7 @@ import intech.co.starbug.activity.CheckoutActivity
 import intech.co.starbug.activity.Feedback
 import intech.co.starbug.activity.admin.HomeManageActivity
 import intech.co.starbug.activity.admin.feedback.FeedbackManager
+import intech.co.starbug.activity.admin.product.ProductManagementActivity
 
 import intech.co.starbug.activity.authentication.LoginActivity
 
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             if(checkAuth() == false)
             {
-                val intent = Intent(this, LoginActivity::class.java)
+                val intent = Intent(this, ProductManagementActivity::class.java)
                 val pairs = arrayOf<Pair<View, String>>(
                     Pair(image, "logo_image"),
                     Pair(logoTV, "brand_text"),
@@ -76,10 +77,13 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
             else {
-
-                val intent = Intent(this, ContainerActivity::class.java)
-                Log.i("MainActivity", "Starting ContainerActivity")
-                startActivity(intent)
+                val pairs = arrayOf<Pair<View, String>>(
+                    Pair(image, "logo_image"),
+                    Pair(logoTV, "brand_text"),
+                )
+                val intent = Intent(this, LoginActivity::class.java)
+                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
+                startActivity(intent, options.toBundle())
             }
             finish()
 
@@ -88,6 +92,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAuth(): Boolean
     {
+        return false
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user == null)

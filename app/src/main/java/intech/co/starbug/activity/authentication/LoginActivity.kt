@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.activity.admin.HomeManageActivity
 import intech.co.starbug.R
+import intech.co.starbug.SharedPreferencesHelper
 import intech.co.starbug.activity.ContainerActivity
 import intech.co.starbug.model.UserModel
 
@@ -91,16 +92,20 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("LoginActivity", "PasswordValue $passwordValue")
                         if (task.isSuccessful) {
                             val user = auth.currentUser
+                            Log.d("LoginActivity", "User: $user")
                             if (user != null) {
                                 val userId = user.uid
                                 val database = FirebaseDatabase.getInstance()
                                 val myRef = database.getReference("User").child(userId)
-
+                                Log.d("LoginActivity", "User ID: $userId")
                                 myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                                         val userData = dataSnapshot.getValue(UserModel::class.java)
                                         if (userData != null) {
                                             val userRole = userData.role
+                                            val sharedPrefManager =
+                                                SharedPreferencesHelper(this@LoginActivity)
+                                            sharedPrefManager.saveUser(userData)
                                             if (userRole == "Admin") {
                                                 Toast.makeText(
                                                     this@LoginActivity,
@@ -143,6 +148,17 @@ class LoginActivity : AppCompatActivity() {
                                                     )
                                                     startActivity(intent)
                                                 }
+
+                                                Toast.makeText(
+                                                    this@LoginActivity,
+                                                    "Welcome back!",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                val intent = Intent(
+                                                    this@LoginActivity,
+                                                    ContainerActivity::class.java
+                                                )
+                                                startActivity(intent)
                                             }
                                         }
                                     }
@@ -212,12 +228,13 @@ class LoginActivity : AppCompatActivity() {
         launcher.launch(signInIntent)
     }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            handleResult(task)
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                handleResult(task)
+            }
         }
-    }
 
     private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
         val credential = GoogleAuthProvider.getCredential(completedTask.result.idToken, null)
@@ -227,6 +244,51 @@ class LoginActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     if (user != null) {
                         addUserToDatabase(user)
+
+                        val userId = user.uid
+                        val database = FirebaseDatabase.getInstance()
+                        val myRef = database.getReference("User").child(userId)
+
+                        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                val userData = dataSnapshot.getValue(UserModel::class.java)
+                                Log.i("LoginActivity", "User data: $userData.email")
+                                if (userData != null) {
+                                    val userRole = userData.role
+                                    val sharedPrefManager =
+                                        SharedPreferencesHelper(this@LoginActivity)
+                                    sharedPrefManager.saveUser(userData)
+                                    if (userRole == "Admin") {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "User is Admin",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        val intent = Intent(
+                                            this@LoginActivity,
+                                            HomeManageActivity::class.java
+                                        )
+                                        Log.i("LoginActivity", "intent: $intent")
+                                        startActivity(intent)
+                                    } else {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "Welcome back!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        val intent = Intent(
+                                            this@LoginActivity,
+                                            ContainerActivity::class.java
+                                        )
+                                        startActivity(intent)
+                                    }
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                Log.e("LoginActivity", "Database error: ${databaseError.message}")
+                            }
+                        })
                     }
 
                     val intent = Intent(this@LoginActivity, ContainerActivity::class.java)

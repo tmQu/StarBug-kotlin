@@ -1,4 +1,10 @@
 <resources>
+    <string-array name="category_array">
+        <item>Trà</item>
+        <item>Cà Phê</item>
+        <item>Trà Sữa</item>
+        <item>Bánh Ngọt</item>
+    </string-array>
     <string name="app_name">StarBug</string>
     <string name="intech_co">\@Intech .Co</string>
     <string name="coddee_is_bug_stay_awake_for_it">Coddee is BUG, stay awake for IT</string>

@@ -1,4 +1,4 @@
-package intech.co.starbug
+package intech.co.starbug.activity.admin.staff
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,13 +11,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import intech.co.starbug.activity.admin.account.AccountItemAddActivity
+import intech.co.starbug.activity.admin.account.AccountItemUpdateActivity
+import intech.co.starbug.R
 import intech.co.starbug.adapter.AccountAdapter
 import intech.co.starbug.model.AccountModel
 
-
-
-class AccountManagement : AppCompatActivity() {
-
+class StaffManagementActivity : AppCompatActivity() {
     private lateinit var usersReference: DatabaseReference
     private lateinit var listView: ListView
     private lateinit var adapter: AccountAdapter
@@ -27,8 +27,7 @@ class AccountManagement : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account_management)
-
+        setContentView(R.layout.activity_staff_management)
         // Initialize Firebase Database
         usersReference = FirebaseDatabase.getInstance().getReference("User")
         Log.d("Firebase", "Database reference: $usersReference")
@@ -44,7 +43,7 @@ class AccountManagement : AppCompatActivity() {
 
         listView.setOnItemClickListener { parent, view, position, id ->
             val user = userList[position]
-            val intent = Intent(this, AccountItemUpdateActivity::class.java)
+            val intent = Intent(this, UpdateStaffManagementActivity::class.java)
             intent.putExtra("Id", idList[position])
             intent.putExtra("FullName", user.Name)
             intent.putExtra("Email", user.Email)
@@ -56,7 +55,7 @@ class AccountManagement : AppCompatActivity() {
         }
 
         addBtn.setOnClickListener {
-            val intent = Intent(this, AccountItemAddActivity::class.java)
+            val intent = Intent(this, AddStaffManagementActivity::class.java)
             startActivityForResult(intent, 1)
         }
 
@@ -71,11 +70,13 @@ class AccountManagement : AppCompatActivity() {
                 for (data in snapshot.children) {
                     val user = data.getValue(AccountModel::class.java)
                     val id = data.key
-                    id?.let {
-                        idList.add(it)
-                    }
-                    user?.let {
-                        userList.add(it)
+                    if (user?.Role == "Staff") {
+                        id?.let {
+                            idList.add(it)
+                        }
+                        user.let {
+                            userList.add(it)
+                        }
                     }
                 }
                 adapter.notifyDataSetChanged()
@@ -101,7 +102,7 @@ class AccountManagement : AppCompatActivity() {
     }
 
     // Delete account from Firebase
-    private fun deleteAccount(id: String ,account: AccountModel) {
+    private fun deleteAccount(id: String, account: AccountModel) {
         usersReference.child(id).removeValue()
     }
 
@@ -130,11 +131,10 @@ class AccountManagement : AppCompatActivity() {
             Log.d("Full Account", "Account: ${account.Email}")
 
             if (delete == "true") {
-                deleteAccount(id!! ,account)
+                deleteAccount(id!!, account)
                 adapter.notifyDataSetChanged()
-            }
-            else {
-                updateAccount(id!! ,account)
+            } else {
+                updateAccount(id!!, account)
                 adapter.notifyDataSetChanged()
             }
         }
