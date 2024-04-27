@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
@@ -25,6 +28,7 @@ import intech.co.starbug.model.cart.DetailCartItem
 
 class HistoryFragment : Fragment() {
     private lateinit var layout: View
+    private lateinit var spinnerTab: Spinner
     private lateinit var allHistory: MutableList<OrderModel>
     private lateinit var listHistory: MutableList<OrderModel>
 
@@ -41,12 +45,14 @@ class HistoryFragment : Fragment() {
         val dbRef = FirebaseDatabase.getInstance().getReference("Orders")
         dbRef.removeEventListener(listener)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         layout = inflater.inflate(R.layout.fragment_history, container, false)
         history_rv = layout.findViewById<RecyclerView>(R.id.rv_history)
+        spinnerTab = layout.findViewById<Spinner>(R.id.spinnerTab)
         listStatus = resources.getStringArray(R.array.order_status)
 
         val listCart = listOf<DetailCartItem>(
@@ -59,7 +65,7 @@ class HistoryFragment : Fragment() {
         allHistory = mutableListOf(
         )
         filter = listOf(listStatus[0])
-        setTablayoutListnener()
+        setSpinnerListener()
 
         getOrderHistory()
 
@@ -67,35 +73,33 @@ class HistoryFragment : Fragment() {
     }
 
 
-    fun setUpHistoryView()
-    {
+    fun setUpHistoryView() {
         filterHistory()
 
         val adapter = OrderHistoryAdapter(listHistory, activity?.baseContext!!)
         history_rv.adapter = adapter
-        history_rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        history_rv.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
         adapter.onItemClick = { view, position ->
             val intent = Intent(activity, HistoryDetailActivity::class.java)
+            Log.d("HistoryFragment", "Order before putExtra: ${listHistory[position].id}")
+            intent.putExtra("order", listHistory[position].id)
             startActivity(intent)
         }
     }
 
-    fun filterHistory()
-    {
+    fun filterHistory() {
         listHistory.clear()
-        for (history in allHistory)
-        {
-            if(filter.contains(history.status))
-            {
+        for (history in allHistory) {
+            if (filter.contains(history.status)) {
                 listHistory.add(history)
             }
         }
     }
 
 
-    private fun getOrderHistory()
-    {
+    private fun getOrderHistory() {
         // get order history from firebase
         val uesrUid = Firebase.auth.currentUser?.uid
         val dbRef = FirebaseDatabase.getInstance().getReference("Orders")
@@ -104,7 +108,7 @@ class HistoryFragment : Fragment() {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val history = snapshot.getValue(OrderModel::class.java)
                 Log.i("HistoryFragment", "History: ${history?.id}")
-                if(history != null){
+                if (history != null) {
                     allHistory.add(history)
                     setUpHistoryView()
                 }
@@ -113,17 +117,14 @@ class HistoryFragment : Fragment() {
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 val history = snapshot.getValue(OrderModel::class.java)
-                if(history != null){
-                    for (i in 0 until allHistory.size)
-                    {
-                        if(allHistory[i].id == history.id)
-                        {
+                if (history != null) {
+                    for (i in 0 until allHistory.size) {
+                        if (allHistory[i].id == history.id) {
                             allHistory[i] = (history)
                             break
                         }
                     }
-                    if (filter.contains(history.status))
-                    {
+                    if (filter.contains(history.status)) {
                         setUpHistoryView()
                     }
                 }
@@ -140,46 +141,52 @@ class HistoryFragment : Fragment() {
         }
         query.addChildEventListener(listener)
     }
-    fun setTablayoutListnener()
-    {
-        val tabLayout = layout.findViewById<TabLayout>(R.id.tabLayout)
-        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab != null)
-                {
-                    val index = tab.position
-                    when(index)
-                    {
-                        0 -> {
-                            filter = listOf( listStatus[0])
 
-                        }
-                        1 -> {
-                            filter = listOf( listStatus[1])
+    private fun setSpinnerListener() {
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listStatus)
+        spinnerTab.adapter = adapter
 
-                        }
-                        2 -> {
-                            filter = listOf( listStatus[2], listStatus[3])
-                        }
-                        3 -> {
-                            filter = listOf( listStatus[4])
-                        }
-                        4 -> {
-                            filter = listOf( listStatus[5])
-                        }
+        spinnerTab.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                when (position) {
+                    0 -> {
+                        filter = listOf(listStatus[0])
                     }
-                    setUpHistoryView()
 
+                    1 -> {
+                        filter = listOf(listStatus[1])
+                    }
+
+                    2 -> {
+                        filter = listOf(listStatus[2], listStatus[3])
+                    }
+
+                    3 -> {
+                        filter = listOf(listStatus[4])
+                    }
+
+                    4 -> {
+                        filter = listOf(listStatus[5])
+                    }
+
+                    5 -> {
+                        filter = listStatus.toList()
+
+                    }
                 }
+                setUpHistoryView()
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
             }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-        })
+        }
     }
 
 }

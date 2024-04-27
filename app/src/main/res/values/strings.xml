@@ -59,11 +59,11 @@
 
     <string-array name="order_status">
         <item>Waiting approved</item>
-        <item>Approved</item>
         <item>Ready to pickup</item>
         <item>Delivering</item>
         <item>Successful</item>
         <item>Unsuccessful</item>
+        <item>All</item>
     </string-array>
 
     <string name="lorem_ipsum">

@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ServerValue.TIMESTAMP
 import intech.co.starbug.model.cart.DetailCartItem
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -14,11 +15,8 @@ class OrderModel(
     var uidUser: String = "",
     var status: String = "",
     var orderToken: String = ""
-){
+) : Serializable {
     var id: String = ""
-
-    
-
 
     fun getTotalPrice(): Int {
         var total = 0
