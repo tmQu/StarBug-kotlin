@@ -78,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         googleBtn.setOnClickListener {
+
             signInGoogle()
         }
 
@@ -231,12 +232,14 @@ class LoginActivity : AppCompatActivity() {
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
+
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 handleResult(task)
             }
         }
 
     private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
+        Log.i("LoginActivity", "handleResult")
         val credential = GoogleAuthProvider.getCredential(completedTask.result.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
@@ -247,7 +250,9 @@ class LoginActivity : AppCompatActivity() {
 
                         val userId = user.uid
                         val database = FirebaseDatabase.getInstance()
+                        Log.i("LoginActivity", "User ID: $userId")
                         val myRef = database.getReference("User").child(userId)
+
 
                         myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
