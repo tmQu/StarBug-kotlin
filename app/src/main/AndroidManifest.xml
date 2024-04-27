@@ -79,10 +79,10 @@
             android:exported="false"
             android:theme="@style/Theme.StarBug" />
         <activity
-            android:name=".AccountItemUpdateActivity"
+            android:name=".activity.admin.account.AccountItemUpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountManagement"
+            android:name=".activity.admin.account.AccountManagement"
 
             android:exported="true" >
         </activity>
@@ -112,12 +112,6 @@
             android:exported="false" />
         <activity
             android:name=".activity.admin.account.AccountItemAddActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.admin.account.AccountItemUpdateActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.admin.account.AccountManagement"
             android:exported="false" />
         <activity
             android:name=".activity.ContainerActivity"
@@ -159,12 +153,7 @@
             android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".HomeActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false" >
         </activity>
         <activity
             android:name=".activity.authentication.ForgetPasswordActivity"

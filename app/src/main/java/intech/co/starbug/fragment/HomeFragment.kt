@@ -4,9 +4,6 @@ import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import android.os.Bundle
@@ -27,20 +24,16 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 
 import androidx.annotation.MenuRes
 import androidx.appcompat.view.menu.MenuBuilder
-import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -48,7 +41,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.R
-import intech.co.starbug.SharedPreferencesHelper
+import intech.co.starbug.helper.SharedPreferencesHelper
 import intech.co.starbug.activity.product.DetailProductActivity
 import intech.co.starbug.adapter.CategoryAdapter
 import intech.co.starbug.adapter.ItemAdapter

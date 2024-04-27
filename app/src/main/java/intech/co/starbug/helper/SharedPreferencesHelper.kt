@@ -1,4 +1,4 @@
-package intech.co.starbug
+package intech.co.starbug.helper
 
 import android.content.Context
 import com.google.gson.Gson
