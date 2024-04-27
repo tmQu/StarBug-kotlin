@@ -12,14 +12,13 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import intech.co.starbug.HistoryDetailActivity
+import intech.co.starbug.activity.HistoryDetailActivity
 import intech.co.starbug.R
 import intech.co.starbug.adapter.OrderHistoryAdapter
 import intech.co.starbug.model.OrderModel

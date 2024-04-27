@@ -50,7 +50,7 @@
             android:exported="false"
             android:label="@string/title_activity_get_address" />
         <activity
-            android:name=".HistoryDetailActivity"
+            android:name=".activity.HistoryDetailActivity"
             android:exported="false" />
         <activity
             android:name=".activity.admin.staff.UpdateStaffManagementActivity"
@@ -117,18 +117,15 @@
             android:name=".activity.ContainerActivity"
             android:exported="false" />
         <activity
-            android:name=".StaffManagementActivity"
+            android:name=".activity.StaffManagementActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderManagementActivity"
+            android:name=".activity.OrderManagementActivity"
             android:exported="false" />
         <activity
             android:name=".activity.admin.product.ProductManagementActivity"
             android:exported="false"
             android:theme="@style/Theme.StarBug" />
-        <activity
-            android:name=".AccountActivity"
-            android:exported="false" />
         <activity
             android:name=".activity.Feedback"
             android:exported="false" />
@@ -142,19 +139,14 @@
             android:name=".activity.comment.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountSettingActivity"
+            android:name=".activity.AccountSettingActivity"
             android:exported="false" />
         <activity
             android:name=".authentication.ResetPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".activity.product.DetailProductActivity"
-            android:exported="false"
-            android:parentActivityName=".HomeActivity" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".activity.authentication.ForgetPasswordActivity"
             android:exported="false" />
