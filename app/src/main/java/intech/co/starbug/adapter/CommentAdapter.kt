@@ -67,4 +67,5 @@ class CommentAdapter(val listComment: List<CommentModel>, val typeLayout: Int): 
         Log.i("test",listComment.size.toString() )
         return listComment.size
     }
+
 }
