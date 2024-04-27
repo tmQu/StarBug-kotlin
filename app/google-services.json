@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "41508495343-s9dlcuaf048j0i7j8js1ltnuij9bs21a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "intech.co.starbug",
+            "certificate_hash": "62f43b3998416f6982e412a7a4b05ea8af9755aa"
+          }
+        },
+        {
           "client_id": "41508495343-vl1q3r4bfuca7ioqlr3prcdhduuq1hk1.apps.googleusercontent.com",
           "client_type": 3
         }
