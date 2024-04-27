@@ -78,21 +78,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/usernameInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/username"
-            android:textColorHint="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textColor="@color/colorPrimary" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailInputLayout"
@@ -146,7 +131,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Customer"
+            android:hint="Admin"
             android:textColorHint="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -156,7 +141,7 @@
                 android:inputType="text"
                 android:clickable="true"
                 android:focusable="false"
-                tools:text="Customer"
+                tools:text="Admin"
                 android:textColor="@color/colorPrimary" />
 
         </com.google.android.material.textfield.TextInputLayout>

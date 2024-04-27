@@ -27,7 +27,13 @@
             android:exported="false" />
         <activity
             android:name=".activity.admin.staff.StaffManagementActivity"
-            android:exported="true"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.admin.promotion.UpdatePromotionManagementActivity"
             android:exported="false" />
@@ -106,12 +112,7 @@
             android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".HomeActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false" >
         </activity>
         <activity
             android:name=".CartActivity"

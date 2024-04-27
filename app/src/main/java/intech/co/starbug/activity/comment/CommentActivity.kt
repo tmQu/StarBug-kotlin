@@ -29,10 +29,10 @@ class CommentActivity : AppCompatActivity() {
         avgRating = findViewById(R.id.avg_rating)
         commentList = findViewById(R.id.comment_list)
         commentRef = FirebaseDatabase.getInstance().getReference("Comment")
-        productID = "-Nv0HS0Nq-OYxYUJ-109"
+//        productID = "-Nv0HS0Nq-OYxYUJ-109"
         getComment()
 
-//        productID = intent.getStringExtra("product_id").toString()
+        productID = intent.getStringExtra("product_id").toString()
 
         commentList.layoutManager = LinearLayoutManager(
             this,

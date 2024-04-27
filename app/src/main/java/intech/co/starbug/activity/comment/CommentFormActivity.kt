@@ -1,5 +1,6 @@
 package intech.co.starbug.activity.comment
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -10,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import intech.co.starbug.R
+import intech.co.starbug.fragment.HomeFragment
 import intech.co.starbug.model.CommentModel
 
 class CommentFormActivity : AppCompatActivity() {
@@ -33,8 +35,8 @@ class CommentFormActivity : AppCompatActivity() {
         deliveryRate = findViewById(R.id.rate_delivery)
         commentTxt = findViewById(R.id.comment)
         submitBtn = findViewById(R.id.send_review_btn)
-//        productID = intent.getStringExtra("productID").toString()
-        productID = "-Nv0HS0Nq-OYxYUJ-109"
+        productID = intent.getStringExtra("product_id").toString()
+//        productID = "-Nv0HS0Nq-OYxYUJ-109"
 
 
 
@@ -45,7 +47,7 @@ class CommentFormActivity : AppCompatActivity() {
             }
             add2DB()
             Toast.makeText(this, "Your comment added", Toast.LENGTH_SHORT).show()
-//            startActivity(Intent(this, HomeFragment::class.java))
+            startActivity(Intent(this, HomeFragment::class.java))
         }
     }
 

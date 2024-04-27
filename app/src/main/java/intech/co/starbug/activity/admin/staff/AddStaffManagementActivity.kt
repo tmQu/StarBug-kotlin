@@ -13,7 +13,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import intech.co.starbug.R
-import intech.co.starbug.activity.authentication.LoginActivity
 import java.util.regex.Pattern
 
 class AddStaffManagementActivity : AppCompatActivity() {
@@ -21,7 +20,6 @@ class AddStaffManagementActivity : AppCompatActivity() {
     val roleOptions = arrayOf("Staff")
 
     private lateinit var fullName: TextInputLayout
-    private lateinit var userName: TextInputLayout
     private lateinit var email: TextInputLayout
     private lateinit var phoneNo: TextInputLayout
     private lateinit var password: TextInputLayout
@@ -33,7 +31,6 @@ class AddStaffManagementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_staff_management)
         fullName = findViewById(R.id.fullName)
-        userName = findViewById(R.id.usernameInputLayout)
         email = findViewById(R.id.emailInputLayout)
         phoneNo = findViewById(R.id.phoneNumberInputLayout)
         password = findViewById(R.id.passwordInputLayout)
@@ -65,11 +62,9 @@ class AddStaffManagementActivity : AppCompatActivity() {
 
         addBtn.setOnClickListener {
             if (fullName.editText?.text.toString().isEmpty() ||
-                userName.editText?.text.toString().isEmpty() ||
                 email.editText?.text.toString().isEmpty() ||
                 password.editText?.text.toString().isEmpty() ||
-                phoneNo.editText?.text.toString().isEmpty() ||
-                role.text.toString().isEmpty()) {
+                phoneNo.editText?.text.toString().isEmpty() ) {
                 // Show error message indicating fields are empty
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // Exit the function early
@@ -83,7 +78,7 @@ class AddStaffManagementActivity : AppCompatActivity() {
         }
 
         role.setOnClickListener() {
-            showRoleDialog()
+//            showRoleDialog()
         }
     }
 
@@ -91,11 +86,10 @@ class AddStaffManagementActivity : AppCompatActivity() {
     private fun addData() {
         val resultIntent = intent.apply {
             putExtra("FullName", fullName.editText?.text.toString())
-            putExtra("Username", userName.editText?.text.toString())
             putExtra("Email", email.editText?.text.toString())
             putExtra("Phone", phoneNo.editText?.text.toString())
             putExtra("Password", password.editText?.text.toString())
-            putExtra("Role", role.text.toString())
+            putExtra("Role", "Admin")
         }
         authenSignUp(email.editText?.text.toString(), password.editText?.text.toString())
         setResult(RESULT_OK, resultIntent)
