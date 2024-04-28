@@ -59,7 +59,7 @@
 
     <string-array name="order_status">
         <item>Waiting approved</item>
-        <item>Approved</item>
+        <item>Preparing</item>
         <item>Ready to pickup</item>
         <item>Delivering</item>
         <item>Successful</item>

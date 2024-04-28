@@ -23,7 +23,6 @@ class SharedPreferencesHelper(private val context: Context) {
         editor.putString(USER_UID_KEY, user.uid)
         editor.putString(USER_EMAIL_KEY, user.email)
         editor.putString(USER_NAME_KEY, user.name)
-        editor.putString(USER_PASSWORD_KEY, user.password)
         editor.putString(USER_PHONE_NUMBER_KEY, user.phoneNumber)
         editor.putString(USER_ROLE_KEY, user.role)
         editor.apply()

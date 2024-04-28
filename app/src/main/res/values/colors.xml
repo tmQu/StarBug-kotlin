@@ -170,9 +170,10 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
-    <color name="colorWaiting">#0275d8</color>
-    <color name="colorApproved">#f0ad4e</color>
+
+    <color name="colorWaiting">#6c757d</color>
+    <color name="colorApproved">#007bff</color>
     <color name="colorDeliver">#F44336</color>
-    <color name="colorSuccess">#5cb85c</color>
-    <color name="colorUnsuccess">#d9534f</color>
+    <color name="colorSuccess">#28a745</color>
+    <color name="colorUnsuccess">#dc3545</color>
 </resources>

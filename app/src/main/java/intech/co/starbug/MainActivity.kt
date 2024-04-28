@@ -82,6 +82,8 @@ class MainActivity : AppCompatActivity() {
                     Pair(image, "logo_image"),
                     Pair(logoTV, "brand_text"),
                 )
+                Log.i("MainActivity", "User not authenticated")
+
                 val intent = Intent(this, LoginActivity::class.java)
                 val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
                 startActivity(intent, options.toBundle())

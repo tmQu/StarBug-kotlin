@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Gray"
+    android:background="@drawable/background"
     tools:context=".OrderManagementActivity">
 
     <!-- Thanh header -->
@@ -13,10 +13,10 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -43,14 +43,16 @@
                         android:id="@+id/imageView2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        app:srcCompat="@drawable/logostarbug" />
+                        app:srcCompat="@drawable/logostarbug"
+                        android:background="@android:color/transparent"
+                        />
 
                     <!-- Tiêu đề -->
                     <TextView
                         android:id="@+id/textViewTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:layout_margin="16dp"
                         android:text="QUẢN LÝ ĐƠN HÀNG"
                         android:textColor="@color/colorPrimary"
                         android:fontFamily="@font/bungee"
@@ -71,32 +73,45 @@
                 android:id="@+id/tabAppLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@android:color/transparent"
+                >
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabItemOrderManagement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chờ xác nhận"
+                    android:text="Waiting Approved"
                     android:textColor="@color/colorPrimary" />
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabItemEmployeeManagement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:text="Chuẩn bị" />
+                    android:text="Preparing" />
+
+
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tabItemMenuManagement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:text="" />
+                    android:text="Ready to pickup" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Delivering" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Finished" />
 
             </com.google.android.material.tabs.TabLayout>
 
@@ -106,56 +121,37 @@
 
 
     <!-- Nội dung chính -->
-    <LinearLayout
-        android:id="@+id/bodyLayout"
+<!--    <LinearLayout-->
+<!--        android:id="@+id/bodyLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:background="@drawable/rounded_corners"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout">-->
+
+
+<!--        &lt;!&ndash; Danh sách sản phẩm &ndash;&gt;-->
+
+
+<!--    </LinearLayout>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_order"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/rounded_corners"
-        android:orientation="vertical"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout">
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:id="@+id/categoryRecyclerViewContainer">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoryRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="8dp"
-                android:scrollbars="none"/>
-
-        </LinearLayout>
-
-        <!-- Danh sách sản phẩm -->
-
-        <ListView
-            android:id="@+id/listViewProducts"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp"
-            android:padding="16dp" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

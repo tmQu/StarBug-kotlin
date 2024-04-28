@@ -239,7 +239,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
     private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
-        Log.i("LoginActivity", "handleResult")
         val credential = GoogleAuthProvider.getCredential(completedTask.result.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
@@ -295,9 +294,9 @@ class LoginActivity : AppCompatActivity() {
                             }
                         })
                     }
-
-                    val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
-                    startActivity(intent)
+//
+//                    val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
+//                    startActivity(intent)
 //                        val userId = user.uid
 //                        val database = FirebaseDatabase.getInstance()
 //                        val myRef = database.getReference("User").child(userId)
