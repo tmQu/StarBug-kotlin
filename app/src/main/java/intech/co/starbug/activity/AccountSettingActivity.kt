@@ -9,12 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.R
 import intech.co.starbug.constants.CONSTANT.Companion.READ_STORAGE_PERMISSION_REQUEST_CODE
+import intech.co.starbug.helper.SharedPreferencesHelper
+import intech.co.starbug.model.UserModel
 import java.util.regex.Pattern
 
 class AccountSettingActivity : AppCompatActivity() {
@@ -31,7 +40,6 @@ class AccountSettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_setting)
 
-//      Dang nhap = cai gi thi khong duoc doi cai do
         cancleBtn = findViewById(R.id.cancleBtn)
         saveBtn = findViewById(R.id.saveBtn)
         avatar = findViewById(R.id.avatar)
@@ -40,6 +48,7 @@ class AccountSettingActivity : AppCompatActivity() {
         password = findViewById(R.id.passwordInputLayout)
         confirmPassword = findViewById(R.id.confirmPasswordInputLayout)
 
+        getCurrentUserData()
 
         // pick image from gallery
         avatar.setOnClickListener {
@@ -47,11 +56,20 @@ class AccountSettingActivity : AppCompatActivity() {
         }
 
         cancleBtn.setOnClickListener {
-            // Cancel
+            finish()
         }
 
         saveBtn.setOnClickListener {
-            // Save data
+            if (fullname.editText?.text.toString().isEmpty() || phoneNo.editText?.text.toString().isEmpty() || password.editText?.text.toString().isEmpty() || confirmPassword.editText?.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(password.editText?.text.toString() != confirmPassword.editText?.text.toString()){
+                Toast.makeText(this, "Password and Confirm Password must be the same", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            updateAccount()
         }
 
         password.editText?.addTextChangedListener(object : TextWatcher {
@@ -75,6 +93,85 @@ class AccountSettingActivity : AppCompatActivity() {
                 validatePass(password)
             }
         })
+    }
+
+    private fun updatePassword(email: String, oldPassword: String, newPassword: String) {
+        val auth = FirebaseAuth.getInstance()
+        val credential = EmailAuthProvider.getCredential(email, oldPassword)
+
+        auth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                user?.updatePassword(newPassword)?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("UpdatePassword", "User password updated.")
+                        Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Log.d(
+                            "UpdatePassword",
+                            "Failed to update password: ${task.exception?.message}"
+                        )
+                        Toast.makeText(
+                            this,
+                            "Failed to update password: ${task.exception?.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
+                Log.d("SignIn", "Failed to sign in: ${task.exception?.message}")
+                Toast.makeText(
+                    this, "Failed to sign in: ${task.exception?.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun updateAccount() {
+        val sharedPrefManager = SharedPreferencesHelper(this)
+        val email = sharedPrefManager.getEmail()
+        val pw = sharedPrefManager.getPassword()
+        val uid = sharedPrefManager.getUid()
+        val role = sharedPrefManager.getRole()
+
+        val user = UserModel(
+            uid!!,
+            email!!,
+            fullname.editText?.text.toString(),
+            password.editText?.text.toString(),
+            phoneNo.editText?.text.toString(),
+            role!!
+        )
+
+        val database = FirebaseDatabase.getInstance()
+        val userRef = database.getReference("User/${uid}")
+
+        Log.d("UpdateAccount", userRef.toString())
+
+        userRef.setValue(user).addOnCompleteListener {
+            if (it.isSuccessful) {
+                Log.d("UpdateAccount", "User account updated.")
+                Toast.makeText(this, "Account updated successfully", Toast.LENGTH_SHORT).show()
+                updatePassword(email, pw!!, password.editText?.text.toString())
+                finish()
+            } else {
+                Log.d("UpdateAccount", "Failed to update account: ${it.exception?.message}")
+                Toast.makeText(
+                    this, "Failed to update account: ${it.exception?.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun getCurrentUserData() {
+        val sharedPrefManager = SharedPreferencesHelper(this)
+        val userName = sharedPrefManager.getName()
+        val userPhone = sharedPrefManager.getPhoneNumber()
+        val pw = sharedPrefManager.getPassword()
+        fullname.editText?.setText(userName)
+        phoneNo.editText?.setText(userPhone)
+        password.editText?.setText(pw)
     }
 
     private fun validatePass(password: TextInputLayout) {
