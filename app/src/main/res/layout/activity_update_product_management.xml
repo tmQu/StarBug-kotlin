@@ -61,12 +61,15 @@
                         android:layout_height="wrap_content">
 
                         <!-- ImageView chứa hình ảnh -->
-                        <ImageView
+                        <androidx.viewpager2.widget.ViewPager2
                             android:id="@+id/itemPictureImage"
                             android:layout_width="140dp"
                             android:layout_height="140dp"
                             android:layout_alignParentTop="true"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@drawable/full_rounded_corners"
                             android:scaleType="centerCrop"
                             android:src="@drawable/default_avatar" />
@@ -141,8 +144,8 @@
                                 android:layout_weight="1"
                                 android:orientation="vertical">
 
-                                <EditText
-                                    android:id="@+id/editTextCategory"
+                                <Spinner
+                                    android:id="@+id/spinnerCategory"
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
                                     android:layout_weight="1"
@@ -150,7 +153,6 @@
                                     android:gravity="left"
                                     android:minHeight="48dp"
                                     android:padding="4dp"
-                                    android:text="Tea"
                                     android:textColor="@color/black"
                                     tools:ignore="TouchTargetSizeCheck" />
 

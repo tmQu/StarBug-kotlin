@@ -1,10 +1,11 @@
-package intech.co.starbug
+package intech.co.starbug.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import intech.co.starbug.R
 
 class StaffManagementActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import intech.co.starbug.activity.admin.feedback.FeedbackManager
-import intech.co.starbug.OrderManagementActivity
+import intech.co.starbug.activity.OrderManagementActivity
 import intech.co.starbug.R
-import intech.co.starbug.StaffManagementActivity
+import intech.co.starbug.activity.StaffManagementActivity
 import intech.co.starbug.activity.admin.product.ProductManagementActivity
 import intech.co.starbug.activity.admin.promotion.PromotionManagementActivity
 

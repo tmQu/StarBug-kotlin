@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".CartActivity">
+    android:background="@drawable/background"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -32,8 +32,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Cart"
-                android:textColor="@color/colorPrimary"
-                android:textSize="24sp"
+                android:fontFamily="@font/bungee"
+                android:gravity="center"
+                android:textColor="@color/colorSecondPrimary"
+                android:textSize="27sp"
                 android:textStyle="bold" />
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -41,49 +43,52 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-            android:id="@+id/linearLayout4"
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintBottom_toTopOf="@id/total_price_container"
+        >
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:id="@+id/recyclerProductsView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintBottom_toTopOf="@id/total_price_container"
-            >
-            <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
-                android:id="@+id/recyclerProductsView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:scrollbarStyle="insideInset"
+            android:scrollbarStyle="insideInset"
+            />
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/empty_cart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/empty_cat"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your cart is empty"
+                android:textSize="20sp"
                 />
-
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/empty_cart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center">
-                <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:src="@drawable/empty_cat"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Your cart is empty"
-                    android:textSize="20sp"
-                    />
-            </LinearLayout>
-
-
-
         </LinearLayout>
+
+
+
+    </LinearLayout>
 
 
 
@@ -138,7 +143,7 @@
                     android:id="@+id/product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100,000VNĐ"
+                    android:text="0 VNĐ"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_alignParentRight="true"/>
@@ -230,7 +235,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/total_price"
-                 />
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

@@ -19,8 +19,15 @@ import intech.co.starbug.utils.Utils
 
 class OrderHistoryAdapter(val listOrder: List<OrderModel>, val context: Context): RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>() {
 
+    var onItemClick: ((View,Int) -> Unit)? = null
+
     inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         fun bind(order: OrderModel) {
+        }
+        init {
+            view.setOnClickListener{
+                onItemClick?.invoke(it,adapterPosition)
+            }
         }
     }
 
@@ -84,7 +91,7 @@ class OrderHistoryAdapter(val listOrder: List<OrderModel>, val context: Context)
 
         orderStatus.background = shape
 
-        orderDate.text = order.getOrderDate()
+        orderDate.text = Utils.convertDate(order.orderDate)
         orderTotalPrice.text = Utils.formatMoney(order.getTotalPrice())
         orderQuantity.text = order.listCartItem.size.toString()
         

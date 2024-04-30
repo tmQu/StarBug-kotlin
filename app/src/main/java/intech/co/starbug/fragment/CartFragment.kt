@@ -47,6 +47,17 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
     private var job: Job? = null
 
     private lateinit var buyBtn: Button
+
+    private lateinit var listener: ValueEventListener
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val dbRef = FirebaseDatabase.getInstance().getReference("Products")
+        dbRef.removeEventListener(listener)
+
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +77,7 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
                 return@setOnClickListener
             }
             val intent = Intent(activity, CheckoutActivity::class.java)
+            intent.putExtra("listDetailOrder", ArrayList(listDetailCart))
             startActivity(intent)
         }
         return mLayout
@@ -134,7 +146,7 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
 
     private fun queryProduct() {
         val listProduct = mutableListOf<ProductModel>()
-        val eventListener = object : ValueEventListener {
+        listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 listProduct.clear()
 
@@ -154,7 +166,7 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
             }
 
         }
-        productRef.addValueEventListener(eventListener)
+        productRef.addValueEventListener(listener)
     }
 
     override fun onItemClick(position: Int) {

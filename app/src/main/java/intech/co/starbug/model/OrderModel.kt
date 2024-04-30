@@ -4,18 +4,19 @@ import android.util.Log
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ServerValue.TIMESTAMP
 import intech.co.starbug.model.cart.DetailCartItem
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Date
 
 class OrderModel(
-    val listCartItem: MutableList<DetailCartItem>,
-    var status: String
-){
-    val id: String = ""
-    var paymentInforModel: PaymentInforModel = PaymentInforModel("", "", "", "")
-//    var status: String = "Waiting approved"
-    var orderDate: Long =  Date().time
-    var uidUser: String = ""
+    val orderDate: Long = Date().time,
+    val listCartItem: List<DetailCartItem> = listOf(),
+    var paymentInforModel: PaymentInforModel = PaymentInforModel("", "", "", 0.0, 0.0, "", ""),
+    var uidUser: String = "",
+    var status: String = "",
+    var orderToken: String = ""
+) : Serializable {
+    var id: String = ""
 
     fun getTotalPrice(): Int {
         var total = 0
@@ -25,10 +26,5 @@ class OrderModel(
             total += item.product!!.price * item.quantity
         }
         return total
-    }
-
-    fun getOrderDate(): String {
-        val date = SimpleDateFormat("hh:mm:ss dd/MM/yyyy").format(Date(orderDate))
-        return date
     }
 }

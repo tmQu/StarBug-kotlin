@@ -1,10 +1,13 @@
 package intech.co.starbug.model.cart
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import intech.co.starbug.model.ProductModel
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "CartItem")
 open class CartItemModel(
     @PrimaryKey(autoGenerate = true)
@@ -27,7 +30,7 @@ open class CartItemModel(
 
     @ColumnInfo(name = "amountSugar")
     var amountSugar: String = ""
-) {
+): Parcelable {
     constructor(cartItem: CartItemModel) : this(
         cartItem.id,
         cartItem.productId,

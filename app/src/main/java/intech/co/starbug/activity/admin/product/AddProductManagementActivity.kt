@@ -9,26 +9,34 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioButton
+import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import intech.co.starbug.R
+import intech.co.starbug.adapter.EditImageAdapter
 import intech.co.starbug.model.ProductModel
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 class AddProductManagementActivity : AppCompatActivity() {
 
-    private lateinit var itemPictureImage: ImageView
+    private lateinit var itemPictureImage: ViewPager2
+    private lateinit var imageAdapter: EditImageAdapter
+
     private lateinit var productNameEditText: TextInputLayout
-    private lateinit var productCategoryEditText: TextInputLayout
+//    private lateinit var productCategoryEditText: TextInputLayout
     private lateinit var productPriceEditText: TextInputLayout
     private lateinit var productDescriptionEditText: TextInputLayout
     private lateinit var productMediumPriceEditText: TextInputLayout
@@ -37,12 +45,16 @@ class AddProductManagementActivity : AppCompatActivity() {
     private lateinit var radioSugarOption: RadioButton
     private lateinit var createButton: Button
     private lateinit var cancelButton: Button
+    private lateinit var spinnerCategory: Spinner
 
     private lateinit var productsRef: DatabaseReference
     private lateinit var tempImage: MutableList<String>
     private val IMAGE_PICK_CODE = 1001
     private var productId: String? = null
     private var selectedImageUri: Uri? = null
+
+    private var countNewImage = 0
+    private var listImageGoogleStore = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +70,7 @@ class AddProductManagementActivity : AppCompatActivity() {
         // Lấy tham chiếu đến các trường nhập liệu từ layout
         itemPictureImage = findViewById(R.id.itemPictureImage)
         productNameEditText = findViewById(R.id.productName)
-        productCategoryEditText = findViewById(R.id.productCategory)
+        spinnerCategory = findViewById(R.id.spinnerCategory)
         productPriceEditText = findViewById(R.id.productPrice)
         productDescriptionEditText = findViewById(R.id.productDescription)
         productMediumPriceEditText = findViewById(R.id.productMediumPrice)
@@ -68,8 +80,25 @@ class AddProductManagementActivity : AppCompatActivity() {
         createButton = findViewById(R.id.buttonCreateProduct)
         cancelButton = findViewById(R.id.cancelButton)
 
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.category_array, // This is an array of strings defined in your strings.xml resource file
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinnerCategory.adapter = adapter
+        }
+
         // Khi người dùng nhấn vào hình ảnh, mở hộp thoại chọn hình ảnh từ thư viện
-        itemPictureImage.setOnClickListener{
+        imageAdapter = EditImageAdapter(mutableListOf())
+        {
+            tempImage.removeAt(it)
+            countNewImage--
+        }
+        itemPictureImage.adapter = imageAdapter
+        findViewById<ImageView>(R.id.camera).setOnClickListener{
             openImageChooser()
         }
 
@@ -81,7 +110,7 @@ class AddProductManagementActivity : AppCompatActivity() {
         // Khi người dùng nhấn vào nút "Tạo sản phẩm"
         createButton.setOnClickListener {
             val productName = productNameEditText.editText?.text.toString()
-            val productCategory = productCategoryEditText.editText?.text.toString()
+            val productCategory = spinnerCategory.selectedItem.toString()
             val productPriceText = productPriceEditText.editText?.text.toString()
             val productDescription = productDescriptionEditText.editText?.text.toString()
             val productMediumPriceText = productMediumPriceEditText.editText?.text.toString()
@@ -116,55 +145,111 @@ class AddProductManagementActivity : AppCompatActivity() {
 
             Log.i("AddProductManagement", "tempImage: $tempImage")
 
-            // Tạo đối tượng ProductModel từ dữ liệu nhập liệu
-            val newProduct = ProductModel(
-                name = productName,
-                category = productCategory,
-                price = productPrice,
-                description = productDescription,
-                medium_price = productMediumPrice,
-                large_price = productLargePrice,
-                avgRate = 0.0,
-                iceOption = iceOption,
-                sugarOption = sugarOption,
-                tempOption = true,
-                img = tempImage
-            )
 
-            // Thêm sản phẩm mới vào Firebase
-            productId = productsRef.push().key
-            if (productId != null) {
-                // Gán ID duy nhất cho sản phẩm
-                newProduct.id = productId.toString()
-                productsRef.child(productId!!).setValue(newProduct)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Sản phẩm mới đã được tạo thành công!", Toast.LENGTH_SHORT).show()
-                        // Đóng hoạt động hiện tại
-                        finish()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Đã xảy ra lỗi! Không thể tạo sản phẩm mới.", Toast.LENGTH_SHORT).show()
-                    }
+            for (i in tempImage) {
+                uploadImageToFirebase(Uri.parse(i))
             }
         }
     }
 
-    // Hàm để mở hộp thoại chọn hình ảnh từ thư viện
-    private fun openImageChooser() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-    }
+    private fun createProduct()
+    {
+        val productName = productNameEditText.editText?.text.toString()
+        val productCategory = spinnerCategory.selectedItem.toString()
+        val productPriceText = productPriceEditText.editText?.text.toString()
+        val productDescription = productDescriptionEditText.editText?.text.toString()
+        val productMediumPriceText = productMediumPriceEditText.editText?.text.toString()
+        val productLargePriceText = productLargePriceEditText.editText?.text.toString()
 
-    // Xử lý kết quả trả về từ hộp thoại chọn hình ảnh
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.data
-            // Cập nhật hình ảnh lên Firebase
-            uploadImageToFirebase(selectedImageUri)
+        // Kiểm tra xem các trường thông tin có bị bỏ trống không
+        if (productName.isEmpty() || productCategory.isEmpty() || productPriceText.isEmpty() ||
+            productDescription.isEmpty() || productMediumPriceText.isEmpty() ||
+            productLargePriceText.isEmpty()) {
+            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin sản phẩm.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Kiểm tra các trường giá có định dạng số không
+        val productPrice = productPriceText.toIntOrNull()
+        val productMediumPrice = productMediumPriceText.toIntOrNull()
+        val productLargePrice = productLargePriceText.toIntOrNull()
+
+        if (productPrice == null || productMediumPrice == null || productLargePrice == null) {
+            Toast.makeText(this, "Vui lòng nhập giá và đánh giá dưới dạng số.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Kiểm tra các giá trị giá và đánh giá có âm không
+        if (productPrice <= 0 || productMediumPrice <= 0 || productLargePrice <= 0 ) {
+            Toast.makeText(this, "Giá và đánh giá phải lớn hơn 0.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val iceOption = radioIceOption.isChecked
+        val sugarOption = radioSugarOption.isChecked
+
+        Log.i("AddProductManagement", "tempImage: $tempImage")
+
+        // Tạo đối tượng ProductModel từ dữ liệu nhập liệu
+        val newProduct = ProductModel(
+            name = productName,
+            category = productCategory,
+            price = productPrice,
+            description = productDescription,
+            medium_price = productMediumPrice,
+            large_price = productLargePrice,
+            avgRate = 0.0,
+            iceOption = iceOption,
+            sugarOption = sugarOption,
+            tempOption = true,
+            img = listImageGoogleStore
+        )
+
+        // Thêm sản phẩm mới vào Firebase
+        productId = productsRef.push().key
+        if (productId != null) {
+            // Gán ID duy nhất cho sản phẩm
+            newProduct.id = productId.toString()
+            productsRef.child(productId!!).setValue(newProduct)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Sản phẩm mới đã được tạo thành công!", Toast.LENGTH_SHORT).show()
+                    // Đóng hoạt động hiện tại
+                    finish()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Đã xảy ra lỗi! Không thể tạo sản phẩm mới.", Toast.LENGTH_SHORT).show()
+                }
         }
     }
+
+    private fun openImageChooser() {
+        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    val pickMultipleMedia =
+        this.registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+            // Callback is invoked after the user selects media items or closes the
+            // photo picker.
+            if (uris.isNotEmpty()) {
+                for (uri in uris) {
+                    tempImage.add(uri.toString())
+                    countNewImage++
+                    imageAdapter.addImage(uri.toString())
+                }
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
+        }
+
+    // Xử lý kết quả trả về từ hộp thoại chọn hình ảnh
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK && data != null) {
+//            selectedImageUri = data.data
+//            // Cập nhật hình ảnh lên Firebase
+//            uploadImageToFirebase(selectedImageUri)
+//        }
+//    }
 
     // Hàm để tải lên hình ảnh lên Firebase Storage
     // Trong hàm updateImageToFirebase()
@@ -199,12 +284,19 @@ class AddProductManagementActivity : AppCompatActivity() {
                     .addOnSuccessListener { taskSnapshot ->
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
                             val updatedImageURL = uri.toString()
-                            tempImage.add(updatedImageURL)
-                            Picasso.get().load(updatedImageURL).fit().centerInside().into(itemPictureImage)
+                            listImageGoogleStore.add(updatedImageURL)
+                            countNewImage--
+                            if (countNewImage == 0) {
+                                createProduct()
+                            }
                         }
                     }
                     .addOnFailureListener{
                         Toast.makeText(this, "Không thể tải ảnh lên", Toast.LENGTH_SHORT).show()
+                        countNewImage--
+                        if (countNewImage == 0) {
+                            createProduct()
+                        }
                     }
             }
         }

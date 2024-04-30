@@ -7,14 +7,21 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RadioButton
+import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -23,6 +30,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import intech.co.starbug.R
+import intech.co.starbug.adapter.EditImageAdapter
 import intech.co.starbug.model.ProductModel
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -38,7 +46,6 @@ class UpdateProductManagementActivity : AppCompatActivity() {
 
     private lateinit var editTextProductName: EditText
     private lateinit var editTextProductPrice: EditText
-    private lateinit var editTextProductCategory: EditText
     private lateinit var radioYes: RadioButton
     private lateinit var radioNo: RadioButton
     private lateinit var radioSugarYes: RadioButton
@@ -47,12 +54,32 @@ class UpdateProductManagementActivity : AppCompatActivity() {
     private lateinit var editTextDescription: EditText
     private lateinit var editTextMedium: EditText
     private lateinit var editTextLarge: EditText
-    private lateinit var itemPictureImage: ImageView
+    private lateinit var itemPictureImage: ViewPager2
     private lateinit var cancelButton: Button
+    private lateinit var spinnerCategory: Spinner
 
+    private var currentImage: MutableList<String> = mutableListOf()
     private lateinit var tempImage: MutableList<String>
+    private lateinit var deleteImage: MutableList<String>
     private var tempAvgRate by Delegates.notNull<Double>()
+
+    private lateinit var imageAdapter: EditImageAdapter
     private val IMAGE_PICK_CODE = 1000 // Mã để xác định kết quả trả về từ hộp thoại chọn ảnh
+    private var countNewImage = 0
+    private var countDeleteImage = 0
+    private var saveButtonClick = false
+
+    private val handler = Handler(Looper.getMainLooper())
+    private fun waitForCallback() {
+
+        Log.i("UpdateProductManagementActivity", "countNewImage: $countNewImage countDeleteImage: $countDeleteImage")
+
+        if(countNewImage == 0 && countDeleteImage == 0 && saveButtonClick)
+        {
+            Log.i("UpdateProductManagementActivity", "in countNewImage: $countNewImage countDeleteImage: $countDeleteImage")
+            updateProductInFirebase()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +87,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
 
         editTextProductName = findViewById(R.id.editTextProductName)
         editTextProductPrice = findViewById(R.id.editTextPrice)
-        editTextProductCategory = findViewById(R.id.editTextCategory)
+        spinnerCategory = findViewById(R.id.spinnerCategory)
         radioYes = findViewById(R.id.radio)
         radioNo = findViewById(R.id.radio2)
         radioSugarYes = findViewById(R.id.radioSugar)
@@ -72,6 +99,17 @@ class UpdateProductManagementActivity : AppCompatActivity() {
         itemPictureImage = findViewById(R.id.itemPictureImage)
         cancelButton = findViewById(R.id.cancelButton)
 
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.category_array, // This is an array of strings defined in your strings.xml resource file
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinnerCategory.adapter = adapter
+        }
+
         // Nhận ID sản phẩm từ Intent
         productId = intent.getStringExtra("PRODUCT_ID") ?: ""
 
@@ -79,15 +117,21 @@ class UpdateProductManagementActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance()
         productsRef = database.getReference("Products")
 
+        imageAdapter = EditImageAdapter(mutableListOf())
+        {
+
+        }
+        deleteImage = mutableListOf()
+        itemPictureImage.adapter = imageAdapter
         // Lấy thông tin sản phẩm từ Firebase và hiển thị trên giao diện
         productsRef.child(productId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val product = dataSnapshot.getValue(ProductModel::class.java)
-                product?.let {
+                product?.let { it ->
                     // Hiển thị thông tin sản phẩm lên giao diện
                     editTextProductName.setText(it.name)
                     editTextProductPrice.setText(it.price.toString())
-                    editTextProductCategory.setText(it.category)
+                    spinnerCategory.setSelection((spinnerCategory.adapter as ArrayAdapter<String>).getPosition(it.category))
                     if (it.sugarOption) {
                         radioSugarYes.isChecked = true
                     } else {
@@ -101,10 +145,19 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                     editTextDescription.setText(it.description)
                     editTextMedium.setText(it.medium_price.toString())
                     editTextLarge.setText(it.large_price.toString())
-                    Picasso.get().load(it.img[it.img.size - 1]).into(itemPictureImage)
 
+                    currentImage = it.img.toMutableList()
                     tempImage = it.img.toMutableList()
                     tempAvgRate = it.avgRate
+
+                    imageAdapter = EditImageAdapter(it.img.toMutableList()) {position: Int ->
+                        val stringImage: String = tempImage[position]
+                        deleteImage.add(stringImage)
+                        tempImage.removeAt(position)
+                    }
+                    itemPictureImage.adapter = imageAdapter
+
+
                 }
             }
 
@@ -115,29 +168,132 @@ class UpdateProductManagementActivity : AppCompatActivity() {
 
         // Xử lý sự kiện khi người dùng nhấn nút "Lưu lại"
         buttonSave.setOnClickListener {
-            updateProductInFirebase()
+            for (i in 0 until tempImage.size)
+            {
+                if(tempImage[i] !in currentImage)
+                {
+                    countNewImage++
+                }
+            }
+
+            for (i in 0 until currentImage.size)
+            {
+                if(currentImage[i] !in tempImage)
+                {
+                    countDeleteImage++
+                }
+            }
+            Log.i("UpdateProductManagementActivity", "start countNewImage: $countNewImage countDeleteImage: $countDeleteImage")
+            for (i in 0 until tempImage.size)
+            {
+                if(tempImage[i] !in currentImage)
+                {
+                    uploadImageToFirebase(Uri.parse(tempImage[i]))
+                }
+            }
+            for (i in 0 until currentImage.size)
+            {
+                if(currentImage[i] !in tempImage)
+                {
+                    deleteImageToFirebase(currentImage[i])
+                }
+            }
+
+            // start Progrss
+
+            saveButtonClick = true
+
         }
 
         cancelButton.setOnClickListener {
             finish() // Kết thúc UpdateProductManagementActivity
-            startActivity(Intent(this@UpdateProductManagementActivity, ProductManagementActivity::class.java)) // Khởi động ProductManagementActivity
         }
+
+
+
 
         // Xử lý sự kiện khi người dùng chọn ảnh từ thư viện
-        itemPictureImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, IMAGE_PICK_CODE)
+
+        findViewById<ImageView>(R.id.camera).setOnClickListener {
+//            val intent = Intent(Intent.ACTION_PICK)
+//            intent.type = "image/*"
+//            startActivityForResult(intent, IMAGE_PICK_CODE)
+            // show dialog edit image
+
+            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null) {
-            val imageUri = data.data
-            uploadImageToFirebase(imageUri)
+    val pickMultipleMedia =
+        this.registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+            // Callback is invoked after the user selects media items or closes the
+            // photo picker.
+            if (uris.isNotEmpty()) {
+                for (uri in uris) {
+
+                    tempImage.add(uri.toString())
+                    imageAdapter.addImage(uri.toString())
+                }
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
+        }
+    private fun getPathStorageFromUrl(url:String): String?{
+        // https://firebasestorage.googleapis.com/v0/b/starbug-9fad0.appspot.com/o/product_img%2F1712984227297?alt=media&token=7fd642be-bd4d-41f4-866b-403d9395140e
+        val baseUrl = "https://firebasestorage.googleapis.com/v0/b/starbug-9fad0.appspot.com/o/"
+        if(url.contains(baseUrl))
+        {
+            val parts = url.split("/")
+            val lastPart = parts.last()
+            val fileNameWithoutParams = lastPart.substringBefore("?").replace("%2F", "/")
+            Log.i("UpdateProductManagementActivity", "getPathStorageFromUrl: $fileNameWithoutParams")
+            return fileNameWithoutParams
+        }
+        else {
+            return null
         }
     }
+    private fun deleteImageToFirebase(url: String)
+    {
+        Log.i("UpdateProductManagementActivity", "deleteImageToFirebase pahtname: $url")
+
+
+        val storageRef = FirebaseStorage.getInstance().reference
+        val getPathName = getPathStorageFromUrl(url)
+        if(getPathName == null)
+        {
+            countDeleteImage--
+            waitForCallback()
+            return
+        }
+        Log.i("UpdateProductManagementActivity", "deleteImageToFirebase pahtname: $getPathName")
+
+        val desertRef = storageRef.child(getPathName)
+        desertRef.delete().addOnSuccessListener {
+            // File deleted successfully
+            Log.i("UpdateProductManagementActivity", "deleteImageToFirebase: File deleted successfully $getPathName")
+        }.addOnFailureListener {
+            // Uh-oh, an error occurred!
+            Log.i("UpdateProductManagementActivity", "deleteImageToFirebase: File deleted unsuccessfully $getPathName")
+
+        }.addOnCompleteListener {
+            Log.i("UpdateProductManagementActivity", "deleteImageToFirebase: File deleted complete $getPathName")
+            countDeleteImage--
+            waitForCallback()
+
+        }
+
+
+    }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null) {
+//            val imageUri = data.data
+//            uploadImageToFirebase(imageUri)
+//        }
+//    }
 
     private fun uploadImageToFirebase(imageUri: Uri?) {
         if (imageUri != null) {
@@ -170,12 +326,21 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                     .addOnSuccessListener { taskSnapshot ->
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
                             val updatedImageURL = uri.toString()
-                            tempImage.add(updatedImageURL)
-                            Picasso.get().load(updatedImageURL).fit().centerInside().into(itemPictureImage)
+                            Log.i("UpdateProductManagementActivity", "uploadImageToFirebase: $updatedImageURL $imageUri ${tempImage.indexOf(imageUri.toString())}")
+                            tempImage[tempImage.indexOf(imageUri.toString())] = updatedImageURL
+
                         }
+                            .addOnCompleteListener {
+                                countNewImage--
+                                waitForCallback()
+
+                            }
                     }
                     .addOnFailureListener{
                         Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnCompleteListener {
+
                     }
             }
         } else {
@@ -235,10 +400,11 @@ class UpdateProductManagementActivity : AppCompatActivity() {
     }
 
     private fun updateProductInFirebase() {
+
         // Lấy dữ liệu mới từ giao diện
         val newName = editTextProductName.text.toString()
         val newPrice = editTextProductPrice.text.toString().toDoubleOrNull()
-        val newCategory = editTextProductCategory.text.toString()
+        val newCategory = spinnerCategory.selectedItem.toString()
         val newRadioYes = radioYes.isChecked
         val newRadioSugarYes = radioSugarYes.isChecked
         val newDescription = editTextDescription.text.toString()
@@ -271,5 +437,10 @@ class UpdateProductManagementActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this@UpdateProductManagementActivity, "Please fill in all fields", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }

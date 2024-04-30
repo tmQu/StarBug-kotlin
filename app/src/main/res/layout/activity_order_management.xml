@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Gray"
-    tools:context=".OrderManagementActivity">
+    tools:context=".activity.OrderManagementActivity">
 
     <!-- Thanh header -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -45,49 +45,27 @@
                         android:layout_height="100dp"
                         app:srcCompat="@drawable/logostarbug" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <!-- Tiêu đề -->
+                    <TextView
+                        android:id="@+id/textViewTitle"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/usernameTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:layout_marginBottom="24dp"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif"
-                            android:text="Username"
-                            android:textColor="@color/colorPrimary"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/welcomeHomeTV" />
-
-                        <TextView
-                            android:id="@+id/welcomeHomeTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="47dp"
-                            android:layout_marginTop="24dp"
-                            android:fontFamily="@font/bungee"
-                            android:text="Welcome!"
-                            android:textColor="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginEnd="16dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/welcomeHomeTV"
-                            tools:srcCompat="@tools:sample/avatars" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="QUẢN LÝ ĐƠN HÀNG"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/bungee"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
 
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabAppLayout"
@@ -103,7 +81,7 @@
                     android:id="@+id/tabItemOrderManagement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ĐƠN HÀNG"
+                    android:text="Chờ xác nhận"
                     android:textColor="@color/colorPrimary" />
 
                 <com.google.android.material.tabs.TabItem
@@ -111,14 +89,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:text="Nhân viên" />
+                    android:text="Chuẩn bị" />
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tabItemMenuManagement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:text="Sản phẩm" />
+                    android:text="" />
 
             </com.google.android.material.tabs.TabLayout>
 
@@ -142,18 +120,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout">
 
-        <!-- Tiêu đề -->
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="QUẢN LÝ ĐƠN HÀNG"
-        android:textColor="@color/colorPrimary"
-        android:fontFamily="@font/bungee"
-        android:textSize="27sp"
-        android:gravity="center"
-        android:textStyle="bold" />
+
 
         <LinearLayout
             android:layout_width="match_parent"

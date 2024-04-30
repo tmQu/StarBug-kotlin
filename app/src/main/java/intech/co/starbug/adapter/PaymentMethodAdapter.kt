@@ -11,25 +11,32 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import intech.co.starbug.R
+import kotlin.properties.Delegates
 
 class PaymentMethodAdapter(val listPaymethod: List<String>, val listLogo: List<Int>, val onItemClickListener: (Int) -> Unit) : RecyclerView.Adapter<PaymentMethodAdapter.ViewHodlder>(){
-    var lastSelected = -1
+    var lastSelected by Delegates.observable(0) { property, oldPos, newPos ->
+        if (newPos in listPaymethod.indices) {
+            selectedList[oldPos] = false
+            selectedList[newPos] = true
+            notifyItemChanged(oldPos)
+            notifyItemChanged(newPos)
+        }
+    }
     var selectedList = BooleanArray(listPaymethod.size)
+
     inner class ViewHodlder(itemView: View)  : RecyclerView.ViewHolder(itemView){
         init {
             itemView.setOnClickListener {
                 onItemClickListener(adapterPosition)
-                selectedList[adapterPosition] = !selectedList[adapterPosition]
-                notifyItemChanged(adapterPosition)
-
-                if(lastSelected != -1){
-                    selectedList[lastSelected] = !selectedList[lastSelected]
-                    notifyItemChanged(lastSelected)
-                }
-
                 lastSelected = adapterPosition
             }
         }
+    }
+
+    fun setSelected(position: Int){
+        selectedList[position] = true
+        onItemClickListener(position)
+        notifyItemChanged(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHodlder {
