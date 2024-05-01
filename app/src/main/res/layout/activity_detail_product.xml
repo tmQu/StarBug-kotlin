@@ -48,6 +48,14 @@
                 app:ci_width="20dp"
                 app:ci_margin="0dp"
                 app:ci_animator="@animator/alpha_slider"/>
+            <View
+                android:id="@+id/dummy_anchor_view"
+                android:visibility="invisible"
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                app:layout_constraintBottom_toBottomOf="@id/circleIndicator"
+                app:layout_constraintRight_toRightOf="parent"
+                />
 
 
             <ScrollView
@@ -243,7 +251,7 @@
         android:id="@+id/btn_show_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchor="@id/container"
+        app:layout_anchor="@id/dummy_anchor_view"
         app:layout_anchorGravity = "right|top"
         android:layout_marginRight="40dp"
         android:contentDescription="add to cart button"

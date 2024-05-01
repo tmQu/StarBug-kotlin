@@ -244,7 +244,7 @@
                     android:id="@+id/shipping_fee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100,000VNĐ"
+                    android:text="0 VNĐ"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_alignParentRight="true"/>

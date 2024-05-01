@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import intech.co.starbug.activity.admin.comment.CommentManage
 import intech.co.starbug.model.ProductModel
 
 class ProductAdapter(
@@ -28,6 +29,7 @@ class ProductAdapter(
         val itemCategoryTextView: TextView = itemView.findViewById(R.id.textViewTxtCategory)
         val detailButton: Button = itemView.findViewById(R.id.detailButton)
         val deleteImageButton: ImageButton = itemView.findViewById(R.id.deleteImageButton)
+        val commentBtn: Button = itemView.findViewById(R.id.comment_button)
         init {
             itemView.setOnClickListener {
                 onItemClick?.invoke(it, adapterPosition)
@@ -42,11 +44,30 @@ class ProductAdapter(
         val viewHolder = ProductViewHolder(itemView)
 
         // Xử lý sự kiện click cho nút "Detail"
-        viewHolder.detailButton.setOnClickListener {
+//        viewHolder.detailButton.setOnClickListener {
+//            val position = viewHolder.adapterPosition
+//            if (position != RecyclerView.NO_POSITION) {
+//                val product = itemList[position]
+//                onDetailClick?.invoke(product)
+//            }
+//        }
+
+        itemView.setOnClickListener {
             val position = viewHolder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 val product = itemList[position]
                 onDetailClick?.invoke(product)
+            }
+        }
+
+        viewHolder.commentBtn.setOnClickListener {
+            val position = viewHolder.adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                val product = itemList[position]
+                val intent = Intent(context, CommentManage::class.java)
+                intent.putExtra("product_id", product.id)
+                intent.putExtra("product", product)
+                context.startActivity(intent)
             }
         }
 

@@ -24,6 +24,10 @@ class Utils {
             // get 2 decimal precision
             return (usd * 100.0).roundToInt() / 100.0
         }
+
+        fun formatAvgRate(avgRate: Double): String {
+            return String.format("%.1f", avgRate)
+        }
     }
 
 

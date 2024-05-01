@@ -4,16 +4,17 @@ import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.os.SystemClock
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,12 +31,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
-import com.paypal.android.sdk.payments.PayPalAuthorization
-import com.paypal.android.sdk.payments.PayPalConfiguration
-import com.paypal.android.sdk.payments.PayPalPayment
-import com.paypal.android.sdk.payments.PayPalService
-import com.paypal.android.sdk.payments.PaymentActivity
-import com.paypal.android.sdk.payments.PaymentConfirmation
 import com.paypal.checkout.PayPalCheckout
 import com.paypal.checkout.approve.OnApprove
 import com.paypal.checkout.cancel.OnCancel
@@ -59,19 +54,25 @@ import intech.co.starbug.StarbugApp
 import intech.co.starbug.activity.authentication.LoginActivity
 import intech.co.starbug.adapter.PaymentMethodAdapter
 import intech.co.starbug.constants.PaypalConstant
+import intech.co.starbug.constants.ZaloPayConstant
+import intech.co.starbug.dialog.LoadingDialog
+import intech.co.starbug.model.BranchModel
+import intech.co.starbug.model.CommentPermission
 import intech.co.starbug.model.OrderModel
 import intech.co.starbug.model.PaymentInforModel
 import intech.co.starbug.model.cart.DetailCartItem
 import intech.co.starbug.utils.Utils
 import intech.co.starbug.zalopay.CreateOrder
 import kotlinx.coroutines.launch
-import org.json.JSONException
+import okhttp3.Callback
 //import vn.zalopay.sdk.Environment
 import vn.zalopay.sdk.ZaloPayError
 import vn.zalopay.sdk.ZaloPaySDK
 import vn.zalopay.sdk.listeners.PayOrderListener
-import java.math.BigDecimal
+import java.io.IOException
+import java.net.URL
 import java.util.Date
+
 
 
 class CheckoutActivity : AppCompatActivity() {
@@ -84,6 +85,8 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var nameEdtv : TextInputEditText
     private lateinit var phoneEdtv : TextInputEditText
     private lateinit var addressTv: TextView
+    private lateinit var shippingFee: TextView
+    private var shipFee = 0
 
     private var paymentMethod = DEFAULT_PAY_METHOD
     private var currentPosition = LatLng(0.0, 0.0)
@@ -140,6 +143,7 @@ class CheckoutActivity : AppCompatActivity() {
         nameEdtv = findViewById(R.id.name_input)
         phoneEdtv = findViewById(R.id.phone_input)
         addressTv = findViewById(R.id.address_input)
+        shippingFee = findViewById(R.id.shipping_fee)
 
         totalPriceTv = findViewById(R.id.total_price)
 
@@ -155,9 +159,10 @@ class CheckoutActivity : AppCompatActivity() {
             phoneEdtv.setText(paymentInfor.phone)
             addressTv.text = paymentInfor.address
             currentPosition = LatLng(paymentInfor.lat, paymentInfor.lng)
+
         }
         else{
-            paymentInfor = PaymentInforModel("", "", "", 0.0, 0.0, "", DEFAULT_PAY_METHOD)
+            paymentInfor = PaymentInforModel("", "", "", "", 0.0, 0.0, "", DEFAULT_PAY_METHOD)
         }
         setUpPaymentMethodView()
 
@@ -185,12 +190,16 @@ class CheckoutActivity : AppCompatActivity() {
             getAddressLaucher.launch(intent)
         }
 
+        updateShippingFee(paymentInfor.distance)
+
     }
 
     private fun setUpPriceView() {
         val totalPrice = calculateTotalPrice()
+
+        val productAllPrice = listDetailCartItem.sumOf { it.getProductPrice() * it.quantity }
         val productPrice = findViewById<TextView>(R.id.product_price)
-        productPrice.text = Utils.formatMoney(totalPrice)
+        productPrice.text = Utils.formatMoney(productAllPrice)
 
         // set up price view
         totalPriceTv.text = Utils.formatMoney(totalPrice)
@@ -201,6 +210,8 @@ class CheckoutActivity : AppCompatActivity() {
     {
         var totalPrice = 0
         totalPrice = listDetailCartItem.sumOf { it.getProductPrice() * it.quantity}
+        totalPrice += shipFee
+
 
         return totalPrice
     }
@@ -279,8 +290,10 @@ class CheckoutActivity : AppCompatActivity() {
     {
         // buy now
         getDeliveryInfor()
+
         if(checkDeliveryInfor())
         {
+
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null)
             {
@@ -339,11 +352,12 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun saveOrder(token: String = "") {
+        saveCurrentPayment()
         val dbRef = FirebaseDatabase.getInstance().getReference("Orders")
         val key = dbRef.push().key
         val listStatus = resources.getStringArray(R.array.order_status)
         if (key != null) {
-            val myOrder = OrderModel(Date().time, listDetailCartItem.toList(), paymentInfor, FirebaseAuth.getInstance().currentUser!!.uid, listStatus[0], token)
+            val myOrder = OrderModel(Date().time, listDetailCartItem.toList(), paymentInfor, FirebaseAuth.getInstance().currentUser!!.uid, listStatus[0], token, calculateTotalPrice())
             myOrder.id = key
             dbRef.child(key).setValue(myOrder).addOnSuccessListener {
                 Log.d("CheckoutActivity", "Order saved successfully")
@@ -353,6 +367,7 @@ class CheckoutActivity : AppCompatActivity() {
                     try {
                         for (item in listDetailCartItem) {
                             cartItemDao.deleteCartItem(item.cartItemModel)
+                            saveCommentPermission(item.product!!.id)
                         }
                     }
                     finally {
@@ -369,8 +384,14 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
+    private fun saveCommentPermission(id: String) {
+        val userUid = FirebaseAuth.getInstance().currentUser!!.uid
+        val dbRef = FirebaseDatabase.getInstance().getReference("CommentPermission/$id/$userUid")
+        dbRef.setValue("true")
+    }
 
-    override fun onBackPressed() {
+    private fun saveCurrentPayment()
+    {
         // save payment infor
         getDeliveryInfor()
         val paymentInforJson = convertPaymentInforToJson(paymentInfor)
@@ -379,6 +400,9 @@ class CheckoutActivity : AppCompatActivity() {
             putString(getString(R.string.saved_payment_infor_key), paymentInforJson)
             apply()
         }
+    }
+    override fun onBackPressed() {
+        saveCurrentPayment()
         super.onBackPressed()
     }
 
@@ -390,10 +414,96 @@ class CheckoutActivity : AppCompatActivity() {
                 val lat = data?.getDoubleExtra("lat", 0.0)
                 val lng = data?.getDoubleExtra("lng", 0.0)
                 currentPosition = LatLng(lat!!, lng!!)
-
                 addressTv.text = address
+                calculatShippingFee()
             }
         }
+
+    private fun calculatShippingFee() {
+        val listBranch = BranchModel.BRANCHES
+        var origin = ""
+        for (branch in listBranch) {
+            origin += "${branch.lat},${branch.lng}|"
+        }
+        origin = origin.substring(0, origin.length - 1)
+        val url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=$origin&destinations=${currentPosition.latitude},${currentPosition.longitude}&key=${BuildConfig.MAPS_API_KEY}"
+        // call api with okhttp
+        val client = okhttp3.OkHttpClient()
+        val request = okhttp3.Request.Builder().url(url).build()
+        //with async
+        val loadingDialog = LoadingDialog(this)
+        loadingDialog.startLoadingDialog()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                Log.e("CheckoutActivity", "Error: ${e.message}")
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(this@CheckoutActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    loadingDialog.dismissDialog()
+                }
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                val body = response.body?.string()
+                val listDistance = mutableListOf<Int>()
+                val listDuration = mutableListOf<Int>()
+                if(body != null) {
+                    // extract distance and duration
+                    val jsonObject = org.json.JSONObject(body)
+                    val rows = jsonObject.getJSONArray("rows")
+                    for(i in 0 until rows.length()) {
+                        val elements = rows.getJSONObject(i).getJSONArray("elements")
+                        val element = elements.getJSONObject(0)
+                        val status = element.getString("status")
+                        if(status == "OK") {
+                            val distance = element.getJSONObject("distance").getInt("value")
+                            val duration = element.getJSONObject("duration").getInt("value")
+                            listDistance.add(distance)
+                            listDuration.add(duration)
+                        }
+                    }
+                    // calculate shipping fee
+                    var minIndex = -1
+                    var minDistance = Int.MAX_VALUE
+                    var minTime = Int.MAX_VALUE
+                    for (i in 0 until listDistance.size)
+                    {
+                        if (listDistance[i] < minDistance)
+                        {
+                            minDistance = listDistance[i]
+                            minTime = listDuration[i]
+                            minIndex = i
+                        }
+                    }
+                    paymentInfor.branchName = listBranch[minIndex].name
+                    paymentInfor.distance = minDistance
+                    paymentInfor.duration = minTime
+                    loadingDialog.dismissDialog()
+                    // Only the original thread that created a view hierarchy can touch its views
+                    Handler(Looper.getMainLooper()).post {
+                        updateShippingFee(minDistance)
+                    }
+                }
+            }
+        })
+
+
+    }
+
+    private fun updateShippingFee(minDistance: Int) {
+
+        val kmDistance = minDistance / 1000
+        var fee = 0
+        if(kmDistance <= 2) {
+            fee = kmDistance * 16500
+        }
+        else
+            fee = 2 * 16500 + (kmDistance - 2) * 5500
+        shippingFee.text = Utils.formatMoney(fee)
+        Log.i("CheckoutActivity", "Shipping fee: $fee")
+        paymentInfor.shippingFee = fee
+        shipFee = fee
+        setUpPriceView()
+    }
 
     @SuppressLint("SetTextI18n")
     private fun payByZaloPay() {
@@ -401,12 +511,14 @@ class CheckoutActivity : AppCompatActivity() {
         val orderApi = CreateOrder()
 
         try {
+            Log.i("CheckoutActivity", "Amount i: ${calculateTotalPrice()}")
             val amount = calculateTotalPrice().toString()
 
             val data = orderApi.createOrder(amount)
 
             val code = data!!.getString("return_code")
             Toast.makeText(applicationContext, "return_code: $code", Toast.LENGTH_LONG).show()
+            Log.i("CheckoutActivity", "Code: $code")
             if (code == "1") {
                 val token = data!!.getString("zp_trans_token")
                 Log.i("Amount", token)
@@ -420,6 +532,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
     private fun payZalo(token: String)
     {
+        Log.i("CheckoutActivity", "Token: $token")
         ZaloPaySDK.getInstance()
             .payOrder(this, token, "demozpdk://app", object : PayOrderListener {
                 override fun onPaymentSucceeded(
@@ -472,7 +585,7 @@ class CheckoutActivity : AppCompatActivity() {
         StrictMode.setThreadPolicy(policy)
 
         // ZaloPay SDK Init
-        ZaloPaySDK.init(2553, vn.zalopay.sdk.Environment.SANDBOX)
+        ZaloPaySDK.init(ZaloPayConstant.APP_ID, vn.zalopay.sdk.Environment.SANDBOX)
     }
 
 
@@ -483,3 +596,5 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
 }
+
+

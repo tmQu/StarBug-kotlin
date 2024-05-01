@@ -25,338 +25,342 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <LinearLayout
+        <ScrollView
+            android:background="@drawable/sheet_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/background">
-
-            <!-- Tiêu đề -->
-            <TextView
-                android:id="@+id/textViewTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bungee"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="THÔNG TIN SẢN PHẨM"
-                android:textColor="@color/colorPrimary"
-                android:textSize="27sp"
-                android:textStyle="bold" />
-
+            android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <!-- Tiêu đề -->
+                <TextView
+                    android:id="@+id/textViewTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <!-- ImageView hiển thị ảnh -->
+                    android:fontFamily="@font/bungee"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="THÔNG TIN SẢN PHẨM"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="27sp"
+                    android:textStyle="bold" />
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                        <!-- ImageView chứa hình ảnh -->
-                        <androidx.viewpager2.widget.ViewPager2
-                            android:id="@+id/itemPictureImage"
-                            android:layout_width="140dp"
-                            android:layout_height="140dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/full_rounded_corners"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_avatar" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <!-- ImageView hiển thị ảnh -->
 
-                        <!-- ImageView của biểu tượng máy ảnh -->
-                        <ImageView
-                            android:id="@+id/camera"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_centerInParent="true"
-                            android:clickable="false"
-                            android:src="@drawable/ic_edit_camera"
-                            android:translationZ="10dp" />
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                    </RelativeLayout>
+                            <!-- ImageView chứa hình ảnh -->
+                            <androidx.viewpager2.widget.ViewPager2
+                                android:id="@+id/itemPictureImage"
+                                android:layout_width="140dp"
+                                android:layout_height="140dp"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/full_rounded_corners"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_avatar" />
+
+                            <!-- ImageView của biểu tượng máy ảnh -->
+                            <ImageView
+                                android:id="@+id/camera"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_centerInParent="true"
+                                android:clickable="false"
+                                android:src="@drawable/ic_edit_camera"
+                                android:translationZ="10dp" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="8dp">
+
+                            <EditText
+                                android:id="@+id/editTextProductName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@android:color/transparent"
+                                android:minHeight="48dp"
+                                android:text="Sản phẩm"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                tools:ignore="TouchTargetSizeCheck" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/txtCategory"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1"
+                                        android:gravity="left"
+                                        android:text="Category"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/txtPrice"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1"
+                                        android:gravity="left"
+                                        android:text="Price"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <Spinner
+                                        android:id="@+id/spinnerCategory"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:gravity="left"
+                                        android:minHeight="48dp"
+                                        android:padding="4dp"
+                                        android:textColor="@color/black"
+                                        tools:ignore="TouchTargetSizeCheck" />
+
+                                    <EditText
+                                        android:id="@+id/editTextPrice"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:gravity="left"
+                                        android:minHeight="48dp"
+                                        android:text="$00.0"
+                                        android:textColor="@color/black"
+                                        tools:ignore="TouchTargetSizeCheck" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+
+                        <TextView
+                            android:id="@+id/txtMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3333"
+                            android:gravity="left"
+                            android:paddingStart="35dp"
+                            android:text="Medium"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3333"
+                            android:gravity="left"
+                            android:text="Large"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="4dp"
+                        tools:ignore="TouchTargetSizeCheck">
+
+
+                        <EditText
+                            android:id="@+id/editTextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3333"
+                            android:background="@android:color/transparent"
+                            android:gravity="left"
+                            android:hint="$00.0"
+                            android:paddingStart="35dp"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            tools:ignore="TouchTargetSizeCheck" />
+
+                        <EditText
+                            android:id="@+id/editTextLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3333"
+                            android:background="@android:color/transparent"
+                            android:gravity="left"
+                            android:text="$00.0"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            tools:ignore="TouchTargetSizeCheck" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/txtIce"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:gravity="left"
+                            android:text="Ice"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Yes"
+                                android:textColor="@color/black"
+                                app:buttonTint="@color/colorSecondPrimary" />
+
+                            <RadioButton
+                                android:id="@+id/radio2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="No"
+                                android:textColor="@color/black"
+                                app:buttonTint="@color/colorSecondPrimary" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/txtSugar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:gravity="left"
+                            android:text="Sugar"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioSugar"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Yes"
+                                android:textColor="@color/black"
+                                app:buttonTint="@color/colorSecondPrimary" />
+
+                            <RadioButton
+                                android:id="@+id/radio2Sugar"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="No"
+                                android:textColor="@color/black"
+                                app:buttonTint="@color/colorSecondPrimary" />
+                        </RadioGroup>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingLeft="8dp">
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/txtDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Description"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
 
                         <EditText
-                            android:id="@+id/editTextProductName"
+                            android:id="@+id/editTextDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:minHeight="48dp"
-                            android:text="Sản phẩm"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            tools:ignore="TouchTargetSizeCheck" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/txtCategory"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:gravity="left"
-                                    android:text="Category"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/txtPrice"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:gravity="left"
-                                    android:text="Price"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <Spinner
-                                    android:id="@+id/spinnerCategory"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:background="@android:color/transparent"
-                                    android:gravity="left"
-                                    android:minHeight="48dp"
-                                    android:padding="4dp"
-                                    android:textColor="@color/black"
-                                    tools:ignore="TouchTargetSizeCheck" />
-
-                                <EditText
-                                    android:id="@+id/editTextPrice"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:background="@android:color/transparent"
-                                    android:gravity="left"
-                                    android:minHeight="48dp"
-                                    android:text="$00.0"
-                                    android:textColor="@color/black"
-                                    tools:ignore="TouchTargetSizeCheck" />
-                            </LinearLayout>
-
-                        </LinearLayout>
+                            android:hint="Description"
+                            android:textColor="@color/black" />
                     </LinearLayout>
-
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="4dp">
-
-
-                    <TextView
-                        android:id="@+id/txtMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3333"
-                        android:gravity="left"
-                        android:paddingStart="35dp"
-                        android:text="Medium"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtLarge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3333"
-                        android:gravity="left"
-                        android:text="Large"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="4dp"
-                    tools:ignore="TouchTargetSizeCheck">
-
-
-                    <EditText
-                        android:id="@+id/editTextMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3333"
-                        android:background="@android:color/transparent"
-                        android:gravity="left"
-                        android:hint="$00.0"
-                        android:paddingStart="35dp"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="TouchTargetSizeCheck" />
-
-                    <EditText
-                        android:id="@+id/editTextLarge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3333"
-                        android:background="@android:color/transparent"
-                        android:gravity="left"
-                        android:text="$00.0"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="TouchTargetSizeCheck" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/txtIce"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:gravity="left"
-                        android:text="Ice"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-
-                    <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radio"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Yes"
-                            android:textColor="@color/black"
-                            app:buttonTint="@color/colorSecondPrimary" />
-
-                        <RadioButton
-                            android:id="@+id/radio2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="No"
-                            android:textColor="@color/black"
-                            app:buttonTint="@color/colorSecondPrimary" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/txtSugar"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:gravity="left"
-                        android:text="Sugar"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-
-                    <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioSugar"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Yes"
-                            android:textColor="@color/black"
-                            app:buttonTint="@color/colorSecondPrimary" />
-
-                        <RadioButton
-                            android:id="@+id/radio2Sugar"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="No"
-                            android:textColor="@color/black"
-                            app:buttonTint="@color/colorSecondPrimary" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/txtDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="Description"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/editTextDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Description"
-                        android:textColor="@color/black" />
-                </LinearLayout>
             </LinearLayout>
 
-        </LinearLayout>
+        </ScrollView>
         <!-- Danh sách sản phẩm -->
 
     </LinearLayout>

@@ -8,16 +8,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
-
-
-
         <ImageView
             android:id="@+id/avatar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/default_avatar"
             />
 
         <LinearLayout
@@ -79,18 +76,40 @@
             app:strokeColor="#EAECED"
             app:strokeWidth="1dp"
             >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Núi rác đúng to như lời đồn. Rác được xử lý và phủ lớp bạt lớn dày lên trên nên dù lại gần mình cũng ko thấy quá hôi như trong tưởng tượng ban đầu."
+                    android:textColor="@android:color/black"
+                    android:textSize="10sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:lineHeight="25sp"
 
-            <TextView
-                android:id="@+id/txt_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Núi rác đúng to như lời đồn. Rác được xử lý và phủ lớp bạt lớn dày lên trên nên dù lại gần mình cũng ko thấy quá hôi như trong tưởng tượng ban đầu."
-                android:textColor="@android:color/black"
-                android:textSize="10sp"
-                android:layout_margin="10dp"
-                android:lineHeight="25sp"/>
+                    />
+
+                <ImageButton
+                    android:id="@+id/delete_comment"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete"
+                    android:background="@color/amp_transparent"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="5dp"
+                    />
+            </LinearLayout>
+
+
         </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/reply_container"
             android:visibility="gone"
@@ -120,12 +139,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cảm ăn bạn nhiều"
-                    />
-                <!--Edit text for admin use                -->
-                <EditText
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     />
             </LinearLayout>
 

@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.WRITE_MEDIA_IMAGES" />
 
-
     <application
         android:name=".StarbugApp"
         android:allowBackup="true"
@@ -23,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.admin.comment.CommentManage"
+            android:exported="false" />
         <activity
             android:name=".activity.admin.order.DetailAdminOrder"
             android:exported="false" />
@@ -49,7 +51,7 @@
             android:exported="false"
             android:label="@string/title_activity_get_address" />
         <activity
-            android:name=".HistoryDetailActivity"
+            android:name=".activity.HistoryDetailActivity"
             android:exported="false" />
         <activity
             android:name=".activity.admin.staff.UpdateStaffManagementActivity"
@@ -78,10 +80,10 @@
             android:exported="false"
             android:theme="@style/Theme.StarBug" />
         <activity
-            android:name=".AccountItemUpdateActivity"
+            android:name=".activity.admin.account.AccountItemUpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountManagement"
+            android:name=".activity.admin.account.AccountManagement"
             android:exported="true"></activity>
         <activity
             android:name=".activity.CheckoutActivity"
@@ -112,27 +114,18 @@
             android:name=".activity.admin.account.AccountItemAddActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.admin.account.AccountItemUpdateActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.admin.account.AccountManagement"
-            android:exported="false" />
-        <activity
             android:name=".activity.ContainerActivity"
             android:exported="false" />
         <activity
-            android:name=".StaffManagementActivity"
+            android:name=".activity.StaffManagementActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderManagementActivity"
-            android:exported="false" />
+            android:name=".activity.admin.order.OrderManagementActivity"
+            android:exported="true"></activity>
         <activity
             android:name=".activity.admin.product.ProductManagementActivity"
             android:exported="false"
             android:theme="@style/Theme.StarBug" />
-        <activity
-            android:name=".AccountActivity"
-            android:exported="false" />
         <activity
             android:name=".activity.Feedback"
             android:exported="false" />
@@ -146,7 +139,7 @@
             android:name=".activity.comment.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountSettingActivity"
+            android:name=".activity.AccountSettingActivity"
             android:exported="false" />
         <activity
             android:name=".authentication.ResetPasswordActivity"
@@ -154,10 +147,7 @@
         <activity
             android:name=".activity.product.DetailProductActivity"
             android:exported="false"
-            android:parentActivityName=".HomeActivity" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="true"></activity>
+            android:parentActivityName=".activity.ContainerActivity" />
         <activity
             android:name=".activity.authentication.ForgetPasswordActivity"
             android:exported="false" />
@@ -181,7 +171,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

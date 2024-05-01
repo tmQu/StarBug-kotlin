@@ -1,4 +1,4 @@
-package intech.co.starbug
+package intech.co.starbug.activity.admin.order
 
 import android.os.Bundle
 import android.util.Log
@@ -15,12 +15,20 @@ import com.google.firebase.database.FirebaseDatabase
 import intech.co.starbug.adapter.AdminOrderAdapter
 import intech.co.starbug.model.OrderModel
 
+import intech.co.starbug.R
+import intech.co.starbug.model.BranchModel
+
 class OrderManagementActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var listOrderRv: RecyclerView
     private lateinit var orderAdapter: AdminOrderAdapter
     private lateinit var listOrder: MutableList<OrderModel>
     private lateinit var database: FirebaseDatabase
+
+    private var listStatus = listOf<String>()
+    private var listBranch = BranchModel.BRANCHES
+    private var branchName = listBranch[0].name
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,6 +40,7 @@ class OrderManagementActivity : AppCompatActivity() {
         }
         database = FirebaseDatabase.getInstance()
 
+        listStatus = resources.getStringArray(R.array.order_status).toList()
         tabLayout = findViewById(R.id.tabAppLayout)
         listOrderRv = findViewById(R.id.list_order)
         Log.i("OrderManagementActivity", "onCreate")
@@ -39,17 +48,17 @@ class OrderManagementActivity : AppCompatActivity() {
 
         listOrder = mutableListOf()
 
-        orderAdapter = AdminOrderAdapter(listOrder, this)
+        orderAdapter = AdminOrderAdapter(listOrder, this, branchName)
 
         listOrderRv.adapter = orderAdapter
         listOrderRv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
 
-        tabLayout.selectTab(tabLayout.getTabAt(0))
+        queryOrders(listStatus[0])
+
     }
 
     private fun tabSelected()
     {
-        val listStatus = resources.getStringArray(R.array.order_status)
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {

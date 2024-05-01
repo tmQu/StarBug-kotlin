@@ -18,13 +18,15 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import intech.co.starbug.R
 import intech.co.starbug.activity.DetailOrderActivity
+import intech.co.starbug.activity.admin.order.DetailAdminOrder
+import intech.co.starbug.model.BranchModel
 import intech.co.starbug.model.OrderModel
 import intech.co.starbug.utils.Utils
 
-class AdminOrderAdapter(var listOrder: List<OrderModel>, val context: Context): RecyclerView.Adapter<AdminOrderAdapter.ViewHolder>() {
+class AdminOrderAdapter(var allOrder: List<OrderModel>, val context: Context, var branchName: String): RecyclerView.Adapter<AdminOrderAdapter.ViewHolder>() {
 
     var onItemClick: ((View,Int) -> Unit)? = null
-
+    var listOrder: List<OrderModel> = allOrder.filter { it.paymentInforModel.branchName == branchName || it.paymentInforModel.branchName == ""}.sortedByDescending { it.orderDate }
     inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         fun bind(order: OrderModel) {
         }
@@ -33,6 +35,12 @@ class AdminOrderAdapter(var listOrder: List<OrderModel>, val context: Context): 
 //                onItemClick?.invoke(it,adapterPosition)
 //            }
         }
+    }
+
+    private fun filterOrderList()
+    {
+        listOrder = allOrder.filter { it.paymentInforModel.branchName == branchName || it.paymentInforModel.branchName == ""}
+        listOrder.sortedByDescending { it.orderDate }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -110,7 +118,7 @@ class AdminOrderAdapter(var listOrder: List<OrderModel>, val context: Context): 
         orderStatus.background = shape
 
         orderDate.text = Utils.convertDate(order.orderDate)
-        orderTotalPrice.text = Utils.formatMoney(order.getTotalPrice())
+        orderTotalPrice.text = Utils.formatMoney(order.price)
         orderQuantity.text = order.listCartItem.size.toString()
 
         customerName.text = order.paymentInforModel.name
@@ -133,7 +141,7 @@ class AdminOrderAdapter(var listOrder: List<OrderModel>, val context: Context): 
         {
             approveBtn.visibility = View.VISIBLE
             approveBtn.setOnClickListener {
-                val intent = Intent(context, DetailOrderActivity::class.java)
+                val intent = Intent(context, DetailAdminOrder::class.java)
                 intent.putExtra("order_id", order.id)
                 startActivity(context, intent, null)
             }
@@ -144,10 +152,17 @@ class AdminOrderAdapter(var listOrder: List<OrderModel>, val context: Context): 
 
 
     }
-
+    fun updateBranch(branchName: String)
+    {
+        this.branchName = branchName
+        filterOrderList()
+        notifyDataSetChanged()
+    }
     fun updateListOrder(listOrder: List<OrderModel>)
     {
-        this.listOrder = listOrder
+        this.allOrder = listOrder
+        filterOrderList()
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

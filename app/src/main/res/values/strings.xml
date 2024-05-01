@@ -64,6 +64,7 @@
         <item>Delivering</item>
         <item>Successful</item>
         <item>Unsuccessful</item>
+        <item>All</item>
     </string-array>
 
     <string name="lorem_ipsum">

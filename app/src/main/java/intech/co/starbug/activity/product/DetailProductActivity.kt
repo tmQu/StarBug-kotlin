@@ -320,16 +320,18 @@ class DetailProductActivity : AppCompatActivity() {
 
     private fun getAllComment()
     {
-        val commentRef = FirebaseDatabase.getInstance().getReference("Comments")
+        val commentRef = FirebaseDatabase.getInstance().getReference("Comment")
         val query = commentRef.orderByChild("id_product").equalTo(product.id)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                listComment = mutableListOf()
                 for (commentSnapshot in snapshot.children) {
                     val comment = commentSnapshot.getValue(CommentModel::class.java)
                     if(comment != null)
                         listComment.add(comment)
                 }
                 numOfRate = listComment.size
+                avgRating = 0.0
                 if(numOfRate != 0)
                 {
                     for (comment in listComment)
@@ -338,11 +340,12 @@ class DetailProductActivity : AppCompatActivity() {
                     }
                     findViewById<TextView>(R.id.txt_first_comment).visibility = View.GONE
                     sliderComment.visibility = View.VISIBLE
-                    val topComment = listComment.sortByDescending { it.rating } as List<CommentModel>
-                    createCommentSlider(topComment.take(5))
+                    val sortedComments = listComment.sortedByDescending { it.rating }
+                    val topComment = sortedComments.take(5)
+                    createCommentSlider(topComment)
 
-                    numRate.text = numOfRate.toString()
-                    avgRate.text = avgRating.toString()
+                    numRate.text = "Based on $numOfRate reviews"
+                    avgRate.text = Utils.formatAvgRate(avgRating)
                 }
 
 

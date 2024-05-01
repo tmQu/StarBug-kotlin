@@ -36,6 +36,7 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -82,7 +83,7 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
     private val handler = Handler(Looper.getMainLooper())
 
 
-    private lateinit var currentPosition: LatLng
+    private var desMarker: Marker? = null
     private lateinit var full_addr: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,8 +122,9 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         findViewById<MaterialButton>(R.id.navigate_btn).setOnClickListener {
             val intent = intent
             intent.putExtra("address", getFullAddr())
-            intent.putExtra("lat", currentPosition.latitude)
-            intent.putExtra("lng", currentPosition.longitude)
+            intent.putExtra("lat", desMarker?.position?.latitude)
+            intent.putExtra("lng", desMarker?.position?.longitude)
+            Log.i(TAG, "Lat: ${desMarker?.position?.latitude} Lng: ${desMarker?.position?.longitude}")
             setResult(RESULT_OK, intent)
             finish()
         }
@@ -233,7 +235,7 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 }
 
-                currentPosition = place.latLng
+                setDesLocationMarker(place.latLng)
                 moveCamera(place.latLng, 15f)
 
             }
@@ -241,6 +243,14 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                 Log.e(TAG, "Place not found: ${it.message}")
             }
     }
+
+    private fun setDesLocationMarker(latLng: LatLng) {
+        desMarker?.remove()
+        val markerOptions = MarkerOptions().position(latLng)
+            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).draggable(true)
+        desMarker = mMap.addMarker(markerOptions)
+    }
+
 
 
     private fun searchText(name: String) {
@@ -263,14 +273,8 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
-    private fun moveCamera(latLng: LatLng, fl: Float) {
-        mMap.clear()
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
-        val markerOptions = MarkerOptions().position(latLng)
-            .title("Your Location").draggable(true)
-        mMap.addMarker(markerOptions)
-
-
+    private fun moveCamera(latLng: LatLng, zoom: Float) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
     }
 
 
@@ -356,7 +360,7 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                         if(location != null)
                         {
                             Log.i("Location", "Location: ${location.latitude}, ${location.longitude}")
-                            currentPosition = LatLng(location.latitude, location.longitude)
+                            setDesLocationMarker(LatLng(location.latitude, location.longitude))
                             moveCamera(LatLng(location.latitude, location.longitude), 15f)
                         }
                     }
@@ -374,7 +378,6 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     override fun onMapReady(googleMap: GoogleMap) {
-        Toast.makeText(this, "Map is ready", Toast.LENGTH_SHORT).show()
         mMap = googleMap
 
         if (ActivityCompat.checkSelfPermission(
@@ -388,10 +391,10 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
             return
         }
-        mMap.isMyLocationEnabled = true
-        mMap.uiSettings.isMyLocationButtonEnabled = true
-        mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.uiSettings.isCompassEnabled = true
+        mMap.isMyLocationEnabled = false
+        mMap.uiSettings.isMyLocationButtonEnabled = false
+        mMap.uiSettings.isZoomControlsEnabled = false
+        mMap.uiSettings.isCompassEnabled = false
         getDeviceLocation()
 
 
@@ -401,7 +404,8 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             override fun onMarkerDragEnd(p0: Marker) {
-                Log.i(TAG, "Location: ${p0.position.latitude}, ${p0.position.longitude}")
+                Log.i(TAG, "Location: ${p0.position.latitude}, ${p0.position.longitude} ${desMarker?.position}")
+
             }
 
             override fun onMarkerDragStart(p0: Marker) {
@@ -410,10 +414,7 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         mMap.setOnMapLongClickListener {
-            mMap.clear()
-            val markerOptions = MarkerOptions().position(it)
-                .title("Your Location").draggable(true)
-            mMap.addMarker(markerOptions)
+            setDesLocationMarker(it)
 
         }
 
@@ -453,10 +454,10 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         // pass in the appropriate value/s for .setCountries() in the
         // FindAutocompletePredictionsRequest.Builder object as well.
         Log.i(TAG, "Query: $query")
-        val bias: LocationBias = RectangularBounds.newInstance(
-            LatLng(22.458744, 88.208162),  // SW lat, lng
-            LatLng(22.730671, 88.524896) // NE lat, lng
-        )
+//        val bias: LocationBias = RectangularBounds.newInstance(
+//            LatLng(22.458744, 88.208162),  // SW lat, lng
+//            LatLng(22.730671, 88.524896) // NE lat, lng
+//        )
 
         // Create a new programmatic Place Autocomplete request in Places SDK for Android
         val newRequest = FindAutocompletePredictionsRequest.builder()

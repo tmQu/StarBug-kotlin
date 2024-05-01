@@ -11,17 +11,16 @@ import java.util.Date
 class OrderModel(
     val orderDate: Long = Date().time,
     val listCartItem: List<DetailCartItem> = listOf(),
-    var paymentInforModel: PaymentInforModel = PaymentInforModel("", "", "", 0.0, 0.0, "", ""),
+    var paymentInforModel: PaymentInforModel = PaymentInforModel("", "", "", "", 0.0, 0.0, "", ""),
     var uidUser: String = "",
     var status: String = "",
-    var orderToken: String = ""
-){
+    var orderToken: String = "",
+    var price: Int = 0
+) : Serializable {
     var id: String = ""
+    var reason: String = ""
 
-    
-
-
-    fun getTotalPrice(): Int {
+    fun getTotalProductPrice(): Int {
         var total = 0
         for (item in listCartItem) {
             if(item.product == null)
@@ -29,5 +28,13 @@ class OrderModel(
             total += item.product!!.price * item.quantity
         }
         return total
+    }
+
+    fun genReadableOrderId(): String {
+        // only get hhmmss and the price
+        val sdf = SimpleDateFormat("hhmmss")
+        // only get 2 first number
+        val char_2 = getTotalProductPrice().toString().substring(0, 2)
+        return "#${sdf.format(Date())}${char_2}"
     }
 }
