@@ -295,46 +295,14 @@ class LoginActivity : AppCompatActivity() {
                             }
                         })
                     }
-
-                    val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
-                    startActivity(intent)
-//                        val userId = user.uid
-//                        val database = FirebaseDatabase.getInstance()
-//                        val myRef = database.getReference("User").child(userId)
-//
-//
-//                        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-//                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                                val userData = dataSnapshot.getValue(UserModel::class.java)
-//                                Log.i("LoginActivity", "User data: $userData.email")
-//                                if (userData != null) {
-//                                    val userRole = userData.role
-//                                    if (userRole == "Admin") {
-//                                        Toast.makeText(
-//                                            this@LoginActivity,
-//                                            "User is Admin",
-//                                            Toast.LENGTH_SHORT
-//                                        ).show()
-//                                        val intent = Intent(this@LoginActivity, HomeManageActivity::class.java)
-//                                        Log.i("LoginActivity", "intent: $intent")
-//                                        startActivity(intent)
-//                                    } else {
-//                                        Toast.makeText(
-//                                            this@LoginActivity,
-//                                            "User is not Admin",
-//                                            Toast.LENGTH_SHORT
-//                                        ).show()
-//                                        val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
-//                                        startActivity(intent)
-//                                    }
-//                                }
-//                            }
-//
-//                            override fun onCancelled(databaseError: DatabaseError) {
-//                                Log.e("LoginActivity", "Database error: ${databaseError.message}")
-//                            }
-//                        })
-//                    }
+                    else if (user == null) {
+                        Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "An error occurred. Please try again later.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
                     Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
                     Toast.makeText(

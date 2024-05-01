@@ -18,7 +18,7 @@ import intech.co.starbug.constants.CONSTANT.Companion.READ_STORAGE_PERMISSION_RE
 import java.util.regex.Pattern
 
 class AccountSettingActivity : AppCompatActivity() {
-    private lateinit var cancleBtn: Button
+    private lateinit var cancelBtn: Button
     private lateinit var saveBtn: Button
     private lateinit var avatar: ImageView
     private lateinit var fullname: TextInputLayout
@@ -32,7 +32,7 @@ class AccountSettingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_account_setting)
 
 //      Dang nhap = cai gi thi khong duoc doi cai do
-        cancleBtn = findViewById(R.id.cancleBtn)
+        cancelBtn = findViewById(R.id.cancelBtn)
         saveBtn = findViewById(R.id.saveBtn)
         avatar = findViewById(R.id.avatar)
         fullname = findViewById(R.id.fullName)
@@ -46,8 +46,8 @@ class AccountSettingActivity : AppCompatActivity() {
             requestPermission()
         }
 
-        cancleBtn.setOnClickListener {
-            // Cancel
+        cancelBtn.setOnClickListener {
+            finish()
         }
 
         saveBtn.setOnClickListener {
