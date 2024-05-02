@@ -21,6 +21,7 @@
         android:textSize="20sp"
         android:text="Are you sure you want to cancel this order"/>
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reason_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Reason"

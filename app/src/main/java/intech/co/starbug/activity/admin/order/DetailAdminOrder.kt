@@ -289,8 +289,9 @@ class DetailAdminOrder : AppCompatActivity(), ReasonDialog.ConfirmListener, OnMa
         db.setValue(order)
     }
 
-    override fun onYesButton() {
+    override fun onYesButton(reason: String) {
         order?.status = listStatus[5]
+        order?.reason = reason
         updateCartToDB()
         finish()
     }

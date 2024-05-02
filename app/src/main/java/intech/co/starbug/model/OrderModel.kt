@@ -35,6 +35,6 @@ class OrderModel(
         val sdf = SimpleDateFormat("hhmmss")
         // only get 2 first number
         val char_2 = getTotalProductPrice().toString().substring(0, 2)
-        return "#${sdf.format(Date())}${char_2}"
+        return "#${sdf.format(orderDate)}${char_2}"
     }
 }

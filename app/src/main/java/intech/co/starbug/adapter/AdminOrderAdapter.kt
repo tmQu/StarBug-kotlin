@@ -31,15 +31,17 @@ class AdminOrderAdapter(var allOrder: List<OrderModel>, val context: Context, va
         fun bind(order: OrderModel) {
         }
         init {
-//            view.setOnClickListener{
-//                onItemClick?.invoke(it,adapterPosition)
-//            }
+            view.setOnClickListener{
+                val intent = Intent(context, DetailAdminOrder::class.java)
+                intent.putExtra("order_id", listOrder[adapterPosition].id)
+                startActivity(context, intent, null)
+            }
         }
     }
 
     private fun filterOrderList()
     {
-        listOrder = allOrder.filter { it.paymentInforModel.branchName == branchName || it.paymentInforModel.branchName == ""}
+        listOrder = allOrder.filter { it.paymentInforModel.branchName == branchName || it.paymentInforModel.branchName == "All"}
         listOrder.sortedByDescending { it.orderDate }
     }
 
@@ -65,12 +67,12 @@ class AdminOrderAdapter(var allOrder: List<OrderModel>, val context: Context, va
         val payMethod = view.findViewById<TextView>(R.id.pay_method)
         val reminderCard = view.findViewById<View>(R.id.reminder_card)
         val approveBtn = view.findViewById<TextView>(R.id.btn_approve)
-
+        val branchName = view.findViewById<TextView>(R.id.branch_name)
 
 
         val resources = context.resources
         val listStatus = resources.getStringArray(R.array.order_status)
-
+        branchName.text = order.paymentInforModel.branchName
         orderStatus.setTextColor(resources.getColor(R.color.white))
 
         val shape = GradientDrawable()

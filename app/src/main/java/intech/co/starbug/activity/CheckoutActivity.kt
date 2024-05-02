@@ -29,7 +29,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.paypal.checkout.PayPalCheckout
 import com.paypal.checkout.approve.OnApprove
@@ -53,6 +56,7 @@ import intech.co.starbug.R
 import intech.co.starbug.StarbugApp
 import intech.co.starbug.activity.authentication.LoginActivity
 import intech.co.starbug.adapter.PaymentMethodAdapter
+import intech.co.starbug.adapter.PromotionSelectionAdapter
 import intech.co.starbug.constants.PaypalConstant
 import intech.co.starbug.constants.ZaloPayConstant
 import intech.co.starbug.dialog.LoadingDialog
@@ -60,6 +64,7 @@ import intech.co.starbug.model.BranchModel
 import intech.co.starbug.model.CommentPermission
 import intech.co.starbug.model.OrderModel
 import intech.co.starbug.model.PaymentInforModel
+import intech.co.starbug.model.PromotionModel
 import intech.co.starbug.model.cart.DetailCartItem
 import intech.co.starbug.utils.Utils
 import intech.co.starbug.zalopay.CreateOrder
@@ -87,6 +92,11 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var addressTv: TextView
     private lateinit var shippingFee: TextView
     private var shipFee = 0
+    private lateinit var promotionView: TextView
+
+    private lateinit var discountTv: TextView
+    private var discountFee = 0
+    private var promotionList: MutableList<PromotionModel> = mutableListOf()
 
     private var paymentMethod = DEFAULT_PAY_METHOD
     private var currentPosition = LatLng(0.0, 0.0)
@@ -100,6 +110,8 @@ class CheckoutActivity : AppCompatActivity() {
 
     private lateinit var totalPriceTv: TextView
     private lateinit var paymentButtonPaypalContainer: PaymentButtonContainer
+
+//    private lateinit var
     override fun onCreate(savedInstanceState: Bundle?) {
 
         initZaloPay()
@@ -144,6 +156,8 @@ class CheckoutActivity : AppCompatActivity() {
         phoneEdtv = findViewById(R.id.phone_input)
         addressTv = findViewById(R.id.address_input)
         shippingFee = findViewById(R.id.shipping_fee)
+        promotionView = findViewById(R.id.promotion_view)
+        discountTv = findViewById(R.id.discount_price)
 
         totalPriceTv = findViewById(R.id.total_price)
 
@@ -172,7 +186,6 @@ class CheckoutActivity : AppCompatActivity() {
         else
             listDetailCartItem = intent.getParcelableArrayListExtra("listDetailOrder")!!
 
-        setUpPriceView()
 
         var mLastClickTime = 0L
         findViewById<Button>(R.id.btn_buy).setOnClickListener {
@@ -191,7 +204,47 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         updateShippingFee(paymentInfor.distance)
+        handlePromotionView()
 
+    }
+
+    private fun handlePromotionView() {
+        val dbRef = FirebaseDatabase.getInstance().getReference("Promotions")
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (data in snapshot.children) {
+                    val promotion = data.getValue(PromotionModel::class.java)
+                    if (promotion != null) {
+                        promotionList.add(promotion)
+                    }
+                }
+                val totalBill = listDetailCartItem.sumOf { it.getProductPrice() * it.quantity }
+                val promotionAdapter = PromotionSelectionAdapter(promotionList, totalBill, onItemClickListener = { position, checked ->
+                    if(checked)
+                    {
+                        discountFee = (promotionList[position].discount * totalBill / 100).toInt()
+                        promotionView.text = "${promotionList[position].name} - Discount ${promotionList[position].discount}%"
+                    }
+                    else
+                    {
+                        discountFee = 0
+                        promotionView.text = "Add your coupon"
+                    }
+                    setUpPriceView()
+                })
+                val promotionRv = findViewById<RecyclerView>(R.id.coupon_rv)
+                promotionRv.adapter = promotionAdapter
+                promotionRv.layoutManager = LinearLayoutManager(this@CheckoutActivity, VERTICAL, false)
+
+                initializeBottomSheetPromotion()
+
+                setUpPriceView()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("CheckoutActivity", "Error: ${error.message}")
+            }
+        })
     }
 
     private fun setUpPriceView() {
@@ -200,6 +253,7 @@ class CheckoutActivity : AppCompatActivity() {
         val productAllPrice = listDetailCartItem.sumOf { it.getProductPrice() * it.quantity }
         val productPrice = findViewById<TextView>(R.id.product_price)
         productPrice.text = Utils.formatMoney(productAllPrice)
+        discountTv.text = "-${Utils.formatMoney(discountFee)}"
 
         // set up price view
         totalPriceTv.text = Utils.formatMoney(totalPrice)
@@ -211,8 +265,7 @@ class CheckoutActivity : AppCompatActivity() {
         var totalPrice = 0
         totalPrice = listDetailCartItem.sumOf { it.getProductPrice() * it.quantity}
         totalPrice += shipFee
-
-
+        totalPrice -= discountFee
         return totalPrice
     }
 
@@ -255,6 +308,16 @@ class CheckoutActivity : AppCompatActivity() {
         bottomSheet.peekHeight = 0
 
         paymentMethodView.setOnClickListener {
+            bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+    }
+
+    private fun initializeBottomSheetPromotion() {
+        val bottomSheet = BottomSheetBehavior.from(findViewById(R.id.coupn_bottom_sheet))
+        bottomSheet.isHideable = true
+        bottomSheet.peekHeight = 0
+
+        promotionView.setOnClickListener {
             bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }

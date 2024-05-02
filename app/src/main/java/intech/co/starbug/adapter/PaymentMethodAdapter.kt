@@ -61,7 +61,7 @@ class PaymentMethodAdapter(val listPaymethod: List<String>, val listLogo: List<I
             }
             else {
                 checkBox.isChecked = false
-                (this as MaterialCardView).strokeColor = resources.getColor(R.color.LightGrey)
+                (this as MaterialCardView).strokeColor = resources.getColor(R.color.black)
 
             }
         }

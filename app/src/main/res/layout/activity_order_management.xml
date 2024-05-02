@@ -17,6 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,72 +50,92 @@
                         />
 
                     <!-- Tiêu đề -->
-                    <TextView
-                        android:id="@+id/textViewTitle"
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:text="QUẢN LÝ ĐƠN HÀNG"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/bungee"
-                        android:textSize="20sp"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        />
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/textViewTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:text="QUẢN LÝ ĐƠN HÀNG"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/bungee"
+                            android:textSize="20sp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+                        <Spinner
+                            android:id="@+id/spinner_branch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle_rounded"
+                            android:padding="10dp"
+                            />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabAppLayout"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:background="@android:color/transparent"
+                android:scrollbarStyle="outsideOverlay"
                 >
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Waiting Approved"
-                    android:textColor="@color/colorPrimary" />
-
-                <com.google.android.material.tabs.TabItem
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabAppLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:text="Preparing" />
+
+                    android:background="@android:color/transparent"
+                    >
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Waiting approved"
+                         />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:text="Prepare" />
 
 
 
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabItemMenuManagement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
-                    android:text="Ready to pickup" />
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tabItemMenuManagement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:text="Pick-up" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
-                    android:text="Delivering" />
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:text="Deliver" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
-                    android:text="Finished" />
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:text="Finished" />
 
-            </com.google.android.material.tabs.TabLayout>
+                </com.google.android.material.tabs.TabLayout>
+
+            </HorizontalScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

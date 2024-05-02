@@ -2,6 +2,7 @@ package intech.co.starbug.model
 
 
 import java.io.Serializable
+import java.text.SimpleDateFormat
 import kotlin.reflect.full.memberProperties
 
 
@@ -14,6 +15,7 @@ class PromotionModel(
     var startDay: String = "",
     var endDay: String = "",
     var timestamps: String = "",
+    var listUser: List<String> = listOf()
 ): Serializable
 {
     fun setter(key: String, value: Any) {
@@ -28,6 +30,18 @@ class PromotionModel(
                 "kotlin.Boolean" -> propertyField.setBoolean(this, value.toString().toBoolean())
             }
         }
+    }
+
+    fun getStartDate(): Long {
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val date = sdf.parse(startDay)
+        return date.time
+    }
+
+    fun getEndDate(): Long {
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val date = sdf.parse(endDay)
+        return date.time
     }
 
 

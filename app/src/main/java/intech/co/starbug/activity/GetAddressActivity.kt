@@ -120,6 +120,11 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         findViewById<MaterialButton>(R.id.navigate_btn).setOnClickListener {
+            if(autocomplete_addr.text.toString().isEmpty() || autocomplete_district.text.toString().isEmpty() || edt_city.editText?.text.toString().isEmpty())
+            {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val intent = intent
             intent.putExtra("address", getFullAddr())
             intent.putExtra("lat", desMarker?.position?.latitude)
@@ -396,7 +401,10 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = false
         mMap.uiSettings.isCompassEnabled = false
         getDeviceLocation()
-
+        mMap.setOnMapClickListener {
+            Log.i(TAG, "Location: ${it.latitude}, ${it.longitude}")
+            setDesLocationMarker(it)
+        }
 
         mMap.setOnMarkerDragListener(object: OnMarkerDragListener {
             override fun onMarkerDrag(p0: Marker) {

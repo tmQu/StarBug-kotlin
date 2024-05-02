@@ -5,14 +5,16 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.textfield.TextInputLayout
 import intech.co.starbug.R
 
 class ReasonDialog: DialogFragment() {
     internal lateinit var listener: ConfirmListener
 
     internal interface ConfirmListener {
-        fun onYesButton()
+        fun onYesButton(reason: String)
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,10 +36,18 @@ class ReasonDialog: DialogFragment() {
             val viewDialog = inflater.inflate(R.layout.cancel_dialog, null)
             builder
                 .setView(viewDialog)
-
+            val reason = viewDialog.findViewById<TextInputLayout>(R.id.reason_input_layout)
             viewDialog.findViewById<Button>(R.id.yes_btn).setOnClickListener {
-                listener.onYesButton()
-                this.dismiss()
+                if(reason.editText?.text.toString().isNotEmpty())
+                {
+                    listener.onYesButton(reason.editText?.text.toString())
+                    this.dismiss()
+                }
+                else
+                {
+                    reason.error = "Please enter reason"
+                }
+
             }
             viewDialog.findViewById<Button>(R.id.no_btn).setOnClickListener {
                 this.dismiss()

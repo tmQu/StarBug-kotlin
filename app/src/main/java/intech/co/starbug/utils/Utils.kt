@@ -28,6 +28,12 @@ class Utils {
         fun formatAvgRate(avgRate: Double): String {
             return String.format("%.1f", avgRate)
         }
+
+        fun getRemainDate(endDate: Long): Int {
+            val currentDate = Date()
+            val diff = endDate - currentDate.time
+            return (diff / (1000 * 60 * 60 * 24)).toInt()
+        }
     }
 
 

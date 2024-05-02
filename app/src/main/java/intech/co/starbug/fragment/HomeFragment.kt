@@ -49,6 +49,7 @@ import intech.co.starbug.adapter.SliderAdapter
 import intech.co.starbug.constants.CONSTANT
 import intech.co.starbug.constants.SETTING
 import intech.co.starbug.model.ProductModel
+import intech.co.starbug.model.PromotionModel
 import intech.co.starbug.model.SliderModel
 import me.relex.circleindicator.CircleIndicator3
 
@@ -384,16 +385,16 @@ class HomeFragment : Fragment() {
         val sliderRef = FirebaseDatabase.getInstance().getReference("Sliders")
         sliderRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val listSlider = mutableListOf<SliderModel>()
+                val listSlider = mutableListOf<PromotionModel>()
                 for (sliderSnapshot in snapshot.children) {
-                    val slider = sliderSnapshot.getValue(SliderModel::class.java)
+                    val slider = sliderSnapshot.getValue(PromotionModel::class.java)
                     if (slider != null) {
                         listSlider.add(slider)
                     }
                 }
-                Log.i("HomeFragment", "Slider: ${listSlider[0].imgUrl}")
+                Log.i("HomeFragment", "Slider: ${listSlider[0].img}")
 
-                val adapter = SliderAdapter(listSlider.map { it.imgUrl }, 24F)
+                val adapter = SliderAdapter(listSlider.map { it.img }, 24F)
 
                 slider.adapter = adapter
                 val handler: Handler = Handler(Looper.getMainLooper())

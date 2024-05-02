@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
+        android:background="@drawable/background"
         >
         <TextView
             android:id="@+id/deliver_title"
@@ -29,8 +30,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/deliver_title"
             android:padding="16dp"
-            app:strokeColor="@color/Gray"
-            app:strokeWidth="2dp"
+            app:strokeColor="@color/black"
+            app:strokeWidth="1dp"
             app:cardCornerRadius="15dp"
             app:contentPadding="15dp"
             android:layout_marginTop="10dp"
@@ -156,7 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            app:strokeWidth="2dp"
+            app:strokeWidth="1dp"
             android:layout_margin="5dp"
             app:strokeColor="@color/LightGrey"
             app:cardCornerRadius="15dp"
@@ -202,15 +203,40 @@
 
 
         </com.google.android.material.card.MaterialCardView>
-
-
+        <LinearLayout
+            android:id="@+id/coupon_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/payment_method"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coupon"
+                android:textColor="@color/colorSecondPrimary"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                />
+            <TextView
+                android:id="@+id/promotion_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_rounded"
+                android:drawableStart="@drawable/ic_vouncher"
+                android:text="Add your coupon"
+                android:padding="20dp"
+                android:drawablePadding="5dp"
+                />
+        </LinearLayout>
         <LinearLayout
             android:padding="10dp"
             android:layout_marginTop="30dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/payment_method"
+            app:layout_constraintTop_toBottomOf="@id/coupon_group"
             >
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -225,7 +251,7 @@
                     android:id="@+id/product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100,000VNĐ"
+                    android:text="0VNĐ"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_alignParentRight="true"/>
@@ -340,6 +366,37 @@
             android:layout_marginBottom="30dp"
             />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/coupn_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_layout"
+        android:clickable="true"
+        android:elevation="16dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:orientation="vertical"
+        >
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="40dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:background="@color/colorPrimary"
+            app:shapeAppearanceOverlay="@style/rounded" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_margin = "10dp"
+            android:id="@+id/coupon_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:layout_marginBottom="30dp"
+            />
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/paypal_container"
         android:layout_width="0dp"
