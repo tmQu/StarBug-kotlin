@@ -82,7 +82,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.admin.account.AccountManagement"
-            android:exported="true"></activity>
+            android:exported="false"></activity>
         <activity
             android:name=".activity.CheckoutActivity"
             android:exported="true"
@@ -115,11 +115,8 @@
             android:name=".activity.ContainerActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.StaffManagementActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.admin.order.OrderManagementActivity"
-            android:exported="true"></activity>
+            android:exported="false" />
         <activity
             android:name=".activity.admin.product.ProductManagementActivity"
             android:exported="false"

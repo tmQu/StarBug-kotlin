@@ -53,7 +53,7 @@ class StaffManagementActivity : AppCompatActivity() {
 
         addBtn.setOnClickListener {
             val intent = Intent(this, AddStaffManagementActivity::class.java)
-            startActivityForResult(intent, 1)
+            startActivity(intent)
         }
     }
 
@@ -82,73 +82,5 @@ class StaffManagementActivity : AppCompatActivity() {
                 println("Firebase database error: ${error.message}")
             }
         })
-    }
-
-    // Add new account to Firebase
-    private fun addAccount(account: UserModel) {
-        val id = usersReference.push().key
-        id?.let {
-            account.uid = id
-            usersReference.child(it).setValue(account)
-        }
-    }
-
-    // Update account in Firebase
-    private fun updateAccount(id: String, account: UserModel) {
-        usersReference.child(id).setValue(account)
-    }
-
-    // Delete account from Firebase
-    private fun deleteAccount(id: String, account: UserModel) {
-        usersReference.child(id).removeValue()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        val id = data?.getStringExtra("Id")
-        val fullName = data?.getStringExtra("FullName")
-        val email = data?.getStringExtra("Email")
-        val role = data?.getStringExtra("Role")
-        val phone = data?.getStringExtra("Phone")
-        val password = data?.getStringExtra("Password")
-
-        if (resultCode == RESULT_OK && requestCode == 2) {
-            val delete = data?.getStringExtra("Delete")
-
-            val account = UserModel(
-                id?: "",
-                email ?: "",
-                fullName ?: "",
-                password ?: "",
-                phone ?: "",
-                role ?: ""
-            )
-
-            Log.d("Full Account", "Account: ${account.email}")
-
-            if (delete == "true") {
-                deleteAccount(id!!, account)
-                adapter.notifyDataSetChanged()
-            } else {
-                updateAccount(id!!, account)
-                adapter.notifyDataSetChanged()
-            }
-        }
-
-        if (resultCode == RESULT_OK && requestCode == 1) {
-
-            val account = UserModel(
-                id?: "",
-                email ?: "",
-                fullName ?: "",
-                password ?: "",
-                phone ?: "",
-                role ?: ""
-            )
-
-            addAccount(account)
-            adapter.notifyDataSetChanged()
-        }
     }
 }

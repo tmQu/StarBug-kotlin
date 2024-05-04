@@ -12,7 +12,10 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import intech.co.starbug.R
+import intech.co.starbug.model.UserModel
 import java.util.regex.Pattern
 
 class AddStaffManagementActivity : AppCompatActivity() {
@@ -84,17 +87,22 @@ class AddStaffManagementActivity : AppCompatActivity() {
 
 
     private fun addData() {
-        val resultIntent = intent.apply {
-            putExtra("FullName", fullName.editText?.text.toString())
-            putExtra("Email", email.editText?.text.toString())
-            putExtra("Phone", phoneNo.editText?.text.toString())
-            putExtra("Password", password.editText?.text.toString())
-            putExtra("Role", "Admin")
-        }
-        authenSignUp(email.editText?.text.toString(), password.editText?.text.toString())
-        setResult(RESULT_OK, resultIntent)
-        Toast.makeText(this, "Account added successfully", Toast.LENGTH_SHORT).show()
-        finish()
+        val fullNameValue = fullName.editText?.text.toString()
+        val emailValue = email.editText?.text.toString()
+        val phoneValue = phoneNo.editText?.text.toString()
+        val passwordValue = password.editText?.text.toString()
+        val roleValue = "Admin"
+
+        val account = UserModel(
+            "",
+            emailValue,
+            fullNameValue,
+            passwordValue,
+            phoneValue,
+            roleValue
+        )
+
+        authenSignUp(emailValue, passwordValue, account)
     }
 
     private fun showConfirmationDialog(title: String, message: String, onConfirm: () -> Unit) {
@@ -154,7 +162,7 @@ class AddStaffManagementActivity : AppCompatActivity() {
         }
     }
 
-    private fun authenSignUp(emailValue: String, passwordValue: String) {
+    private fun authenSignUp(emailValue: String, passwordValue: String, account: UserModel) {
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(emailValue, passwordValue)
             .addOnCompleteListener { task ->
@@ -169,6 +177,7 @@ class AddStaffManagementActivity : AppCompatActivity() {
                     if (user != null) {
                         user.sendEmailVerification()
                         Toast.makeText(this, "Please verify your email", Toast.LENGTH_SHORT).show()
+                        addAccountToFirebase(account)
                     }
                 } else {
                     if (task.exception?.message == "The email address is already in use by another account.") {
@@ -183,5 +192,16 @@ class AddStaffManagementActivity : AppCompatActivity() {
                     ).show()
                 }
             }
+    }
+
+    private fun addAccountToFirebase(account: UserModel) {
+        val usersReference = FirebaseDatabase.getInstance().getReference("User")
+        val id = usersReference.push().key
+        id?.let {
+            account.uid = id
+            usersReference.child(it).setValue(account)
+            Toast.makeText(this, "Account added successfully", Toast.LENGTH_SHORT).show()
+            finish()
+        }
     }
 }

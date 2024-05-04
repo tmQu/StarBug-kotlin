@@ -9,7 +9,9 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import intech.co.starbug.R
+import intech.co.starbug.model.UserModel
 
 class UpdateStaffManagementActivity : AppCompatActivity() {
 
@@ -65,7 +67,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         deleteBtn.setOnClickListener {
             showConfirmationDialog(title = "Delete Account",
                 message = "Are you sure you want to delete this account?",
-                onConfirm = { deleteData() })
+                onConfirm = { checkAccountExistsInFirebaseAuth(emailData!!) })
         }
 
         role.setOnClickListener() {
@@ -94,7 +96,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         val resultIntent = intent.apply {
             putExtra("Id", idData)
             putExtra("FullName", fullName.editText?.text.toString())
-            putExtra("Email", email.editText?.text.toString())
+            putExtra("Email", emailData) // Keep the original email
             putExtra("Phone", phoneNo.editText?.text.toString())
             putExtra("Password", password.editText?.text.toString())
             putExtra("Role", "Admin")
@@ -102,23 +104,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         updatePassword(emailData!!, passwordData!!, password.editText?.text.toString())
         setResult(RESULT_OK, resultIntent)
         Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show()
-        finish()
-    }
-
-    private fun deleteData() {
-        Log.d("AccountItemActivity", "deleteData: ")
-        val resultIntent = intent.apply {
-            putExtra("Id", idData)
-            putExtra("FullName", fullName.editText?.text.toString())
-            putExtra("Email", email.editText?.text.toString())
-            putExtra("Phone", phoneNo.editText?.text.toString())
-            putExtra("Password", password.editText?.text.toString())
-            putExtra("Role", "Admin")
-            putExtra("Delete", "true")
-        }
-        setResult(RESULT_OK, resultIntent)
-        deleteAccountFirebase(emailData!!, passwordData!!)
-        Toast.makeText(this, "Account deleted", Toast.LENGTH_SHORT).show()
+        updateAccountInFirebase(idData!!)
         finish()
     }
 
@@ -130,25 +116,6 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
             }.setNegativeButton("No") { dialog, _ ->
                 dialog.cancel()
             }.show()
-    }
-
-    private fun showRoleDialog() {
-        var selectedRole = roleOptions[0] // Default selected role
-
-        Log.d("AccountItemActivity", "showRoleDialog: $roleOptions")
-        role.editText?.setText(selectedRole)
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose Role").setSingleChoiceItems(roleOptions, 0) { _, which ->
-            selectedRole = roleOptions[which]
-        }.setPositiveButton("OK") { dialog, _ ->
-            role.editText?.setText(selectedRole)
-            dialog.dismiss()
-        }.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.cancel()
-        }
-
-        val alertDialog = builder.create()
-        alertDialog.show()
     }
 
     private fun updatePassword(email: String, oldPassword: String, newPassword: String) {
@@ -184,6 +151,46 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkAccountExistsInFirebaseAuth(email: String) {
+        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+                val isUserExists = task.result?.signInMethods?.isNotEmpty() ?: false
+                if (isUserExists) {
+                    deleteAccountFirebase(emailData!!, passwordData!!)
+                } else {
+                    Toast.makeText(this, "Account does not exist", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun updateAccountInFirebase(id: String) {
+        val usersReference = FirebaseDatabase.getInstance().getReference("User")
+        val updatedUser = UserModel(
+            uid = id,
+            email = emailData!!,
+            name = fullName.editText?.text.toString(),
+            password = password.editText?.text.toString(),
+            phoneNumber = phoneNo.editText?.text.toString(),
+            role = "Admin"
+        )
+        usersReference.child(id).setValue(updatedUser).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(this, "Account updated in database successfully", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Log.d(
+                    "UpdateAccountDatabase",
+                    "Failed to update account in database: ${task.exception?.message}"
+                )
+                Toast.makeText(
+                    this,
+                    "Failed to update account in database: ${task.exception?.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
     private fun deleteAccountFirebase(email: String, password: String) {
         val auth = FirebaseAuth.getInstance()
         val credential = EmailAuthProvider.getCredential(email, password)
@@ -196,6 +203,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
                         Log.d("DeleteAccount", "User account deleted.")
                         Toast.makeText(this, "Account deleted successfully", Toast.LENGTH_SHORT)
                             .show()
+                        deleteAccountFromDatabase(idData!!)
                     } else {
                         Log.d(
                             "DeleteAccount",
@@ -217,4 +225,24 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         }
     }
 
+    private fun deleteAccountFromDatabase(id: String) {
+        val usersReference = FirebaseDatabase.getInstance().getReference("User")
+        usersReference.child(id).removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(this, "Account deleted from database successfully", Toast.LENGTH_SHORT)
+                    .show()
+                finish()
+            } else {
+                Log.d(
+                    "DeleteAccountDatabase",
+                    "Failed to delete account from database: ${task.exception?.message}"
+                )
+                Toast.makeText(
+                    this,
+                    "Failed to delete account from database: ${task.exception?.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
 }
