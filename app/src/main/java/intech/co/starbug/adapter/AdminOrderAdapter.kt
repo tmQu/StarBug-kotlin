@@ -26,7 +26,7 @@ import intech.co.starbug.utils.Utils
 class AdminOrderAdapter(var allOrder: List<OrderModel>, val context: Context, var branchName: String): RecyclerView.Adapter<AdminOrderAdapter.ViewHolder>() {
 
     var onItemClick: ((View,Int) -> Unit)? = null
-    var listOrder: List<OrderModel> = allOrder.filter { it.paymentInforModel.branchName == branchName || it.paymentInforModel.branchName == ""}.sortedByDescending { it.orderDate }
+    var listOrder: List<OrderModel> = allOrder.filter { it.paymentInforModel.branchName == branchName || branchName == "All"}.sortedByDescending { it.orderDate }
     inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         fun bind(order: OrderModel) {
         }
@@ -41,7 +41,7 @@ class AdminOrderAdapter(var allOrder: List<OrderModel>, val context: Context, va
 
     private fun filterOrderList()
     {
-        listOrder = allOrder.filter { it.paymentInforModel.branchName == branchName || it.paymentInforModel.branchName == "All"}
+        listOrder = allOrder.filter { it.paymentInforModel.branchName == branchName || branchName == "All"}
         listOrder.sortedByDescending { it.orderDate }
     }
 

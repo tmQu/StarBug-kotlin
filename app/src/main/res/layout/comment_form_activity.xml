@@ -91,7 +91,10 @@
                     android:layout_gravity="end"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:numStars="5"/>
+                    android:numStars="5"
+                    android:progressTint="#FBBE21"
+                    android:stepSize="0.5"
+                    />
 
 
                 <TextView
@@ -111,7 +114,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/rate_food"
                     app:layout_constraintRight_toRightOf="parent"
-
+                    android:progressTint="#FBBE21"
+                    android:stepSize="0.5"
                     android:numStars="5"/>
 
                 <TextView
@@ -131,7 +135,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/rate_package"
                     app:layout_constraintRight_toRightOf="parent"
-
+                    android:progressTint="#FBBE21"
+                    android:stepSize="0.5"
                     android:numStars="5"/>
 
 

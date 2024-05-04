@@ -86,7 +86,7 @@ class CheckoutActivity : AppCompatActivity() {
         val DEFAULT_PAY_METHOD = "Zalo Pay"
     }
 
-
+    private var note: String = ""
     private lateinit var nameEdtv : TextInputEditText
     private lateinit var phoneEdtv : TextInputEditText
     private lateinit var addressTv: TextView
@@ -186,7 +186,7 @@ class CheckoutActivity : AppCompatActivity() {
         else
             listDetailCartItem = intent.getParcelableArrayListExtra("listDetailOrder")!!
 
-
+        note = intent.getStringExtra("note") ?: ""
         var mLastClickTime = 0L
         findViewById<Button>(R.id.btn_buy).setOnClickListener {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
@@ -420,7 +420,7 @@ class CheckoutActivity : AppCompatActivity() {
         val key = dbRef.push().key
         val listStatus = resources.getStringArray(R.array.order_status)
         if (key != null) {
-            val myOrder = OrderModel(Date().time, listDetailCartItem.toList(), paymentInfor, FirebaseAuth.getInstance().currentUser!!.uid, listStatus[0], token, calculateTotalPrice())
+            val myOrder = OrderModel(Date().time, listDetailCartItem.toList(), paymentInfor, FirebaseAuth.getInstance().currentUser!!.uid, listStatus[0], token, calculateTotalPrice(), note)
             myOrder.id = key
             dbRef.child(key).setValue(myOrder).addOnSuccessListener {
                 Log.d("CheckoutActivity", "Order saved successfully")

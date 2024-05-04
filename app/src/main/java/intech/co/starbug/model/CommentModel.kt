@@ -17,5 +17,8 @@ class CommentModel(
     var user_uid: String = "",
     val date_comment: Long = Date().time
 ) : Serializable {
-
+    fun getDate(): String {
+        val date = Date(date_comment)
+        return date.toString()
+    }
 }

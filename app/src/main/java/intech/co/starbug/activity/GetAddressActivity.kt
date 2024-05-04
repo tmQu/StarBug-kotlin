@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -20,11 +21,13 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ListAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ApiException
@@ -53,12 +56,15 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.api.net.SearchByTextRequest
 import com.google.android.libraries.places.api.net.SearchByTextResponse
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.play.integrity.internal.i
 import intech.co.starbug.BuildConfig
 import intech.co.starbug.R
 import intech.co.starbug.adapter.MapPredictionAdapter
+import org.json.JSONObject
+import java.net.URL
 import java.util.Arrays
 
 
@@ -81,10 +87,11 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var edt_city: TextInputLayout
 
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var bottomNavigation: BottomSheetBehavior<ConstraintLayout>
 
 
     private var desMarker: Marker? = null
-    private lateinit var full_addr: String
+    private var full_addr = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -112,21 +119,27 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         autocomplete_district = findViewById(R.id.autocomplete_district)
         edt_city = findViewById(R.id.edt_city)
 
+        bottomNavigation = BottomSheetBehavior.from(findViewById(R.id.bottom_choose_location))
+        bottomNavigation.isHideable = true
+        bottomNavigation.state = BottomSheetBehavior.STATE_HIDDEN
+
         handleAutocompleteAddr()
         handleAutocompleteDistrict()
 
         findViewById<ImageButton>(R.id.here_btn).setOnClickListener {
             getDeviceLocation()
+            reverseGeocoding()
+
         }
 
-        findViewById<MaterialButton>(R.id.navigate_btn).setOnClickListener {
+        findViewById<MaterialButton>(R.id.choose_location).setOnClickListener {
             if(autocomplete_addr.text.toString().isEmpty() || autocomplete_district.text.toString().isEmpty() || edt_city.editText?.text.toString().isEmpty())
             {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val intent = intent
-            intent.putExtra("address", getFullAddr())
+            intent.putExtra("address", full_addr)
             intent.putExtra("lat", desMarker?.position?.latitude)
             intent.putExtra("lng", desMarker?.position?.longitude)
             Log.i(TAG, "Lat: ${desMarker?.position?.latitude} Lng: ${desMarker?.position?.longitude}")
@@ -144,7 +157,8 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getFullAddr(): String
     {
-        full_addr = autocomplete_addr.text.toString() + " " + autocomplete_district.text.toString() + " " + edt_city.editText?.text.toString()
+
+        full_addr =  autocomplete_addr.text.toString() + " " + autocomplete_district.text.toString() + " thành phố " + edt_city.editText?.text.toString()
         return full_addr
     }
 
@@ -201,47 +215,51 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                 Log.i(TAG, "Place found: ${place.address}")
                 var temp_addr = ""
                 val components = place.addressComponents
-                if(replace == true)
+
+                // get ward
+                val ward = place.address
+                val ward_split = ward.split(",")
+                var wardName = ""
+                for (i in ward_split)
                 {
-                    // get ward
-                    val ward = place.address
-                    val ward_split = ward.split(",")
-                    var wardName = ""
-                    for (i in ward_split)
+                    if(i.contains("Phường") || i.contains("phường"))
                     {
-                        if(i.contains("Phường") || i.contains("phường"))
-                        {
-                            wardName = i
-                        }
+                        wardName = i
                     }
-
-                    for (component in components.asList()) {
-                        Log.i(TAG, "Component: ${component.types} ${component.name}")
-                        when {
-                            "street_number" in component.types -> {
-                                temp_addr += component.name + " "
-                                Log.i(TAG, "Temp addr: $temp_addr")
-                            }
-                            "route" in component.types -> temp_addr += component.name + " "
-                            "sublocality" in component.types -> temp_addr += component.name + " "
-                            "locality" in component.types -> temp_addr += component.name
-                            "administrative_area_level_2" in component.types -> autocomplete_district.setText(component.name)
-                        }
-                    }
-                    if(wardName != "" && !temp_addr.contains("Phường") && !temp_addr.contains("phường"))
-                    {
-                        temp_addr += ", $wardName"
-                    }
-                    {
-                        temp_addr += ", $wardName"
-                    }
-                    autocomplete_addr.setText(temp_addr)
-
-
                 }
 
-                setDesLocationMarker(place.latLng)
-                moveCamera(place.latLng, 15f)
+                for (component in components.asList()) {
+                    Log.i(TAG, "Component: ${component.types} ${component.name}")
+                    when {
+                        "street_number" in component.types -> {
+                            temp_addr += component.name + " "
+                            Log.i(TAG, "Temp addr: $temp_addr")
+                        }
+                        "route" in component.types -> temp_addr += component.name + " "
+                        "sublocality" in component.types -> temp_addr += component.name + " "
+                        "locality" in component.types -> temp_addr += component.name
+                        "administrative_area_level_2" in component.types -> autocomplete_district.setText(component.name)
+                    }
+                }
+                if(wardName != "" && !temp_addr.contains("Phường") && !temp_addr.contains("phường"))
+                {
+                    temp_addr += ", $wardName"
+                }
+
+                bottomNavigation.state = BottomSheetBehavior.STATE_EXPANDED
+                findViewById<TextView>(R.id.address).text = place.address
+
+
+                if (replace)
+                {
+                    autocomplete_addr.setText(temp_addr)
+
+                }
+                bottomNavigation.state = BottomSheetBehavior.STATE_EXPANDED
+                findViewById<TextView>(R.id.address).text = getFullAddr()
+
+                setDesLocationMarker(place.latLng, getFullAddr())
+                moveCamera(place.latLng, 20f)
 
             }
             .addOnFailureListener {
@@ -249,10 +267,85 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
-    private fun setDesLocationMarker(latLng: LatLng) {
+    private fun reverseGeocoding()
+    {
+        val latLng = "${desMarker?.position?.latitude},${desMarker?.position?.longitude}"
+        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng}&result_type=street_address&key=${BuildConfig.MAPS_API_KEY}"
+        val request = ReverseGeocodingRequest(this, url)
+        request.execute()
+    }
+
+    fun updateDesAddress(result: String?)
+    {
+        if(result != null)
+        {
+            val jsonObject = JSONObject(result)
+            val results = jsonObject.getJSONArray("results")
+            if(results.length() > 0)
+            {
+                val address = results.getJSONObject(0).getString("formatted_address")
+                // get address component
+                val components = results.getJSONObject(0).getJSONArray("address_components")
+                var temp_addr = ""
+                for (i in 0 until components.length())
+                {
+                    val component = components.getJSONObject(i)
+                    val types = component.getJSONArray("types")
+                    if(types.length() > 0)
+                    {
+                        when(types.getString(0))
+                        {
+                            "street_number" -> temp_addr += component.getString("long_name") + " "
+                            "route" -> temp_addr += component.getString("long_name") + " "
+                            "sublocality" -> temp_addr += component.getString("long_name") + " "
+                            "locality" -> temp_addr += component.getString("long_name")
+                            "administrative_area_level_2" -> autocomplete_district.setText(component.getString("long_name"))
+                        }
+                    }
+                }
+                autocomplete_addr.setText(temp_addr)
+                findViewById<TextView>(R.id.address).text = address
+                full_addr = address
+
+            }
+            bottomNavigation.state = BottomSheetBehavior.STATE_EXPANDED
+
+        }
+        else {
+            findViewById<TextView>(R.id.address).text = getFullAddr()
+        }
+    }
+
+    class ReverseGeocodingRequest(private val activity: GetAddressActivity, private val url: String) :
+        AsyncTask<Void?, Void?, String?>() {
+        override fun doInBackground(vararg params: Void?): String? {
+            val result: String
+            val handler = Handler(Looper.getMainLooper())
+            try {
+                val data = url.let { URL(it).readText() }
+                result = data
+            } catch (e: Exception) {
+                handler.post {
+                    Toast.makeText(activity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+                return null
+            }
+            return result
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            activity.updateDesAddress(result)
+        }
+
+
+
+    }
+
+    private fun setDesLocationMarker(latLng: LatLng, address: String) {
         desMarker?.remove()
         val markerOptions = MarkerOptions().position(latLng)
-            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).draggable(true)
+            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).draggable(true).title("Drag me").snippet(address)
         desMarker = mMap.addMarker(markerOptions)
     }
 
@@ -314,41 +407,7 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-//    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_WIFI_STATE])
-//    private fun getDeviceLocation()
-//    {
-//        if (locationPermissionGranted) {
-//            // Use fields to define the data types to return.
-//            val placeFields = listOf(Place.Field.NAME, Place.Field.LAT_LNG)
-//
-//            val request = FindCurrentPlaceRequest.newInstance(placeFields)
-//
-//            // Get the likely places - that is, the businesses and other points of interest that
-//            // are the best match for the device's current location.
-//            val placeResult = placesClient.findCurrentPlace(request)
-//            placeResult.addOnCompleteListener { task ->
-//                if (task.isSuccessful && task.result != null) {
-//                    val likelyPlaces = task.result
-//
-//                    val count = 1
-//                    var i = 0
-//                    for (placeLikelihood in likelyPlaces?.placeLikelihoods ?: emptyList()) {
-//                        // Build a list of likely places to show the user.
-////                        autocomplete_addr.setText(placeLikelihood.place.address)
-////                        address = placeLikelihood.place.address
-//                        currentPosition = placeLikelihood.place.latLng
-//                        moveCamera(currentPosition, 15f)
-//                        i++
-//                        if (i > count - 1) {
-//                            break
-//                        }
-//                    }
-//                } else {
-//                    Log.e(TAG, "Exception: %s", task.exception)
-//                }
-//            }
-//        }
-//    }
+
 
     private fun getDeviceLocation()
     {
@@ -365,8 +424,9 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                         if(location != null)
                         {
                             Log.i("Location", "Location: ${location.latitude}, ${location.longitude}")
-                            setDesLocationMarker(LatLng(location.latitude, location.longitude))
-                            moveCamera(LatLng(location.latitude, location.longitude), 15f)
+                            setDesLocationMarker(LatLng(location.latitude, location.longitude), "")
+
+                            moveCamera(LatLng(location.latitude, location.longitude), 20f)
                         }
                     }
                 }
@@ -401,10 +461,6 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = false
         mMap.uiSettings.isCompassEnabled = false
         getDeviceLocation()
-        mMap.setOnMapClickListener {
-            Log.i(TAG, "Location: ${it.latitude}, ${it.longitude}")
-            setDesLocationMarker(it)
-        }
 
         mMap.setOnMarkerDragListener(object: OnMarkerDragListener {
             override fun onMarkerDrag(p0: Marker) {
@@ -422,7 +478,7 @@ class GetAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         mMap.setOnMapLongClickListener {
-            setDesLocationMarker(it)
+            setDesLocationMarker(it, "")
 
         }
 

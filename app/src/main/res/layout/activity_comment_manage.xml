@@ -110,7 +110,7 @@
         app:endIconMode="clear_text"
         app:endIconTint="#989898"
         app:hintEnabled="false"
-        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         android:textColor="#989898"
         android:textColorHint="#989898"

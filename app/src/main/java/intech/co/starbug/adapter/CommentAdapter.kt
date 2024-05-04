@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import intech.co.starbug.R
 import intech.co.starbug.model.CommentModel
+import intech.co.starbug.utils.Utils
 
 const val RV = 1
 const val VP = 2
@@ -27,10 +28,11 @@ class CommentAdapter(val listComment: List<CommentModel>, val typeLayout: Int): 
     inner class CommentViewHolder(val view: View): RecyclerView.ViewHolder(view)
     {
         val userUid = FirebaseAuth.getInstance().currentUser?.uid
-         val avatar = view.findViewById<ImageView>(R.id.avatar)
-         val user_name = view.findViewById<TextView>(R.id.user_name)
-         val rating = view.findViewById<RatingBar>(R.id.ratingBar)
-         val comment_txt = view.findViewById<TextView>(R.id.txt_comment)
+        val avatar = view.findViewById<ImageView>(R.id.avatar)
+        val user_name = view.findViewById<TextView>(R.id.user_name)
+        val rating = view.findViewById<RatingBar>(R.id.ratingBar)
+        val comment_txt = view.findViewById<TextView>(R.id.txt_comment)
+        val dateComment = view.findViewById<TextView>(R.id.date_comment)
 
         fun bind(comment: CommentModel)
         {
@@ -51,6 +53,7 @@ class CommentAdapter(val listComment: List<CommentModel>, val typeLayout: Int): 
             user_name.text = comment.user_name
             rating.rating = comment.rating.toFloat()
             comment_txt.text = comment.comment
+            dateComment.text = Utils.convertCommentDate(comment.date_comment)
             if(typeLayout == RV)
             {
                 if(comment.reply != "")

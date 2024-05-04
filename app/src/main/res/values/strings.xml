@@ -111,5 +111,6 @@
     <string name="city">city</string>
     <string name="district">district</string>
 
+    <string name ="cod">Cash on Delivery</string>
 
 </resources>

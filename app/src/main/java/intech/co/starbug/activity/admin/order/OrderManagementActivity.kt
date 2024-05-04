@@ -75,12 +75,17 @@ class OrderManagementActivity : AppCompatActivity() {
             listSpinner.add(it.name)
         }
         listSpinner.add("All")
+        Log.i("OrderManagementActivitys", "Branch: ${listSpinner.size}")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listSpinner)
         spinnerBranch.adapter = adapter
 
         spinnerBranch.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                branchName = listBranch[position].name
+                if (position == listSpinner.size - 1) {
+                    branchName = "All"
+                } else {
+                    branchName = listBranch[position].name
+                }
                 orderAdapter.updateBranch(branchName)
             }
 

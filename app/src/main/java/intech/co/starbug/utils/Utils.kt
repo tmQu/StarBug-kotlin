@@ -17,6 +17,28 @@ class Utils {
             return date
         }
 
+        fun convertCommentDate(date: Long): String
+        {
+            val dateRemain = getPassDate(date)
+            if(dateRemain == 0)
+            {
+                return "Today"
+            }
+            else if(dateRemain == 1)
+            {
+                return "Yesterday"
+            }
+            else
+            {
+                if (dateRemain  > 30)
+                {
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+                    return dateFormat.format(Date(date))
+                }
+                return dateRemain.toString() + " days ago"
+            }
+        }
+
         fun convertVNDtoUSD(calculateTotalPrice: Int): Double {
             // get the ratio from the inter
             val ratio = 25000
@@ -32,6 +54,12 @@ class Utils {
         fun getRemainDate(endDate: Long): Int {
             val currentDate = Date()
             val diff = endDate - currentDate.time
+            return (diff / (1000 * 60 * 60 * 24)).toInt()
+        }
+
+        fun getPassDate(endDate: Long): Int {
+            val currentDate = Date()
+            val diff = currentDate.time - endDate
             return (diff / (1000 * 60 * 60 * 24)).toInt()
         }
     }

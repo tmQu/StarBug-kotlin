@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -42,7 +43,7 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
     private lateinit var mLayout: View
     private var listDetailCart = mutableListOf<DetailCartItem>()
     private lateinit var cartItemDao: CartItemDAO
-
+    private lateinit var noteView: TextInputLayout
     private lateinit var productRef: DatabaseReference
     private var job: Job? = null
 
@@ -68,7 +69,7 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
         productRef = FirebaseDatabase.getInstance().getReference("Products")
         queryProduct()
 
-
+        noteView = mLayout.findViewById(R.id.note)
         buyBtn = mLayout.findViewById<Button>(R.id.btn_buy)
         buyBtn.setOnClickListener {
             if(listDetailCart.isEmpty())
@@ -78,6 +79,7 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
             }
             val intent = Intent(activity, CheckoutActivity::class.java)
             intent.putExtra("listDetailOrder", ArrayList(listDetailCart))
+            intent.putExtra("note", noteView.editText?.text.toString())
             startActivity(intent)
         }
         return mLayout
@@ -133,13 +135,11 @@ class CartFragment : Fragment(), CartAdapter.ButtonClickListener {
         recyclerView.adapter = cartAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val totalPriceView = mLayout.findViewById<TextView>(R.id.total_price)
-        val productPriceView = mLayout.findViewById<TextView>(R.id.product_price)
         var totalPrice = 0
         for (item in listDetailCart)
         {
             totalPrice += item.quantity * item.getProductPrice()
         }
-        productPriceView.text = Utils.formatMoney(totalPrice)
         totalPriceView.text = Utils.formatMoney(totalPrice)
     }
 

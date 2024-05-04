@@ -9,7 +9,8 @@
     tools:context=".activity.admin.order.DetailAdminOrder">
 
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
@@ -17,12 +18,14 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:fillViewport="true"
+        >
 
         <LinearLayout
             android:id="@+id/bodyLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
@@ -39,7 +42,7 @@
                 android:fontFamily="@font/bungee"
                 android:text="Detail Order"
                 android:textColor="@color/colorPrimary"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/orderId"
@@ -51,6 +54,42 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/bungee"
+                android:text="This order is not paid"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+            <com.shuhart.stepview.StepView
+                android:id="@+id/step_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sv_animationType="All"
+                app:sv_doneTextColor="@color/black"
+                app:sv_doneCircleColor="@color/colorSecondPrimary"
+                app:sv_doneCircleRadius="12dp"
+                app:sv_doneStepLineColor="@color/colorSecondPrimary"
+                app:sv_doneStepMarkColor="@color/white"
+
+                app:sv_nextStepCircleColor="@color/colorAccent"
+                app:sv_nextStepLineColor="@color/colorAccent"
+                app:sv_nextTextColor="@color/black"
+
+
+                app:sv_selectedCircleColor="#EADFCC"
+                app:sv_selectedCircleRadius="12dp"
+                app:sv_selectedStepNumberColor="@color/black"
+                app:sv_selectedTextColor="@color/black"
+
+                app:sv_stepLineWidth="1dp"
+                app:sv_stepNumberTextSize="16sp"
+                app:sv_stepPadding="4dp"
+                app:sv_stepViewStyle="@style/StepView"
+
+                app:sv_stepsNumber="4" />
             <com.ramotion.foldingcell.FoldingCell
                 android:id="@+id/folding_cell"
                 android:layout_width="match_parent"
@@ -144,14 +183,31 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="8dp">
-
-                                        <TextView
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
+                                        <LinearLayout
                                             android:layout_weight="4"
-                                            android:text="Address: "
-                                            android:textSize="16sp"
-                                            android:textStyle="bold" />
+                                            android:orientation="vertical"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent">
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Address: "
+                                                android:textSize="16sp"
+                                                android:textStyle="bold" />
+
+                                            <Button
+                                                android:id="@+id/map_btn"
+                                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="see map"
+                                                android:padding="0dp"
+                                                android:gravity="start|center_vertical"
+
+                                                />
+                                        </LinearLayout>
+
+
 
                                         <TextView
                                             android:id="@+id/user_address"
@@ -174,7 +230,9 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp">
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -192,84 +250,206 @@
 
                 </FrameLayout>
             </com.ramotion.foldingcell.FoldingCell>
-
-            <com.shuhart.stepview.StepView
-                android:id="@+id/step_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:sv_animationType="All"
-                app:sv_doneTextColor="@color/black"
-                app:sv_doneCircleColor="@color/colorSecondPrimary"
-                app:sv_doneCircleRadius="12dp"
-                app:sv_doneStepLineColor="@color/colorSecondPrimary"
-                app:sv_doneStepMarkColor="@color/white"
-
-                app:sv_nextStepCircleColor="@color/colorAccent"
-                app:sv_nextStepLineColor="@color/colorAccent"
-                app:sv_nextTextColor="@color/black"
-
-
-                app:sv_selectedCircleColor="#EADFCC"
-                app:sv_selectedCircleRadius="12dp"
-                app:sv_selectedStepNumberColor="@color/black"
-                app:sv_selectedTextColor="@color/black"
-
-                app:sv_stepLineWidth="1dp"
-                app:sv_stepNumberTextSize="16sp"
-                app:sv_stepPadding="4dp"
-                app:sv_stepViewStyle="@style/StepView"
-
-                app:sv_stepsNumber="4" />
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@drawable/rectangle_rounded"
+                android:padding="3dp"
                 android:id="@+id/map_container"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="200dp">
                 <fragment
                     android:id="@+id/map"
-                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:name="intech.co.starbug.CustomMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="match_parent"
                     />
 
-            </LinearLayout>
+                <ImageButton
+                    android:id="@+id/mapNavBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="@android:color/transparent"
+                    android:src="@android:drawable/ic_dialog_map"
+                    app:tint="#000000"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.ramotion.foldingcell.FoldingCell
+                android:layout_marginTop="5dp"
+                android:id="@+id/folding_cell_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/rectangle_rounded"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:padding="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="5"
+                                            android:text="Payment method: "
+                                            android:textSize="16sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:id="@+id/payment_method"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="7"
+                                            android:text="COD"
+                                            android:textColor="@color/black"
+                                            android:textSize="16sp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="5"
+                                            android:text="Total : "
+                                            android:textSize="16sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:id="@+id/total_price"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="7"
+                                            android:text="200,000VNĐ"
+                                            android:textColor="@color/colorSecondPrimary"
+                                            android:textStyle="bold"
+                                            android:layout_alignParentRight="true"/>
+                                    </LinearLayout>
+                                    <TextView
+                                        android:layout_marginTop="5dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Note"
+                                        android:textSize="15sp"/>
+                                    <TextView
+                                        android:id="@+id/note"
+                                        android:background="@drawable/rectangle_rounded"
+                                        android:padding="5dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:minHeight="50dp"
+                                        android:text="Cafe lấy đường không lấy đá sajfl alsfj; a f;sajfa  ;ajfs daf; ajk;fsd f;jajsf; a;s fl;ksjfd;ksafj aks;f sja;kfj;lkasdjfk;l  ;asjfd;kasj f;jaskldf j;laskf j;salkdjfiweoifja; fakfjwoie;fj"
+                                        android:textSize="15sp"/>
+
+
+
+
+                                </LinearLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_rounded"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/bungee"
+                            android:gravity="center"
+                            android:text="Order Information" />
+                    </LinearLayout>
+
+                </FrameLayout>
+            </com.ramotion.foldingcell.FoldingCell>
+
+
             <androidx.recyclerview.widget.RecyclerView
+                android:background="@drawable/rectangle_rounded"
+                android:padding="3dp"
+                android:layout_marginBottom="5dp"
                 android:id="@+id/list_cart"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_marginTop="20dp" />
+
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:padding="5dp"
         android:id="@+id/linearLayout7"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/cancelButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:fontFamily="@font/bungee"
             android:textColor="@color/white"
             android:backgroundTint="@color/LightGrey"
             android:text="Cancel Order"
             android:elevation="4dp"
             android:textAllCaps="true"
-            android:textSize="16sp"
+            android:textSize="13sp"
             app:cornerRadius="16dp" />
 
         <Button
             android:id="@+id/nextButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_weight="1"
             android:elevation="4dp"
             android:backgroundTint="@color/colorSecondPrimary"
             android:fontFamily="@font/bungee"
@@ -277,7 +457,7 @@
             android:text="Next Step"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="13sp"
             app:cornerRadius="16dp" />
 
         <Button

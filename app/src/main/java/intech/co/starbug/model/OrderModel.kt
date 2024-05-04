@@ -15,7 +15,8 @@ class OrderModel(
     var uidUser: String = "",
     var status: String = "",
     var orderToken: String = "",
-    var price: Int = 0
+    var price: Int = 0,
+    var note: String = ""
 ) : Serializable {
     var id: String = ""
     var reason: String = ""

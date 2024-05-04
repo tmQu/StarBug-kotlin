@@ -3,6 +3,7 @@ package intech.co.starbug.activity.admin.feedback
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,7 @@ class FeedbackManager : AppCompatActivity() {
     private lateinit var feedbackAdapter: FeedbackManagerAdapter
     private var feedbackList = mutableListOf<FeedbackModel>()
     private var idList = mutableListOf<String>()
+    private lateinit var cancelImageBtn: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,11 @@ class FeedbackManager : AppCompatActivity() {
         database = FirebaseDatabase.getInstance()
         feedbackRef = database.getReference("Feedbacks")
         initRecyclerView()
+
+        cancelImageBtn = findViewById(R.id.imageBackButton)
+        cancelImageBtn.setOnClickListener {
+            finish()
+        }
 
         feedbackRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

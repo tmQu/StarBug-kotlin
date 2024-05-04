@@ -334,6 +334,14 @@ class LoginActivity : AppCompatActivity() {
 //                            }
 //                        })
 //                    }
+                    else if (user == null) {
+                        Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "An error occurred. Please try again later.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
                     Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
                     Toast.makeText(

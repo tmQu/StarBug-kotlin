@@ -17,6 +17,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.FirebaseApp
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 import intech.co.starbug.activity.ContainerActivity
 import intech.co.starbug.activity.GetAddressActivity
@@ -27,6 +31,8 @@ import intech.co.starbug.activity.admin.feedback.FeedbackManager
 import intech.co.starbug.activity.admin.product.ProductManagementActivity
 
 import intech.co.starbug.activity.authentication.LoginActivity
+import intech.co.starbug.helper.SharedPreferencesHelper
+import intech.co.starbug.model.UserModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var logoTV: TextView;
     private lateinit var sloganTV: TextView;
     private lateinit var companyTV: TextView;
+    private var wait = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -65,16 +72,29 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseApp.initializeApp(this)
         Handler().postDelayed({
-            if(checkAuth() == false)
+            if(checkAuth())
             {
-                val intent = Intent(this, LoginActivity::class.java)
+                val role = SharedPreferencesHelper(this).getRole()
+                Log.i("MainActivity", "User authenticated $role")
+                val intent = when(role)
+                {
+                    "Admin" -> Intent(this, HomeManageActivity::class.java)
+                    "Customer" -> Intent(this, ContainerActivity::class.java)
+                    else -> Intent(this, LoginActivity::class.java)
+                }
                 val pairs = arrayOf<Pair<View, String>>(
                     Pair(image, "logo_image"),
                     Pair(logoTV, "brand_text"),
                 )
+                if(wait) {
+                    val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
+                    startActivity(intent, options.toBundle())
+                    finish()
 
-                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
-                startActivity(intent, options.toBundle())
+                }
+                else
+                    wait = true
+
 
             }
             else {
@@ -87,24 +107,71 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
                 startActivity(intent, options.toBundle())
+                finish()
+
             }
-            finish()
 
         }, 3000)
     }
 
     private fun checkAuth(): Boolean
     {
+
         val user = FirebaseAuth.getInstance().currentUser
+        val userId = user?.uid
+        if(userId != null)
+        {
+            val dbRef = FirebaseDatabase.getInstance().getReference("User").child(userId)
+            dbRef.addListenerForSingleValueEvent(/* listener = */ object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userData = dataSnapshot.getValue(UserModel::class.java)
+                    if (userData != null) {
+                        val userRole = userData.role
+                        val sharedPrefManager =
+                            SharedPreferencesHelper(this@MainActivity)
+                        sharedPrefManager.saveUser(userData)
+                        if(wait)
+                        {
+                            val intent = when(userRole)
+                            {
+                                "Admin" -> Intent(this@MainActivity, HomeManageActivity::class.java)
+                                "Customer" -> Intent(this@MainActivity, ContainerActivity::class.java)
+                                else -> Intent(this@MainActivity, LoginActivity::class.java)
+                            }
 
-        if (user == null)
-            return false
-        else {
-            if(!(user.isEmailVerified)!!)
-                return false
+                            startActivity(intent)
+                            finish()
+
+                        }
+                        else {
+                            wait = true
+                        }
+                    }else {
+                        val pairs = arrayOf<Pair<View, String>>(
+                            Pair(image, "logo_image"),
+                            Pair(logoTV, "brand_text"),
+                        )
+                        Log.i("MainActivity", "User not authenticated")
+
+                        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                        val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
+                        startActivity(intent, options.toBundle())
+                        finish()
+
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(
+                        "MainActivity",
+                        "Database error: ${error.message}"
+                    )
+                }
+            })
         }
-
+        else {
+            return false
+        }
         return true
-        return user != null
     }
 }

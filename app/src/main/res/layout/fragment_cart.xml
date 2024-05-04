@@ -23,8 +23,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             app:contentInsetStart="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:navigationIcon="@drawable/arrow">
+            app:contentInsetStartWithNavigation="0dp">
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -117,73 +116,32 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Payment"
+            android:text="Note"
             android:textColor="@color/colorSecondPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:padding="10dp"
-            android:layout_marginTop="30dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/payment_method"
             >
-            <RelativeLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/note"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Price: "
-                    android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minLines="5"
+                    android:background="@drawable/rectangle_rounded"
+                    android:gravity="start"
                     />
-                <TextView
-                    android:id="@+id/product_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0 VNĐ"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:layout_alignParentRight="true"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Shipping fee: "
-                    android:layout_alignParentLeft="true"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:layout_alignParentRight="true"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Discount "
-                    android:layout_alignParentLeft="true"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:layout_alignParentRight="true"/>
-            </RelativeLayout>
+            </com.google.android.material.textfield.TextInputLayout>
             <ImageView
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
