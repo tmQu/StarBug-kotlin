@@ -1,6 +1,6 @@
 package intech.co.starbug.activity.comment
 
-import android.content.SharedPreferences
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -46,7 +46,6 @@ class CommentFormActivity : AppCompatActivity() {
         commentTxt = findViewById(R.id.comment)
         submitBtn = findViewById(R.id.send_review_btn)
         productID = intent.getStringExtra("product_id").toString()
-//        productID = "-Nv0HS0Nq-OYxYUJ-109"
 
 
         getProduct()

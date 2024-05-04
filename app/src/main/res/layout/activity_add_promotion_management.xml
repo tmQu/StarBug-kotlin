@@ -170,8 +170,10 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="date"
-                                android:textColor="@color/colorPrimary" />
+                                android:textColor="@color/colorPrimary"
+                                android:inputType="none"
+                                android:focusable="false"
+                                android:cursorVisible="false"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,8 +191,10 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="date"
-                                android:textColor="@color/colorPrimary" />
+                                android:textColor="@color/colorPrimary"
+                                android:inputType="none"
+                                android:focusable="false"
+                                android:cursorVisible="false"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 

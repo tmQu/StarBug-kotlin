@@ -8,8 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import intech.co.starbug.R
 import intech.co.starbug.model.AccountModel
+import intech.co.starbug.model.UserModel
 
-class AccountAdapter(context: Context, private val itemList: List<AccountModel>) : ArrayAdapter<AccountModel>(context, R.layout.account_layout, itemList) {
+class AccountAdapter(context: Context, private val itemList: List<UserModel>) : ArrayAdapter<UserModel>(context, R.layout.account_layout, itemList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View = convertView ?: LayoutInflater.from(context).inflate(R.layout.account_layout, parent, false)
@@ -19,9 +20,9 @@ class AccountAdapter(context: Context, private val itemList: List<AccountModel>)
         val itemRoleTextView: TextView = view.findViewById(R.id.RoleTextView)
 
         val currentItem = itemList[position]
-        itemNameTextView.text = currentItem.Name
-        itemEmailTextView.text = currentItem.Email
-        itemRoleTextView.text = currentItem.Role
+        itemNameTextView.text = currentItem.name
+        itemEmailTextView.text = currentItem.email
+        itemRoleTextView.text = currentItem.role
 
         return view
     }

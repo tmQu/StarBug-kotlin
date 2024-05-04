@@ -19,12 +19,10 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
     private var roleData: String? = null
     private var phoneData: String? = null
     private var passwordData: String? = null
-    private var usernameData: String? = null
 
-    val roleOptions = arrayOf("Staff")
+    val roleOptions = arrayOf("Admin")
 
     private lateinit var fullName: TextInputLayout
-    private lateinit var userName: TextInputLayout
     private lateinit var email: TextInputLayout
     private lateinit var phoneNo: TextInputLayout
     private lateinit var password: TextInputLayout
@@ -38,7 +36,6 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         setContentView(R.layout.activity_update_staff_management)
 
         fullName = findViewById(R.id.fullName)
-        userName = findViewById(R.id.usernameInputLayout)
         email = findViewById(R.id.emailInputLayout)
         phoneNo = findViewById(R.id.phoneNumberInputLayout)
         password = findViewById(R.id.passwordInputLayout)
@@ -51,11 +48,10 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         deleteBtn = findViewById(R.id.deleteBtn)
 
         saveBtn.setOnClickListener {
-            if (fullName.editText?.text.toString().isEmpty() || userName.editText?.text.toString()
-                    .isEmpty() || email.editText?.text.toString()
+            if (fullName.editText?.text.toString().isEmpty() || email.editText?.text.toString()
                     .isEmpty() || password.editText?.text.toString()
                     .isEmpty() || phoneNo.editText?.text.toString()
-                    .isEmpty() || role.editText?.text.toString().isEmpty()
+                    .isEmpty()
             ) {
                 // Show error message indicating fields are empty
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
@@ -73,7 +69,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         }
 
         role.setOnClickListener() {
-            showRoleDialog()
+//            showRoleDialog()
         }
     }
 
@@ -84,12 +80,10 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         roleData = intent?.getStringExtra("Role")
         phoneData = intent?.getStringExtra("Phone")
         passwordData = intent?.getStringExtra("Password")
-        usernameData = intent?.getStringExtra("Username")
     }
 
     private fun setData() {
         fullName.editText?.setText(fullNameData)
-        userName.editText?.setText(usernameData)
         email.editText?.setText(emailData)
         phoneNo.editText?.setText(phoneData)
         password.editText?.setText(passwordData)
@@ -100,11 +94,10 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         val resultIntent = intent.apply {
             putExtra("Id", idData)
             putExtra("FullName", fullName.editText?.text.toString())
-            putExtra("Username", userName.editText?.text.toString())
             putExtra("Email", email.editText?.text.toString())
             putExtra("Phone", phoneNo.editText?.text.toString())
             putExtra("Password", password.editText?.text.toString())
-            putExtra("Role", role.editText?.text.toString())
+            putExtra("Role", "Admin")
         }
         updatePassword(emailData!!, passwordData!!, password.editText?.text.toString())
         setResult(RESULT_OK, resultIntent)
@@ -117,14 +110,14 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         val resultIntent = intent.apply {
             putExtra("Id", idData)
             putExtra("FullName", fullName.editText?.text.toString())
-            putExtra("Username", userName.editText?.text.toString())
             putExtra("Email", email.editText?.text.toString())
             putExtra("Phone", phoneNo.editText?.text.toString())
             putExtra("Password", password.editText?.text.toString())
-            putExtra("Role", role.editText?.text.toString())
+            putExtra("Role", "Admin")
             putExtra("Delete", "true")
         }
         setResult(RESULT_OK, resultIntent)
+        deleteAccountFirebase(emailData!!, passwordData!!)
         Toast.makeText(this, "Account deleted", Toast.LENGTH_SHORT).show()
         finish()
     }
@@ -178,6 +171,39 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
                         Toast.makeText(
                             this,
                             "Failed to update password: ${task.exception?.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
+                Log.d("SignIn", "Failed to sign in: ${task.exception?.message}")
+                Toast.makeText(
+                    this, "Failed to sign in: ${task.exception?.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun deleteAccountFirebase(email: String, password: String) {
+        val auth = FirebaseAuth.getInstance()
+        val credential = EmailAuthProvider.getCredential(email, password)
+
+        auth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                user?.delete()?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("DeleteAccount", "User account deleted.")
+                        Toast.makeText(this, "Account deleted successfully", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Log.d(
+                            "DeleteAccount",
+                            "Failed to delete account: ${task.exception?.message}"
+                        )
+                        Toast.makeText(
+                            this,
+                            "Failed to delete account: ${task.exception?.message}",
                             Toast.LENGTH_SHORT
                         ).show()
                     }

@@ -1,5 +1,6 @@
 package intech.co.starbug.activity.admin.promotion
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,6 +20,8 @@ import com.squareup.picasso.Picasso
 import intech.co.starbug.R
 import intech.co.starbug.activity.admin.promotion.PromotionManagementActivity
 import intech.co.starbug.model.PromotionModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 class UpdatePromotionManagementActivity : AppCompatActivity() {
 
@@ -50,6 +53,7 @@ class UpdatePromotionManagementActivity : AppCompatActivity() {
         buttonSave = findViewById(R.id.buttonSavePromotion)
         itemPictureImage = findViewById(R.id.itemPictureImage)
         cancelButton = findViewById(R.id.cancelButton)
+
 
         // Nhận ID sản phẩm từ Intent
         PromotionId = intent.getStringExtra("Promotion_ID") ?: ""
@@ -106,6 +110,9 @@ class UpdatePromotionManagementActivity : AppCompatActivity() {
             intent.type = "image/*"
             startActivityForResult(intent, IMAGE_PICK_CODE)
         }
+
+        handleDatePicker()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,6 +120,72 @@ class UpdatePromotionManagementActivity : AppCompatActivity() {
         if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null) {
             val imageUri = data.data
             updateImageToFirebase(imageUri)
+        }
+    }
+
+    private fun compareDate(startDate: String, endDate: String): Int {
+        if(startDate.isEmpty() || endDate.isEmpty())
+            return -1
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val date1 = sdf.parse(startDate)
+        val date2 = sdf.parse(endDate)
+        return date1.compareTo(date2)
+    }
+    private fun handleDatePicker() {
+
+        val calendar: Calendar = Calendar.getInstance()
+        val day: Int = calendar.get(Calendar.DAY_OF_MONTH)
+        val month: Int = calendar.get(Calendar.MONTH) + 1 // Month starts from 0, so add 1
+        val year: Int = calendar.get(Calendar.YEAR)
+
+        editTextPromotionStartDay.setOnClickListener {
+            if (editTextPromotionStartDay.text.toString().isNotEmpty())
+            {
+                val getStartDate = editTextPromotionStartDay.text.toString().split("/")
+                DatePickerDialog(this,
+                    { _, year, month, dayOfMonth ->
+                        val dateSelection = "$dayOfMonth/${month + 1}/$year"
+                        if (compareDate(dateSelection, editTextPromotionEndDay.text.toString()) > 0)
+                        {
+                            Toast.makeText(this, "error: start date > end date", Toast.LENGTH_SHORT).show()
+                            return@DatePickerDialog
+                        }
+                        else
+                            editTextPromotionStartDay.setText("$dayOfMonth/${month + 1}/$year")
+                    },getStartDate[2].toInt(),getStartDate[1].toInt() - 1,getStartDate[0].toInt()).show()
+            }
+            else
+            {
+                DatePickerDialog(this,
+                    { _, year, month, dayOfMonth ->
+                        editTextPromotionStartDay.setText("$dayOfMonth/${month + 1}/$year")
+                    },year,month - 1,day).show()
+            }
+        }
+
+        editTextPromotionEndDay.setOnClickListener {
+            if(editTextPromotionEndDay.text.toString().isNotEmpty())
+            {
+                val getEndDate = editTextPromotionEndDay.text.toString().split("/")
+                DatePickerDialog(this,
+                    { _, year, month, dayOfMonth ->
+                        val dateSelection = "$dayOfMonth/${month + 1}/$year"
+                        if (compareDate(editTextPromotionStartDay.text.toString(), dateSelection) >= 0)
+                        {
+                            Toast.makeText(this, "error: start date > end date", Toast.LENGTH_SHORT).show()
+                            return@DatePickerDialog
+                        }
+                        else
+                            editTextPromotionEndDay.setText("$dayOfMonth/${month + 1}/$year")
+                    },getEndDate[2].toInt(),getEndDate[1].toInt() - 1,getEndDate[0].toInt()).show()
+            }
+            else
+            {
+                DatePickerDialog(this,
+                    { _, year, month, dayOfMonth ->
+                        editTextPromotionEndDay.setText("$dayOfMonth/${month + 1}/$year")
+                    },year,month - 1,day).show()
+            }
         }
     }
 

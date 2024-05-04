@@ -215,7 +215,8 @@ class CheckoutActivity : AppCompatActivity() {
                 for (data in snapshot.children) {
                     val promotion = data.getValue(PromotionModel::class.java)
                     if (promotion != null) {
-                        promotionList.add(promotion)
+                        if (promotion.isActive())
+                            promotionList.add(promotion)
                     }
                 }
                 val totalBill = listDetailCartItem.sumOf { it.getProductPrice() * it.quantity }
@@ -584,7 +585,6 @@ class CheckoutActivity : AppCompatActivity() {
             Log.i("CheckoutActivity", "Code: $code")
             if (code == "1") {
                 val token = data!!.getString("zp_trans_token")
-                Log.i("Amount", token)
                 payZalo(token)
             }
         } catch (e: Exception) {
@@ -603,31 +603,16 @@ class CheckoutActivity : AppCompatActivity() {
                     transToken: String,
                     appTransID: String
                 ) {
-                    saveOrder()
+                    saveOrder(token)
 
-                    runOnUiThread {
-                        AlertDialog.Builder(this@CheckoutActivity)
-                            .setTitle("Payment Success")
-                            .setMessage(
-                                String.format(
-                                    "TransactionId: %s - TransToken: %s",
-                                    transactionId,
-                                    transToken
-                                )
-                            )
-                            .setPositiveButton("OK",
-                                DialogInterface.OnClickListener { dialog, which -> })
-                            .setNegativeButton("Cancel", null).show()
-                    }
                 }
 
                 override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
                     AlertDialog.Builder(this@CheckoutActivity)
                         .setTitle("User Cancel Payment")
-                        .setMessage(String.format("zpTransToken: %s \n", zpTransToken))
-                        .setPositiveButton("OK",
+                        .setMessage("Sorry your order is not successful, please try again!")
+                        .setPositiveButton("Continue",
                             DialogInterface.OnClickListener { dialog, which -> })
-                        .setNegativeButton("Cancel", null).show()
                 }
 
                 override fun onPaymentError(

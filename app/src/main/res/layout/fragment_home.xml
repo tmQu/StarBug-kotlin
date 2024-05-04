@@ -93,7 +93,7 @@
                                     />
 
                                 <com.google.android.material.imageview.ShapeableImageView
-                                    android:id="@+id/imageView3"
+                                    android:id="@+id/avatar"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
                                     android:layout_marginEnd="16dp"

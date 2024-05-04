@@ -44,5 +44,11 @@ class PromotionModel(
         return date.time
     }
 
+    fun isActive(): Boolean {
+        val currentTime = System.currentTimeMillis()
+        return currentTime in getStartDate()..getEndDate()
+    }
+
+
 
 }

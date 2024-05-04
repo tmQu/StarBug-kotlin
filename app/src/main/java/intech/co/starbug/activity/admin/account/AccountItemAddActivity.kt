@@ -17,10 +17,9 @@ import java.util.regex.Pattern
 
 class AccountItemAddActivity : AppCompatActivity() {
 
-    val roleOptions = arrayOf("Admin", "Customer", "Staff")
+    val roleOptions = arrayOf("Admin", "Customer")
 
     private lateinit var fullName: TextInputLayout
-    private lateinit var userName: TextInputLayout
     private lateinit var email: TextInputLayout
     private lateinit var phoneNo: TextInputLayout
     private lateinit var password: TextInputLayout
@@ -33,7 +32,6 @@ class AccountItemAddActivity : AppCompatActivity() {
         setContentView(R.layout.activity_account_item_add)
 
         fullName = findViewById(R.id.fullName)
-        userName = findViewById(R.id.usernameInputLayout)
         email = findViewById(R.id.emailInputLayout)
         phoneNo = findViewById(R.id.phoneNumberInputLayout)
         password = findViewById(R.id.passwordInputLayout)
@@ -58,11 +56,10 @@ class AccountItemAddActivity : AppCompatActivity() {
         })
 
         addBtn.setOnClickListener {
-            if (fullName.editText?.text.toString().isEmpty() || userName.editText?.text.toString()
-                    .isEmpty() || email.editText?.text.toString()
+            if (fullName.editText?.text.toString().isEmpty() || email.editText?.text.toString()
                     .isEmpty() || password.editText?.text.toString()
                     .isEmpty() || phoneNo.editText?.text.toString()
-                    .isEmpty() || role.text.toString().isEmpty()
+                    .isEmpty()
             ) {
                 // Show error message indicating fields are empty
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
@@ -79,13 +76,15 @@ class AccountItemAddActivity : AppCompatActivity() {
     }
 
     private fun addData() {
+        if (role.text.toString().isEmpty()) {
+            role.setText(roleOptions[0])
+        }
         val resultIntent = intent.apply {
             putExtra("FullName", fullName.editText?.text.toString())
-            putExtra("Username", userName.editText?.text.toString())
             putExtra("Email", email.editText?.text.toString())
             putExtra("Phone", phoneNo.editText?.text.toString())
             putExtra("Password", password.editText?.text.toString())
-            putExtra("Role", role.text.toString())
+            putExtra("Role", role.text.toString() )
         }
         setResult(RESULT_OK, resultIntent)
         authenSignUp(email.editText?.text.toString(), password.editText?.text.toString())

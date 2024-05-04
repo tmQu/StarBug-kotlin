@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 
@@ -33,7 +34,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import coil.load
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -73,6 +76,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var layout: View
     private lateinit var userNameTV: TextView
+    private lateinit var avatar: ImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -82,17 +86,25 @@ class HomeFragment : Fragment() {
         productsRef = FirebaseDatabase.getInstance().getReference("Products")
         categoryButtons = mutableListOf()
         gridItem = layout.findViewById(R.id.itemView)
-
+        avatar = layout.findViewById(R.id.avatar)
         listAllProduct = mutableListOf()
         productList = mutableListOf()
-
+        val user = FirebaseAuth.getInstance().currentUser
         userNameTV = layout.findViewById(R.id.usernameTV)
+        avatar.load(user?.photoUrl.toString()){
+            target(
+                onError = {
+                    avatar.setImageResource(R.drawable.default_avatar)
+                }
+            )
+        }
         val sharedPrefManager = SharedPreferencesHelper(requireContext())
         val userName = sharedPrefManager.getName()
         userNameTV.text = "Hello " + userName
 
         shimmer = layout.findViewById(R.id.shimmerFrameLayout)
         shimmer.startShimmer()
+
 
         showSliderPromotion()
         retrieveCategoriesFromFirebase()
@@ -382,7 +394,7 @@ class HomeFragment : Fragment() {
     private fun showSliderPromotion() {
         val slider = layout.findViewById<ViewPager2>(R.id.slider_promotion)
         val circleIndicator = layout.findViewById<CircleIndicator3>(R.id.circleIndicator)
-        val sliderRef = FirebaseDatabase.getInstance().getReference("Sliders")
+        val sliderRef = FirebaseDatabase.getInstance().getReference("Promotions")
         sliderRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val listSlider = mutableListOf<PromotionModel>()

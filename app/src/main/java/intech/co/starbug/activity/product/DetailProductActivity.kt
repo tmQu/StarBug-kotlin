@@ -4,19 +4,19 @@ package intech.co.starbug.activity.product
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
+import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
-
+import android.widget.TextView
+import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -24,14 +24,6 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import intech.co.starbug.R
-import intech.co.starbug.adapter.CommentAdapter
-import intech.co.starbug.adapter.SliderAdapter
-import intech.co.starbug.model.ProductModel
-import intech.co.starbug.constants.SETTING
-import intech.co.starbug.model.CommentModel
-import me.relex.circleindicator.CircleIndicator3
-import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
@@ -42,14 +34,21 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import intech.co.starbug.R
 import intech.co.starbug.StarbugApp
 import intech.co.starbug.activity.comment.CommentActivity
+import intech.co.starbug.adapter.CommentAdapter
+import intech.co.starbug.adapter.SliderAdapter
 import intech.co.starbug.adapter.VP
+import intech.co.starbug.constants.SETTING
+import intech.co.starbug.model.CommentModel
+import intech.co.starbug.model.ProductModel
 import intech.co.starbug.model.cart.CartItemModel
+import intech.co.starbug.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import me.relex.circleindicator.CircleIndicator3
 import java.io.Serializable
-import intech.co.starbug.utils.Utils
 
 
 private const val HOT_OPTION = 0
@@ -125,6 +124,8 @@ class DetailProductActivity : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
 
         }
+
+        findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener(OnClickListener { finish() })
         productId = intent.getStringExtra("product_id") ?: ""
         product = getSerializable(this, "product", ProductModel::class.java)
         listComment = mutableListOf()

@@ -40,6 +40,7 @@ class CommentActivity : AppCompatActivity() {
         allAvgRate = findViewById(R.id.avg_rating)
         numComment = findViewById(R.id.total_review)
         commentRef = FirebaseDatabase.getInstance().getReference("Comment")
+
         commentBtn = findViewById(R.id.add_comment)
         productID = intent.getStringExtra("product_id").toString()
 
