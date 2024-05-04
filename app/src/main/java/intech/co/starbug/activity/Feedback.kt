@@ -107,7 +107,7 @@ class Feedback : AppCompatActivity() {
             feedback.id = feedbackId.toString()
             feedbackRef.child(feedbackId!!).setValue(feedback)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Sản phẩm mới đã được tạo thành công!", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Successfully send feedback", Toast.LENGTH_SHORT)
                         .show()
                     // Đóng hoạt động hiện tại
                     finish()

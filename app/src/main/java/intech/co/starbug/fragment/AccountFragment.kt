@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import intech.co.starbug.R
 import intech.co.starbug.activity.AccountSettingActivity
+import intech.co.starbug.activity.Feedback
 import intech.co.starbug.activity.authentication.LoginActivity
 import intech.co.starbug.helper.SharedPreferencesHelper
 
@@ -48,6 +49,8 @@ class AccountFragment : Fragment() {
 
         order.setOnClickListener {
             // Orders
+            val intent = Intent(requireContext(), Feedback::class.java)
+            startActivity(intent)
         }
 
         return view

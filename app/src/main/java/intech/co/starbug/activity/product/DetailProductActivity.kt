@@ -114,18 +114,18 @@ class DetailProductActivity : AppCompatActivity() {
         
         // show up the back button
         // set toolbar as support action bar
-        setSupportActionBar(findViewById(R.id.toolbar))
-
-        supportActionBar?.apply {
-            title = ""
-            // show back button on toolbar
-            // on back button press, it will navigate to parent activity
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-
-        }
-
-        findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener(OnClickListener { finish() })
+//        setSupportActionBar(findViewById(R.id.toolbar))
+//
+//        supportActionBar?.apply {
+//            title = ""
+//            // show back button on toolbar
+//            // on back button press, it will navigate to parent activity
+//            setDisplayHomeAsUpEnabled(true)
+//            setDisplayShowHomeEnabled(true)
+//
+//        }
+//
+//        findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener(OnClickListener { finish() })
         productId = intent.getStringExtra("product_id") ?: ""
         product = getSerializable(this, "product", ProductModel::class.java)
         listComment = mutableListOf()

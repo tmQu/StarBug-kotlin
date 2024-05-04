@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import intech.co.starbug.activity.admin.feedback.FeedbackManager
 import intech.co.starbug.activity.admin.order.OrderManagementActivity
 import intech.co.starbug.R
-import intech.co.starbug.activity.StaffManagementActivity
+import intech.co.starbug.activity.admin.staff.StaffManagementActivity
 import intech.co.starbug.activity.admin.product.ProductManagementActivity
 import intech.co.starbug.activity.admin.promotion.PromotionManagementActivity
 import intech.co.starbug.activity.authentication.LoginActivity
