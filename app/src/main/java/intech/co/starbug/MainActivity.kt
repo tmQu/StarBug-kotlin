@@ -29,6 +29,8 @@ import intech.co.starbug.activity.Feedback
 import intech.co.starbug.activity.admin.HomeManageActivity
 import intech.co.starbug.activity.admin.feedback.FeedbackManager
 import intech.co.starbug.activity.admin.product.ProductManagementActivity
+import intech.co.starbug.activity.admin.staff.AddStaffManagementActivity
+import intech.co.starbug.activity.admin.staff.StaffManagementActivity
 import intech.co.starbug.activity.admin.statistical.StatisticalActivity
 
 import intech.co.starbug.activity.authentication.LoginActivity

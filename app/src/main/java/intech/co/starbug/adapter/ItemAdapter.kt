@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import intech.co.starbug.R
 import intech.co.starbug.model.ProductModel
 import com.squareup.picasso.Picasso
+import intech.co.starbug.utils.Utils
 
 class ItemAdapter(private val itemList: List<ProductModel>) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
     var onItemClick: ((View,Int) -> Unit)? = null
@@ -34,7 +35,7 @@ class ItemAdapter(private val itemList: List<ProductModel>) : RecyclerView.Adapt
         val currentItem = itemList[position]
         holder.itemNameTextView.text = currentItem.name
         holder.itemName2TextView.text = currentItem.category
-        holder.itemPriceTextView.text = currentItem.price.toString()
+        holder.itemPriceTextView.text = Utils.formatPrice(currentItem.price)
         Picasso.get().load(currentItem.img[0]).into(holder.itemImageView)
     }
 

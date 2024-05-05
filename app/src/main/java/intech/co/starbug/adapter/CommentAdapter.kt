@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import intech.co.starbug.R
 import intech.co.starbug.model.CommentModel
 import intech.co.starbug.utils.Utils
@@ -39,13 +40,8 @@ class CommentAdapter(val listComment: List<CommentModel>, val typeLayout: Int): 
 
             if(comment.avatar != "")
             {
-                avatar.load(comment.avatar){
-                    target(
-                        onError = {
-                            avatar.setImageResource(R.drawable.default_avatar)
-                        }
-                    )
-                }
+                Picasso.get().load(comment.avatar).into(avatar)
+
             }
             else {
 //                avatar.setImageResource()

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import intech.co.starbug.activity.admin.comment.CommentManage
 import intech.co.starbug.model.ProductModel
+import intech.co.starbug.utils.Utils
 
 class ProductAdapter(
     private var itemList: List<ProductModel> = emptyList(),
@@ -86,7 +87,7 @@ class ProductAdapter(
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val currentItem = itemList[position]
         holder.itemNameTextView.text = currentItem.name
-        holder.itemPriceTextView.text = currentItem.price.toString()
+        holder.itemPriceTextView.text = Utils.formatPrice(currentItem.price)
         holder.itemCategoryTextView.text = currentItem.category
         Picasso.get().load(currentItem.img[currentItem.img.size - 1]).into(holder.itemImageView)
 

@@ -107,6 +107,7 @@ class LoginActivity : AppCompatActivity() {
                                             val sharedPrefManager =
                                                 SharedPreferencesHelper(this@LoginActivity)
                                             sharedPrefManager.saveUser(userData)
+                                            Log.i("LoginActivity", "User data: ${userData.role}")
                                             if (userRole == "Admin") {
                                                 Toast.makeText(
                                                     this@LoginActivity,
@@ -179,6 +180,15 @@ class LoginActivity : AppCompatActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                        }
+                        else {
+                            Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "An error occurred. Please try again later.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
                         }
                     }
             }

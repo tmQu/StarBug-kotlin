@@ -1,17 +1,26 @@
 package intech.co.starbug.activity.admin.staff
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import intech.co.starbug.R
 import intech.co.starbug.model.UserModel
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.Response
+import org.json.JSONObject
+
 
 class UpdateStaffManagementActivity : AppCompatActivity() {
 
@@ -46,6 +55,8 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         getData()
         setData()
 
+
+
         saveBtn = findViewById(R.id.saveBtn)
         deleteBtn = findViewById(R.id.deleteBtn)
 
@@ -66,7 +77,21 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         deleteBtn.setOnClickListener {
             showConfirmationDialog(title = "Delete Account",
                 message = "Are you sure you want to delete this account?",
-                onConfirm = { deleteAccountFromDatabase(idData!!) })
+                onConfirm = {
+                    val mUser = FirebaseAuth.getInstance().currentUser
+                    mUser!!.getIdToken(true)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val idToken = task.result.token
+                                deleteAccountFromFBAuth(idToken!!)
+
+                            } else {
+                                // Handle error -> task.getException();
+                                Toast.makeText(this, "Failed to delete account, please login again", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                })
         }
 
         role.setOnClickListener() {
@@ -89,6 +114,13 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         phoneNo.editText?.setText(phoneData)
         password.editText?.setText(passwordData)
         role.editText?.setText(roleData)
+
+        if(idData == FirebaseAuth.getInstance().currentUser?.uid)
+        {
+            deleteBtn.isEnabled = false
+            deleteBtn.isClickable = false
+            deleteBtn.visibility = View.GONE
+        }
     }
 
     private fun saveData() {
@@ -128,6 +160,8 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
             phoneNumber = phoneNo.editText?.text.toString(),
             role = "Admin"
         )
+
+
         usersReference.child(id).setValue(updatedUser).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(this, "Account updated in database successfully", Toast.LENGTH_SHORT)
@@ -145,11 +179,50 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
             }
         }
     }
+    private fun deleteAccountFromFBAuth(token: String)
+    {
+        // use Okhttp send post request to delete account
+        //
+        val url = "https://lucent-halva-a93008.netlify.app/.netlify/functions/api/delete-user"
+        val client = OkHttpClient()
+        val jsonBody = JSONObject()
+        jsonBody.put("token", token)
+        jsonBody.put("uid", idData!!)
+        val body = RequestBody.create("application/json".toMediaTypeOrNull(), jsonBody.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: java.io.IOException) {
+                // Handle failure
+                Log.i("DeleteAccount", e.message.toString())
+
+                Toast.makeText(this@UpdateStaffManagementActivity, "Failed to delete account", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                // Handle success
+                Log.i("DeleteAccount", "Account deleted successfully ${response.body?.string()}")
+                this@UpdateStaffManagementActivity.runOnUiThread(Runnable {
+                    Toast.makeText(this@UpdateStaffManagementActivity, "Account deleted successfully", Toast.LENGTH_SHORT).show()
+
+                })
+                deleteAccountFromDatabase(idData!!)
+            }
+        })
+    }
 
     private fun deleteAccountFromDatabase(id: String) {
         Log.i("ID", "$id")
         val usersReference = FirebaseDatabase.getInstance().getReference("User")
         Log.i("DeleteAccountDatabase", "$usersReference")
+        // delete a user with uid in firebase auth
+
+
+
         usersReference.child(id).removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(this, "Account deleted from database successfully", Toast.LENGTH_SHORT)

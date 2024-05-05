@@ -43,6 +43,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import intech.co.starbug.R
 import intech.co.starbug.helper.SharedPreferencesHelper
 import intech.co.starbug.activity.product.DetailProductActivity
@@ -91,13 +92,8 @@ class HomeFragment : Fragment() {
         productList = mutableListOf()
         val user = FirebaseAuth.getInstance().currentUser
         userNameTV = layout.findViewById(R.id.usernameTV)
-        avatar.load(user?.photoUrl.toString()){
-            target(
-                onError = {
-                    avatar.setImageResource(R.drawable.default_avatar)
-                }
-            )
-        }
+        Picasso.get().load(user?.photoUrl).into(avatar)
+
         val sharedPrefManager = SharedPreferencesHelper(requireContext())
         val userName = sharedPrefManager.getName()
         userNameTV.text = "Hello " + userName

@@ -21,6 +21,8 @@ import intech.co.starbug.dialog.ConfirmDialog
 import intech.co.starbug.dialog.ReasonDialog
 import intech.co.starbug.model.CommentModel
 import android.content.Context
+import com.squareup.picasso.Picasso
+import intech.co.starbug.utils.Utils
 
 
 class CommentAdminAdapter(val listComment: List<CommentModel>, val onReplyClick: (Int) -> Unit, val onDeleteReplyClick: (Int) -> Unit, val onDeleteCommentClick: (Int) -> Unit): RecyclerView.Adapter<CommentAdminAdapter.CommentViewHolder>(){
@@ -35,15 +37,13 @@ class CommentAdminAdapter(val listComment: List<CommentModel>, val onReplyClick:
          val comment_txt = view.findViewById<TextView>(R.id.txt_comment)
         val replyBtn = view.findViewById<Button>(R.id.reply_btn)
         val deleteComment =  view.findViewById<ImageButton>(R.id.delete_comment)
+        val dateComment  = view.findViewById<TextView>(R.id.date_comment)
 
         fun bind(comment: CommentModel)
         {
             if(comment.avatar != "")
             {
-                avatar.load(comment.avatar){
-                    crossfade(true)
-                    placeholder(R.drawable.default_avatar)
-                }
+                Picasso.get().load(comment.avatar).into(avatar)
             }
 
             user_name.text = comment.user_name
@@ -52,6 +52,8 @@ class CommentAdminAdapter(val listComment: List<CommentModel>, val onReplyClick:
             deleteComment.setOnClickListener {
                 onDeleteCommentClick(adapterPosition)
             }
+
+            dateComment.text = Utils.convertCommentDate(comment.date_comment)
             if(comment.reply != "")
             {
                 view.findViewById<CardView>(R.id.reply_container).visibility = VISIBLE

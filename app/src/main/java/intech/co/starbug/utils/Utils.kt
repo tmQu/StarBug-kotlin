@@ -62,6 +62,11 @@ class Utils {
             val diff = currentDate.time - endDate
             return (diff / (1000 * 60 * 60 * 24)).toInt()
         }
+
+        fun formatPrice(price: Int): CharSequence? {
+            val formatter = java.text.DecimalFormat("#,###")
+            return "${formatter.format(price)}"
+        }
     }
 
 

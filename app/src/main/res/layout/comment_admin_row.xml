@@ -53,6 +53,7 @@
                     style="?android:attr/ratingBarStyleSmall"
                     android:stepSize="0.5" />
                 <TextView
+                    android:id="@+id/date_comment"
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
