@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import intech.co.starbug.BuildConfig
 import intech.co.starbug.R
 import intech.co.starbug.dialog.LoadingDialog
 import intech.co.starbug.model.UserModel
@@ -55,6 +57,10 @@ class AddStaffManagementActivity : AppCompatActivity() {
         password = findViewById(R.id.passwordInputLayout)
         role = findViewById(R.id.roleInputLayout)
 
+
+        findViewById<ImageView>(R.id.imageBackButton).setOnClickListener {
+            finish()
+        }
         password.editText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 charSequence: CharSequence?,
@@ -255,7 +261,8 @@ class AddStaffManagementActivity : AppCompatActivity() {
     private fun addAccountToFirebaseAuth(token: String, emailValue: String, passwordValue: String)
     {
         val auth = FirebaseAuth.getInstance()
-        val url = "https://lucent-halva-a93008.netlify.app/.netlify/functions/api/create-user"
+        val base_url = BuildConfig.BASE_URL
+        val url = base_url + "/.netlify/functions/api/create-user"
         val client = OkHttpClient()
         val jsonBody = JSONObject()
         jsonBody.put("token", token)

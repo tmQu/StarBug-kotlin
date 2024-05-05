@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import intech.co.starbug.BuildConfig
 import intech.co.starbug.R
 import intech.co.starbug.dialog.LoadingDialog
 import intech.co.starbug.model.UserModel
@@ -54,14 +56,19 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         phoneNo = findViewById(R.id.phoneNumberInputLayout)
         password = findViewById(R.id.passwordInputLayout)
         role = findViewById(R.id.roleInputLayout)
+        saveBtn = findViewById(R.id.saveBtn)
+        deleteBtn = findViewById(R.id.deleteBtn)
         loadingDialog = LoadingDialog(this)
+
+        findViewById<ImageView>(R.id.imageBackButton).setOnClickListener {
+            finish()
+        }
         getData()
         setData()
 
 
 
-        saveBtn = findViewById(R.id.saveBtn)
-        deleteBtn = findViewById(R.id.deleteBtn)
+
 
         saveBtn.setOnClickListener {
             if (fullName.editText?.text.toString().isEmpty() || email.editText?.text.toString()
@@ -187,8 +194,8 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
     {
         // use Okhttp send post request to delete account
         //
-
-        val url = "https://lucent-halva-a93008.netlify.app/.netlify/functions/api/delete-user"
+        val base_url = BuildConfig.BASE_URL
+        val url = base_url + "/.netlify/functions/api/delete-user"
         val client = OkHttpClient()
         val jsonBody = JSONObject()
         jsonBody.put("token", token)

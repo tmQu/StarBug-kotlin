@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import intech.co.starbug.activity.admin.feedback.FeedbackManager
 import intech.co.starbug.activity.admin.order.OrderManagementActivity
@@ -40,6 +42,13 @@ class HomeManageActivity : AppCompatActivity() {
         logoutBtn = findViewById(R.id.logout_btn)
 
         logoutBtn.setOnClickListener {
+            val googleSignInClient =
+              GoogleSignIn.getClient(applicationContext, GoogleSignInOptions.DEFAULT_SIGN_IN)
+            FirebaseAuth.getInstance().signOut()
+
+            if (googleSignInClient != null) {
+                googleSignInClient.revokeAccess()
+            }
             // Handle click on logout button
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(this, LoginActivity::class.java)

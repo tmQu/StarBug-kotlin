@@ -293,8 +293,8 @@ class LoginActivity : AppCompatActivity() {
                                             this@LoginActivity,
                                             HomeManageActivity::class.java
                                         )
-                                        Log.i("LoginActivity", "intent: $intent")
                                         startActivity(intent)
+                                        finish()
                                     } else {
                                         Toast.makeText(
                                             this@LoginActivity,
@@ -306,6 +306,8 @@ class LoginActivity : AppCompatActivity() {
                                             ContainerActivity::class.java
                                         )
                                         startActivity(intent)
+                                        finish()
+
                                     }
                                 }
                             }

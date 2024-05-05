@@ -443,6 +443,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                 }
         } else {
             loadingDialog.dismissDialog()
+
             Toast.makeText(this@UpdateProductManagementActivity, "Please fill in all fields", Toast.LENGTH_SHORT).show()
         }
     }

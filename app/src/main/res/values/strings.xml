@@ -1,4 +1,5 @@
 <resources>
+    <string name="base_url"></string>
     <string-array name="category_array">
         <item>Trà</item>
         <item>Cà Phê</item>

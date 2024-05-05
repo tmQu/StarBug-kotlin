@@ -10,9 +10,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -52,6 +54,8 @@ class AccountSettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_setting)
 
+
+
 //      Dang nhap = cai gi thi khong duoc doi cai do
         cancelBtn = findViewById(R.id.cancelBtn)
 
@@ -62,6 +66,14 @@ class AccountSettingActivity : AppCompatActivity() {
 //        password = findViewById(R.id.passwordInputLayout)
 //        confirmPassword = findViewById(R.id.confirmPasswordInputLayout)
 //        currentPassw = findViewById(R.id.currentPwd)
+
+
+        val mToolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+        mToolbar.setNavigationOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                finish()
+            }
+        })
 
         loadingDialog = LoadingDialog(this)
         getCurrentUserData()
