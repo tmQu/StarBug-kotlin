@@ -40,7 +40,7 @@
                 android:fontFamily="@font/bungee"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="CHI TIẾT FEEDBACK"
+                android:text="FEEDBACK DETAIL"
                 android:textColor="@color/colorPrimary"
                 android:textSize="27sp"
                 android:textStyle="bold" />

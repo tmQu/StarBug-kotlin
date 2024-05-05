@@ -38,7 +38,6 @@ class HistoryFragment : Fragment() {
 
     private var filter = listOf<String>()
 
-
     override fun onDestroy() {
         super.onDestroy()
         val dbRef = FirebaseDatabase.getInstance().getReference("Orders")
