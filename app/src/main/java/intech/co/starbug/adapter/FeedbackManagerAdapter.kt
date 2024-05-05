@@ -44,7 +44,6 @@ class FeedbackManagerAdapter(
         Log.i("FeedbackManagerAdapter", "onCreateViewHolder: $itemView")
         val viewHolder = FeedbackViewHolder(itemView)
 
-        // Xử lý sự kiện click cho nút "Detail"
         viewHolder.detailButton.setOnClickListener {
             val position = viewHolder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
@@ -53,7 +52,6 @@ class FeedbackManagerAdapter(
             }
         }
 
-        // Xử lý sự kiện click cho nút "Delete"
         viewHolder.deleteImageButton.setOnClickListener {
             val position = viewHolder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
@@ -82,7 +80,6 @@ class FeedbackManagerAdapter(
         notifyDataSetChanged()
     }
 
-    // Phương thức public để thiết lập listener cho sự kiện nhấp vào item
     fun setOnItemClickListener(listener: (FeedbackModel) -> Unit) {
         onItemClick = { view, position ->
             val item = itemList[position]

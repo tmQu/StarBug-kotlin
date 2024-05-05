@@ -74,17 +74,14 @@ class FeedbackManager : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Trong phương thức onCreate của ProductManagementActivity
         feedbackAdapter.setOnDeleteClickListener { feedback ->
             val alertDialogBuilder = AlertDialog.Builder(this@FeedbackManager)
             alertDialogBuilder.apply {
                 setTitle("Confirm Delete")
                 setMessage("Are you sure you want to delete this feedback?")
                 setPositiveButton("Yes") { _, _ ->
-                    // Xóa feedback từ cơ sở dữ liệu Firebase
                     feedbackRef.child(feedback.id).removeValue()
                         .addOnSuccessListener {
-                            // Xử lý thành công
                             Toast.makeText(
                                 this@FeedbackManager,
                                 "Feedback deleted successfully",
@@ -92,7 +89,6 @@ class FeedbackManager : AppCompatActivity() {
                             ).show()
                         }
                         .addOnFailureListener { e ->
-                            // Xử lý thất bại
                             Log.e("Feedback Manager", "Error deleting feedback", e)
                             Toast.makeText(
                                 this@FeedbackManager,
