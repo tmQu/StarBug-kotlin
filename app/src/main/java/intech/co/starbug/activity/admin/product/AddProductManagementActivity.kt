@@ -26,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import intech.co.starbug.R
 import intech.co.starbug.adapter.EditImageAdapter
+import intech.co.starbug.dialog.LoadingDialog
 import intech.co.starbug.model.ProductModel
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -210,13 +211,16 @@ class AddProductManagementActivity : AppCompatActivity() {
         if (productId != null) {
             // Gán ID duy nhất cho sản phẩm
             newProduct.id = productId.toString()
+            val loadingDialog = LoadingDialog(this)
             productsRef.child(productId!!).setValue(newProduct)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Sản phẩm mới đã được tạo thành công!", Toast.LENGTH_SHORT).show()
                     // Đóng hoạt động hiện tại
+                    loadingDialog.dismissDialog()
                     finish()
                 }
                 .addOnFailureListener {
+                    loadingDialog.dismissDialog()
                     Toast.makeText(this, "Đã xảy ra lỗi! Không thể tạo sản phẩm mới.", Toast.LENGTH_SHORT).show()
                 }
         }
@@ -279,10 +283,12 @@ class AddProductManagementActivity : AppCompatActivity() {
             if (convertedImageUri != null) {
                 val storageRef = FirebaseStorage.getInstance().reference
                     .child("product_img/${System.currentTimeMillis()}")
-
+                val loadingDialog = LoadingDialog(this)
+                loadingDialog.startLoadingDialog()
                 storageRef.putFile(convertedImageUri)
                     .addOnSuccessListener { taskSnapshot ->
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
+                            loadingDialog.dismissDialog()
                             val updatedImageURL = uri.toString()
                             listImageGoogleStore.add(updatedImageURL)
                             countNewImage--
@@ -293,6 +299,7 @@ class AddProductManagementActivity : AppCompatActivity() {
                     }
                     .addOnFailureListener{
                         Toast.makeText(this, "Không thể tải ảnh lên", Toast.LENGTH_SHORT).show()
+                        loadingDialog.dismissDialog()
                         countNewImage--
                         if (countNewImage == 0) {
                             createProduct()

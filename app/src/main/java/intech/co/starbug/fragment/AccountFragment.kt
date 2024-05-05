@@ -12,6 +12,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -56,7 +58,13 @@ class AccountFragment : Fragment() {
 
         logout.setOnClickListener {
             // Logout
+            val googleSignInClient =
+                activity?.let { it1 -> GoogleSignIn.getClient(it1.applicationContext, GoogleSignInOptions.DEFAULT_SIGN_IN) }
             FirebaseAuth.getInstance().signOut()
+
+            if (googleSignInClient != null) {
+                googleSignInClient.revokeAccess()
+            }
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)

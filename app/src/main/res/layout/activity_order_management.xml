@@ -59,7 +59,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="16dp"
-                            android:text="QUẢN LÝ ĐƠN HÀNG"
+                            android:text="ORDER MANAGEMENT"
                             android:textColor="@color/colorPrimary"
                             android:fontFamily="@font/bungee"
                             android:textSize="20sp"

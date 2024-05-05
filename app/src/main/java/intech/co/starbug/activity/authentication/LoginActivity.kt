@@ -31,6 +31,7 @@ import intech.co.starbug.activity.admin.HomeManageActivity
 import intech.co.starbug.R
 import intech.co.starbug.helper.SharedPreferencesHelper
 import intech.co.starbug.activity.ContainerActivity
+import intech.co.starbug.dialog.LoadingDialog
 import intech.co.starbug.model.UserModel
 
 
@@ -87,6 +88,9 @@ class LoginActivity : AppCompatActivity() {
             val passwordValue = password.editText?.text.toString()
 
             if (emailValue.isNotEmpty() && passwordValue.isNotEmpty()) {
+
+                val loadingDialog = LoadingDialog(this)
+                loadingDialog.startLoadingDialog()
                 auth.signInWithEmailAndPassword(emailValue, passwordValue)
                     .addOnCompleteListener { task ->
                         Log.d("LoginActivity", "EmailValue $emailValue")
@@ -102,6 +106,7 @@ class LoginActivity : AppCompatActivity() {
                                 myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                                         val userData = dataSnapshot.getValue(UserModel::class.java)
+                                        loadingDialog.dismissDialog()
                                         if (userData != null) {
                                             val userRole = userData.role
                                             val sharedPrefManager =
@@ -170,9 +175,11 @@ class LoginActivity : AppCompatActivity() {
                                             "LoginActivity",
                                             "Database error: ${databaseError.message}"
                                         )
+                                        loadingDialog.dismissDialog()
                                     }
                                 })
                             } else {
+                                loadingDialog.dismissDialog()
                                 Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
                                 Toast.makeText(
                                     this@LoginActivity,
@@ -188,6 +195,7 @@ class LoginActivity : AppCompatActivity() {
                                 "An error occurred. Please try again later.",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            loadingDialog.dismissDialog()
 
                         }
                     }
@@ -250,6 +258,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
         val credential = GoogleAuthProvider.getCredential(completedTask.result.idToken, null)
+        val loadingDialog = LoadingDialog(this)
+        loadingDialog.startLoadingDialog()
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -272,6 +282,7 @@ class LoginActivity : AppCompatActivity() {
                                     val sharedPrefManager =
                                         SharedPreferencesHelper(this@LoginActivity)
                                     sharedPrefManager.saveUser(userData)
+                                    loadingDialog.dismissDialog()
                                     if (userRole == "Admin") {
                                         Toast.makeText(
                                             this@LoginActivity,
@@ -301,49 +312,10 @@ class LoginActivity : AppCompatActivity() {
 
                             override fun onCancelled(databaseError: DatabaseError) {
                                 Log.e("LoginActivity", "Database error: ${databaseError.message}")
+                                loadingDialog.dismissDialog()
                             }
                         })
                     }
-//
-//                    val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
-//                    startActivity(intent)
-//                        val userId = user.uid
-//                        val database = FirebaseDatabase.getInstance()
-//                        val myRef = database.getReference("User").child(userId)
-//
-//
-//                        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-//                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                                val userData = dataSnapshot.getValue(UserModel::class.java)
-//                                Log.i("LoginActivity", "User data: $userData.email")
-//                                if (userData != null) {
-//                                    val userRole = userData.role
-//                                    if (userRole == "Admin") {
-//                                        Toast.makeText(
-//                                            this@LoginActivity,
-//                                            "User is Admin",
-//                                            Toast.LENGTH_SHORT
-//                                        ).show()
-//                                        val intent = Intent(this@LoginActivity, HomeManageActivity::class.java)
-//                                        Log.i("LoginActivity", "intent: $intent")
-//                                        startActivity(intent)
-//                                    } else {
-//                                        Toast.makeText(
-//                                            this@LoginActivity,
-//                                            "User is not Admin",
-//                                            Toast.LENGTH_SHORT
-//                                        ).show()
-//                                        val intent = Intent(this@LoginActivity, ContainerActivity::class.java)
-//                                        startActivity(intent)
-//                                    }
-//                                }
-//                            }
-//
-//                            override fun onCancelled(databaseError: DatabaseError) {
-//                                Log.e("LoginActivity", "Database error: ${databaseError.message}")
-//                            }
-//                        })
-//                    }
                     else if (user == null) {
                         Log.d("LoginActivity", "Failed to sign in: ${task.exception}")
                         Toast.makeText(
@@ -360,6 +332,8 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
+                loadingDialog.dismissDialog()
             }
     }
 

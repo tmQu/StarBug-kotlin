@@ -11,6 +11,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import intech.co.starbug.R
+import intech.co.starbug.dialog.LoadingDialog
 import intech.co.starbug.model.UserModel
 import okhttp3.Call
 import okhttp3.Callback
@@ -42,6 +43,8 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
     private lateinit var saveBtn: Button
     private lateinit var deleteBtn: Button
 
+    private lateinit  var loadingDialog: LoadingDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_staff_management)
@@ -51,7 +54,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         phoneNo = findViewById(R.id.phoneNumberInputLayout)
         password = findViewById(R.id.passwordInputLayout)
         role = findViewById(R.id.roleInputLayout)
-
+        loadingDialog = LoadingDialog(this)
         getData()
         setData()
 
@@ -79,6 +82,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
                 message = "Are you sure you want to delete this account?",
                 onConfirm = {
                     val mUser = FirebaseAuth.getInstance().currentUser
+                    loadingDialog.startLoadingDialog()
                     mUser!!.getIdToken(true)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
@@ -183,6 +187,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
     {
         // use Okhttp send post request to delete account
         //
+
         val url = "https://lucent-halva-a93008.netlify.app/.netlify/functions/api/delete-user"
         val client = OkHttpClient()
         val jsonBody = JSONObject()
@@ -199,8 +204,11 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
             override fun onFailure(call: Call, e: java.io.IOException) {
                 // Handle failure
                 Log.i("DeleteAccount", e.message.toString())
+                loadingDialog.dismissDialog()
+                this@UpdateStaffManagementActivity.runOnUiThread(Runnable {
+                    Toast.makeText(this@UpdateStaffManagementActivity, "Fail to delete account", Toast.LENGTH_SHORT).show()
 
-                Toast.makeText(this@UpdateStaffManagementActivity, "Failed to delete account", Toast.LENGTH_SHORT).show()
+                })
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -225,10 +233,13 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
 
         usersReference.child(id).removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                loadingDialog.dismissDialog()
+
                 Toast.makeText(this, "Account deleted from database successfully", Toast.LENGTH_SHORT)
                     .show()
                 finish()
             } else {
+                loadingDialog.dismissDialog()
                 Log.d(
                     "DeleteAccountDatabase",
                     "Failed to delete account from database: ${task.exception?.message}"

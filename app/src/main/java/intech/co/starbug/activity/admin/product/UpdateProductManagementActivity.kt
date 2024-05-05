@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import intech.co.starbug.R
 import intech.co.starbug.adapter.EditImageAdapter
+import intech.co.starbug.dialog.LoadingDialog
 import intech.co.starbug.model.ProductModel
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -69,6 +70,9 @@ class UpdateProductManagementActivity : AppCompatActivity() {
     private var countDeleteImage = 0
     private var saveButtonClick = false
 
+
+    private lateinit var loadingDialog: LoadingDialog
+
     private val handler = Handler(Looper.getMainLooper())
     private fun waitForCallback() {
 
@@ -99,6 +103,8 @@ class UpdateProductManagementActivity : AppCompatActivity() {
         itemPictureImage = findViewById(R.id.itemPictureImage)
         cancelButton = findViewById(R.id.cancelButton)
 
+
+        loadingDialog = LoadingDialog(this)
         ArrayAdapter.createFromResource(
             this,
             R.array.category_array, // This is an array of strings defined in your strings.xml resource file
@@ -198,7 +204,7 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                     deleteImageToFirebase(currentImage[i])
                 }
             }
-
+            loadingDialog.startLoadingDialog()
             // start Progrss
 
             saveButtonClick = true
@@ -321,7 +327,6 @@ class UpdateProductManagementActivity : AppCompatActivity() {
             if (convertedImageUri != null) {
                 val storageRef = FirebaseStorage.getInstance().reference
                     .child("product_img/${System.currentTimeMillis()}")
-
                 storageRef.putFile(convertedImageUri)
                     .addOnSuccessListener { taskSnapshot ->
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -430,11 +435,14 @@ class UpdateProductManagementActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     Toast.makeText(this@UpdateProductManagementActivity, "Product updated successfully", Toast.LENGTH_SHORT).show()
                     finish() // Kết thúc activity sau khi cập nhật thành công
+                    loadingDialog.dismissDialog()
                 }
                 .addOnFailureListener {
+                    loadingDialog.dismissDialog()
                     Toast.makeText(this@UpdateProductManagementActivity, "Failed to update product", Toast.LENGTH_SHORT).show()
                 }
         } else {
+            loadingDialog.dismissDialog()
             Toast.makeText(this@UpdateProductManagementActivity, "Please fill in all fields", Toast.LENGTH_SHORT).show()
         }
     }
