@@ -51,8 +51,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
 
         saveBtn.setOnClickListener {
             if (fullName.editText?.text.toString().isEmpty() || email.editText?.text.toString()
-                    .isEmpty() || password.editText?.text.toString()
-                    .isEmpty() || phoneNo.editText?.text.toString()
+                    .isEmpty()  || phoneNo.editText?.text.toString()
                     .isEmpty()
             ) {
                 // Show error message indicating fields are empty
@@ -67,7 +66,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         deleteBtn.setOnClickListener {
             showConfirmationDialog(title = "Delete Account",
                 message = "Are you sure you want to delete this account?",
-                onConfirm = { checkAccountExistsInFirebaseAuth(emailData!!) })
+                onConfirm = { deleteAccountFromDatabase(idData!!) })
         }
 
         role.setOnClickListener() {
@@ -101,7 +100,7 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
             putExtra("Password", password.editText?.text.toString())
             putExtra("Role", "Admin")
         }
-        updatePassword(emailData!!, passwordData!!, password.editText?.text.toString())
+        Log.i("UpdateStaffManagement", "Changes saved")
         setResult(RESULT_OK, resultIntent)
         Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show()
         updateAccountInFirebase(idData!!)
@@ -118,50 +117,6 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
             }.show()
     }
 
-    private fun updatePassword(email: String, oldPassword: String, newPassword: String) {
-        val auth = FirebaseAuth.getInstance()
-        val credential = EmailAuthProvider.getCredential(email, oldPassword)
-
-        auth.signInWithCredential(credential).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = auth.currentUser
-                user?.updatePassword(newPassword)?.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("UpdatePassword", "User password updated.")
-                        Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        Log.d(
-                            "UpdatePassword",
-                            "Failed to update password: ${task.exception?.message}"
-                        )
-                        Toast.makeText(
-                            this,
-                            "Failed to update password: ${task.exception?.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            } else {
-                Log.d("SignIn", "Failed to sign in: ${task.exception?.message}")
-                Toast.makeText(
-                    this, "Failed to sign in: ${task.exception?.message}", Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-    private fun checkAccountExistsInFirebaseAuth(email: String) {
-        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
-            .addOnCompleteListener { task ->
-                val isUserExists = task.result?.signInMethods?.isNotEmpty() ?: false
-                if (isUserExists) {
-                    deleteAccountFirebase(emailData!!, passwordData!!)
-                } else {
-                    Toast.makeText(this, "Account does not exist", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
 
     private fun updateAccountInFirebase(id: String) {
         val usersReference = FirebaseDatabase.getInstance().getReference("User")
@@ -191,42 +146,10 @@ class UpdateStaffManagementActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteAccountFirebase(email: String, password: String) {
-        val auth = FirebaseAuth.getInstance()
-        val credential = EmailAuthProvider.getCredential(email, password)
-
-        auth.signInWithCredential(credential).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = auth.currentUser
-                user?.delete()?.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("DeleteAccount", "User account deleted.")
-                        Toast.makeText(this, "Account deleted successfully", Toast.LENGTH_SHORT)
-                            .show()
-                        deleteAccountFromDatabase(idData!!)
-                    } else {
-                        Log.d(
-                            "DeleteAccount",
-                            "Failed to delete account: ${task.exception?.message}"
-                        )
-                        Toast.makeText(
-                            this,
-                            "Failed to delete account: ${task.exception?.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            } else {
-                Log.d("SignIn", "Failed to sign in: ${task.exception?.message}")
-                Toast.makeText(
-                    this, "Failed to sign in: ${task.exception?.message}", Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
     private fun deleteAccountFromDatabase(id: String) {
+        Log.i("ID", "$id")
         val usersReference = FirebaseDatabase.getInstance().getReference("User")
+        Log.i("DeleteAccountDatabase", "$usersReference")
         usersReference.child(id).removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(this, "Account deleted from database successfully", Toast.LENGTH_SHORT)
