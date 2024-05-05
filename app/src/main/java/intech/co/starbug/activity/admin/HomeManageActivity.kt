@@ -12,6 +12,7 @@ import intech.co.starbug.R
 import intech.co.starbug.activity.admin.staff.StaffManagementActivity
 import intech.co.starbug.activity.admin.product.ProductManagementActivity
 import intech.co.starbug.activity.admin.promotion.PromotionManagementActivity
+import intech.co.starbug.activity.admin.statistical.StatisticalActivity
 import intech.co.starbug.activity.authentication.LoginActivity
 
 class HomeManageActivity : AppCompatActivity() {
@@ -21,6 +22,7 @@ class HomeManageActivity : AppCompatActivity() {
     private lateinit var feedbackLayout: LinearLayout
     private lateinit var orderLayout: LinearLayout
     private lateinit var promotionLayout: LinearLayout
+    private lateinit var statisticalLayout: LinearLayout
 
     private lateinit var logoutBtn: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,8 @@ class HomeManageActivity : AppCompatActivity() {
         feedbackLayout = findViewById(R.id.feedbackLayout)
         orderLayout = findViewById(R.id.orderLayout)
         promotionLayout = findViewById(R.id.promotionLayout)
+        statisticalLayout = findViewById(R.id.staticLayout)
+
         logoutBtn = findViewById(R.id.logout_btn)
 
         logoutBtn.setOnClickListener {
@@ -70,6 +74,12 @@ class HomeManageActivity : AppCompatActivity() {
 
         promotionLayout.setOnClickListener {
             val intent = Intent(this, PromotionManagementActivity::class.java)
+            startActivity(intent)
+        }
+
+        statisticalLayout.setOnClickListener {
+            // Handle click on statistical layout
+            val intent = Intent(this, StatisticalActivity::class.java)
             startActivity(intent)
         }
     }

@@ -214,6 +214,38 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/staticLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/full_rounded_corners"
+                        android:gravity="center|left"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/imageViewStatistic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_statistics_report"
+                            android:backgroundTint="@color/colorPrimary"
+                            />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/bungee"
+                            android:gravity="center"
+                            android:text="Statistical Report"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

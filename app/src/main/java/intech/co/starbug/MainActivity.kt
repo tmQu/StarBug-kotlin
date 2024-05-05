@@ -29,6 +29,7 @@ import intech.co.starbug.activity.Feedback
 import intech.co.starbug.activity.admin.HomeManageActivity
 import intech.co.starbug.activity.admin.feedback.FeedbackManager
 import intech.co.starbug.activity.admin.product.ProductManagementActivity
+import intech.co.starbug.activity.admin.statistical.StatisticalActivity
 
 import intech.co.starbug.activity.authentication.LoginActivity
 import intech.co.starbug.helper.SharedPreferencesHelper
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         companyTV.setAnimation(bottomAnim);
 
         FirebaseApp.initializeApp(this)
+
         Handler().postDelayed({
             if(checkAuth())
             {

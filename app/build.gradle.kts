@@ -124,4 +124,7 @@ dependencies {
     implementation("com.paypal.checkout:android-sdk:1.3.2")
     implementation("com.github.shuhart:stepview:1.5.1")
     implementation("com.ramotion.foldingcell:folding-cell:1.2.3")
+
+    // mp chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

@@ -21,6 +21,9 @@
         android:theme="@style/Theme.StarBug"
         tools:targetApi="31">
         <activity
+            android:name=".activity.admin.statistical.StatisticalActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.admin.comment.CommentManage"
             android:exported="false" />
         <activity
@@ -82,7 +85,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.admin.account.AccountManagement"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".activity.CheckoutActivity"
             android:exported="true"
