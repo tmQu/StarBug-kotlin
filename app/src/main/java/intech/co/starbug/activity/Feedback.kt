@@ -64,7 +64,7 @@ class Feedback : AppCompatActivity() {
 
         sendBtn.setOnClickListener {
             addFirebase()
-            Toast.makeText(this, "Gửi phản hồi thành công", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Sent successfully!", Toast.LENGTH_SHORT).show()
         }
 
         image.setOnClickListener {
@@ -90,7 +90,7 @@ class Feedback : AppCompatActivity() {
         val descriptionText = description.editText?.text.toString()
 
         if (senderNameText.isBlank() || senderPhoneNumberText.isBlank() || descriptionText.isBlank()) {
-            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Fill enough information.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -109,13 +109,12 @@ class Feedback : AppCompatActivity() {
                 .addOnSuccessListener {
                     Toast.makeText(this, "Successfully send feedback", Toast.LENGTH_SHORT)
                         .show()
-                    // Đóng hoạt động hiện tại
                     finish()
                 }
                 .addOnFailureListener {
                     Toast.makeText(
                         this,
-                        "Đã xảy ra lỗi! Không thể tạo sản phẩm mới.",
+                        "There is an error.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -141,7 +140,6 @@ class Feedback : AppCompatActivity() {
         if (imageUri != null) {
             var convertedImageUri: Uri? = null
             try {
-                // Kiểm tra định dạng của hình ảnh
                 val inputStream = contentResolver.openInputStream(imageUri)
                 val options = BitmapFactory.Options()
                 options.inJustDecodeBounds = true
@@ -152,7 +150,6 @@ class Feedback : AppCompatActivity() {
                 Log.i("Feedback", "Image MIME type: $imageMimeType")
 
                 if (imageMimeType != "image/jpg" || imageMimeType != "image/jpeg" || imageMimeType != "image/png" || imageMimeType != "image/webp") {
-                    // Chuyển đổi hình ảnh sang định dạng JPG
                     convertedImageUri = convertImageToJpeg(imageUri)
                     Log.i("Feedback", "Converted image URI: $convertedImageUri")
                 } else {
@@ -175,7 +172,7 @@ class Feedback : AppCompatActivity() {
                         }
                     }
                     .addOnFailureListener{
-                        Toast.makeText(this, "Không thể tải ảnh lên", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Can not upload images.", Toast.LENGTH_SHORT).show()
                     }
             }
         }
@@ -186,16 +183,13 @@ class Feedback : AppCompatActivity() {
         try {
             var inputStream = contentResolver.openInputStream(inputUri)
 
-            // Đọc thông tin kích thước của ảnh gốc
             val options = BitmapFactory.Options()
             options.inJustDecodeBounds = true
             BitmapFactory.decodeStream(inputStream, null, options)
             inputStream?.close()
 
-            // Đặt lại đọc ảnh từ đầu
             inputStream = contentResolver.openInputStream(inputUri)
 
-            // Decode bitmap với thông tin kích thước đã lấy
             val bitmap = BitmapFactory.decodeStream(inputStream)
 
             val exif = inputStream?.let { ExifInterface(it) }

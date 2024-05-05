@@ -94,8 +94,6 @@ class OrderHistoryAdapter(val listOrder: List<OrderModel>, val context: Context)
         orderDate.text = Utils.convertDate(order.orderDate)
         orderTotalPrice.text = Utils.formatMoney(order.price)
         orderQuantity.text = order.listCartItem.size.toString()
-        
-
 
     }
 
