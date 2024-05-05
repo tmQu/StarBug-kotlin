@@ -274,7 +274,7 @@ class CheckoutActivity : AppCompatActivity() {
     {
         initializeBottomSheetPayment()
         val listPayemnt = LIST_PAYMENT_METHOD
-        val listLogo = listOf(R.drawable.logo_zalo_pay, R.drawable.logo_momo, R.drawable.logo_cod)
+        val listLogo = listOf(R.drawable.logo_zalo_pay, R.drawable.logo_paypal, R.drawable.logo_cod)
 
         val adapter = PaymentMethodAdapter(listPayemnt, listLogo){
             paymentMethod = listPayemnt[it]
@@ -611,7 +611,8 @@ class CheckoutActivity : AppCompatActivity() {
                     AlertDialog.Builder(this@CheckoutActivity)
                         .setTitle("User Cancel Payment")
                         .setMessage("Sorry your order is not successful, please try again!")
-                        .setPositiveButton("Continue",
+                        .setPositiveButton("" +
+                                "Continue",
                             DialogInterface.OnClickListener { dialog, which -> })
                 }
 

@@ -128,29 +128,8 @@ class MainActivity : AppCompatActivity() {
             val dbRef = FirebaseDatabase.getInstance().getReference("User").child(userId)
             dbRef.addListenerForSingleValueEvent(/* listener = */ object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val userData = dataSnapshot.getValue(UserModel::class.java)
-                    if (userData != null) {
-                        val userRole = userData.role
-                        val sharedPrefManager =
-                            SharedPreferencesHelper(this@MainActivity)
-                        sharedPrefManager.saveUser(userData)
-                        if(wait)
-                        {
-                            val intent = when(userRole)
-                            {
-                                "Admin" -> Intent(this@MainActivity, HomeManageActivity::class.java)
-                                "Customer" -> Intent(this@MainActivity, ContainerActivity::class.java)
-                                else -> Intent(this@MainActivity, LoginActivity::class.java)
-                            }
-
-                            startActivity(intent)
-                            finish()
-
-                        }
-                        else {
-                            wait = true
-                        }
-                    }else {
+                    if(!dataSnapshot.exists())
+                    {
                         val pairs = arrayOf<Pair<View, String>>(
                             Pair(image, "logo_image"),
                             Pair(logoTV, "brand_text"),
@@ -162,6 +141,43 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent, options.toBundle())
                         finish()
 
+                    }else {
+                        val userData = dataSnapshot.getValue(UserModel::class.java)
+                        if (userData != null) {
+                            val userRole = userData.role
+                            val sharedPrefManager =
+                                SharedPreferencesHelper(this@MainActivity)
+                            sharedPrefManager.saveUser(userData)
+                            Log.i("MainActivity", "User authenticated $userRole")
+                            if(wait)
+                            {
+                                val intent = when(userRole)
+                                {
+                                    "Admin" -> Intent(this@MainActivity, HomeManageActivity::class.java)
+                                    "Customer" -> Intent(this@MainActivity, ContainerActivity::class.java)
+                                    else -> Intent(this@MainActivity, LoginActivity::class.java)
+                                }
+
+                                startActivity(intent)
+                                finish()
+
+                            }
+                            else {
+                                wait = true
+                            }
+                        }else {
+                            val pairs = arrayOf<Pair<View, String>>(
+                                Pair(image, "logo_image"),
+                                Pair(logoTV, "brand_text"),
+                            )
+                            Log.i("MainActivity", "User not authenticated")
+
+                            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                            val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
+                            startActivity(intent, options.toBundle())
+                            finish()
+
+                        }
                     }
                 }
 
@@ -170,6 +186,18 @@ class MainActivity : AppCompatActivity() {
                         "MainActivity",
                         "Database error: ${error.message}"
                     )
+
+                    val pairs = arrayOf<Pair<View, String>>(
+                        Pair(image, "logo_image"),
+                        Pair(logoTV, "brand_text"),
+                    )
+                    Log.i("MainActivity", "User not authenticated")
+
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, *pairs)
+                    startActivity(intent, options.toBundle())
+                    finish()
+
                 }
             })
         }
